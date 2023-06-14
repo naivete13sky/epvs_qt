@@ -17,4 +17,6 @@ Makefile*
 Thumbs.db
 .idea/
 x64/
+.vs/
+
 
