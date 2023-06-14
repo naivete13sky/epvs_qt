@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QPushButton>
-
+#include "EPVS.h"
 
 namespace Ui {
 class Login;
@@ -17,6 +17,7 @@ class Login : public QMainWindow
 public:
     explicit Login(QWidget *parent = 0);
     ~Login();
+    EPVS epvs;
 
 public slots:
     void handleButtonClick();
@@ -24,6 +25,10 @@ public slots:
 
 private:
     Ui::Login *ui;
+    QString loginUserName;
+    QString loginPassword;
 };
+
+
 
 #endif // LOGIN_H
