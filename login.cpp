@@ -150,7 +150,17 @@ void Login::handleButtonClick()
     }
 
 
-
+    // 将修改后的JSON对象保存回JSON文件
+    QFile saveJsonFile(jsonFilePath);
+    if (saveJsonFile.open(QIODevice::WriteOnly)) {
+        QJsonDocument modifiedJsonDoc(loadedObject);
+        saveJsonFile.write(modifiedJsonDoc.toJson());
+        saveJsonFile.close();
+        qDebug() << "Modified JSON file saved successfully.";
+    }
+    else {
+        qDebug() << "Failed to save modified JSON file.";
+    }
 
 
 
@@ -169,17 +179,7 @@ void Login::handleButtonClick()
 
 
 
-    // 将修改后的JSON对象保存回JSON文件
-    QFile saveJsonFile(jsonFilePath);
-    if (saveJsonFile.open(QIODevice::WriteOnly)) {
-        QJsonDocument modifiedJsonDoc(loadedObject);
-        saveJsonFile.write(modifiedJsonDoc.toJson());
-        saveJsonFile.close();
-        qDebug() << "Modified JSON file saved successfully.";
-    }
-    else {
-        qDebug() << "Failed to save modified JSON file.";
-    }
+    
 
 
 
