@@ -6,7 +6,9 @@
 #include <QSettings>
 #include <QtCore/QDebug>
 #include "global_variables.h"
-
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QFile>
 
 
 //login_user_type是全局变量
@@ -121,6 +123,53 @@ void Login::handleButtonClick()
         
 
     }
+
+
+    // 创建嵌套的JSON数据
+    QJsonObject root;
+    root["name"] = "John";
+    root["age"] = 25;
+
+    QJsonObject address;
+    address["city"] = "New York";
+    address["street"] = "123 Main St";
+
+    root["address"] = address;
+
+    // 将JSON数据写入文件
+    QFile file("config.json");
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QJsonDocument doc(root);
+        file.write(doc.toJson());
+        file.close();
+    }
+
+    // 从文件读取JSON数据
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+        file.close();
+
+        if (doc.isObject())
+        {
+            QJsonObject data = doc.object();
+
+            QString name = data["name"].toString();
+            int age = data["age"].toInt();
+
+            QJsonObject addressData = data["address"].toObject();
+            QString city = addressData["city"].toString();
+            QString street = addressData["street"].toString();
+
+            qDebug() << "Name:" << name;
+            qDebug() << "Age:" << age;
+            qDebug() << "City:" << city;
+            qDebug() << "Street:" << street;
+        }
+    }
+
+
 
 
 
