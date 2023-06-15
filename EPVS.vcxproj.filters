@@ -46,6 +46,9 @@
     <ClCompile Include="ccMethod\EncryptionQByteArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ccMethod\jsonutils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="login.h">
@@ -62,9 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="..\..\..\..\Users\cheng.chen\Desktop\config.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global_variables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ccMethod\jsonutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

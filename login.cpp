@@ -11,6 +11,7 @@
 #include <QFile>
 
 
+
 //login_user_type是全局变量
 QString login_user_type = "";
 
@@ -38,23 +39,44 @@ Login::~Login()
 }
 
 
-void Login::loadConfig() {
-    qDebug() << "loadConfig:";
-    QSettings settings("settings/config.ini", QSettings::IniFormat);
-    QString remember = settings.value("DEFAULT/remember").toString();
-    qDebug() << "remember:" << remember;
-    if (remember == "True") {
-        ui->lineEditUserName->setText(settings.value("DEFAULT/user_name").toString());
+void Login::loadConfig() {   
+    
+    QJsonObject login_data;
+    QFile file("settings/epvs.json");
+    // 从文件读取JSON数据
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+        file.close();
 
-        // 读取并解密密码
-        EncryptionQByteArray encryptionQByteArray;
-        QString storedpassword = settings.value("DEFAULT/password").toString();
+        if (doc.isObject())
+        {
+            QJsonObject data = doc.object();
+            login_data = data["login"].toObject();            
+        }
+    }
+
+
+    QString remember = login_data["remember"].toString();
+    QString user_name = login_data["user_name"].toString();    
+    QString storedpassword = login_data["password"].toString();
+    QString login_user_type = login_data["user_type"].toString();
+        
+    qDebug() << "remember:" << remember;    
+    
+    if (remember == "True") {
+        // 从配置文件读取用户名并在登录窗口默认显示出来
+        ui->lineEditUserName->setText(user_name);
+
+        // 从配置文件读取密码并在登录窗口默认显示出来
+        // 需要解密密码，
+        EncryptionQByteArray encryptionQByteArray;        
         QString decryptedPassword = encryptionQByteArray.decrypt(storedpassword);
         ui->lineEditPassword->setText(decryptedPassword);
-
-        ui->checkBoxRememberPassword->setChecked(true);
         
-        login_user_type = settings.value("DEFAULT/user_type").toString();
+        // 是否要记住密码
+        ui->checkBoxRememberPassword->setChecked(true); 
+        
 
         if (login_user_type == "common") {
             ui->radioButtonUserNameTypeCommon->setChecked(true);            
@@ -84,6 +106,40 @@ void Login::handleButtonClick()
 
     
     QSettings settings("settings/config.ini", QSettings::IniFormat);
+
+    
+    QString jsonFilePath = "settings/epvs.json";
+
+    // 从JSON文件中读取JSON对象
+    QFile loadJsonFile(jsonFilePath);
+    if (loadJsonFile.open(QIODevice::ReadOnly)) {
+        QByteArray jsonData = loadJsonFile.readAll();
+        QJsonDocument loadedJsonDoc = QJsonDocument::fromJson(jsonData);
+        QJsonObject loadedObject = loadedJsonDoc.object();
+
+        // 修改嵌套JSON中的一个变量的值
+        modifyJsonValue(loadedObject, "nestedObject/var2", "new value");
+
+        // 将修改后的JSON对象保存回JSON文件
+        QFile saveJsonFile(jsonFilePath);
+        if (saveJsonFile.open(QIODevice::WriteOnly)) {
+            QJsonDocument modifiedJsonDoc(loadedObject);
+            saveJsonFile.write(modifiedJsonDoc.toJson());
+            saveJsonFile.close();
+            qDebug() << "Modified JSON file saved successfully.";
+        }
+        else {
+            qDebug() << "Failed to save modified JSON file.";
+        }
+    }
+    else {
+        qDebug() << "Failed to load JSON file.";
+    }
+
+
+
+
+
     
        
 
@@ -101,6 +157,11 @@ void Login::handleButtonClick()
     
     if (ui->checkBoxRememberPassword->isChecked()) {
         settings.setValue("DEFAULT/user_name", loginUserName);
+
+
+
+
+
         // 加密密码
         QString encryptedPassword = encryptionQByteArray.encrypt(loginPassword);
         // 将加密后的密码保存到配置文件
@@ -125,49 +186,27 @@ void Login::handleButtonClick()
     }
 
 
-    // 创建嵌套的JSON数据
-    QJsonObject root;
-    root["name"] = "John";
-    root["age"] = 25;
+    //// 创建嵌套的JSON数据
+    //QJsonObject root;
+    //root["name"] = "John";
+    //root["age"] = 25;
 
-    QJsonObject address;
-    address["city"] = "New York";
-    address["street"] = "123 Main St";
+    //QJsonObject address;
+    //address["city"] = "New York";
+    //address["street"] = "123 Main St";
 
-    root["address"] = address;
+    //root["address"] = address;
 
-    // 将JSON数据写入文件
-    QFile file("config.json");
-    if (file.open(QIODevice::WriteOnly))
-    {
-        QJsonDocument doc(root);
-        file.write(doc.toJson());
-        file.close();
-    }
+    //// 将JSON数据写入文件
+    //QFile file2("config.json");
+    //if (file2.open(QIODevice::WriteOnly))
+    //{
+    //    QJsonDocument doc(root);
+    //    file2.write(doc.toJson());
+    //    file2.close();
+    //}
 
-    // 从文件读取JSON数据
-    if (file.open(QIODevice::ReadOnly))
-    {
-        QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
-        file.close();
-
-        if (doc.isObject())
-        {
-            QJsonObject data = doc.object();
-
-            QString name = data["name"].toString();
-            int age = data["age"].toInt();
-
-            QJsonObject addressData = data["address"].toObject();
-            QString city = addressData["city"].toString();
-            QString street = addressData["street"].toString();
-
-            qDebug() << "Name:" << name;
-            qDebug() << "Age:" << age;
-            qDebug() << "City:" << city;
-            qDebug() << "Street:" << street;
-        }
-    }
+    
 
 
 

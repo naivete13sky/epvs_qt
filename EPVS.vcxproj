@@ -85,6 +85,7 @@
     <QtUic Include="EPVS.ui" />
     <QtMoc Include="EPVS.h" />
     <ClCompile Include="ccMethod\EncryptionQByteArray.cpp" />
+    <ClCompile Include="ccMethod\jsonutils.cpp" />
     <ClCompile Include="EPVS.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="main.cpp" />
@@ -94,12 +95,14 @@
     <QtMoc Include="login.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\Users\cheng.chen\Desktop\config.json" />
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ccMethod\EncryptionQByteArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ccMethod\jsonutils.h" />
     <ClInclude Include="global_variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
