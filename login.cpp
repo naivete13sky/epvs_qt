@@ -24,45 +24,29 @@ Login::~Login()
 
 void Login::handleButtonClick()
 {
-    //QMessageBox::information(this, "Button Clicked", "The button was clicked!");
-
-
-    //// 加密密码
-    //QString password = "mysecretpassword";
-    //QString encryptedPassword = PasswordManager::encryptPassword(password);
-
-    //// 将加密后的密码保存到配置文件
-    //QSettings settings("config.ini", QSettings::IniFormat);
-    //settings.setValue("account/password", encryptedPassword);
+    //QMessageBox::information(this, "Button Clicked", "The button was clicked!");       
 
 
     EncryptionQByteArray encryptionQByteArray;
 
-    // Encrypt
-    QString plainText = "Hello, World!";
-    QString cipherText = encryptionQByteArray.encrypt(plainText);
-    qDebug() << "Plain Text:" << plainText;
-    qDebug() << "Cipher Text:" << cipherText;
-
-    // Decrypt
-    QString decryptedText = encryptionQByteArray.decrypt(cipherText);
-    qDebug() << "Decrypted Text:" << decryptedText;
-
-
-
-
-
-
-    //// 读取并解密密码
-    //QString storedPassword = settings.value("account/password").toString();
-    //QString decryptedPassword = PasswordManager::decryptPassword2(storedPassword);
-
-    qDebug() << "Original password:" << plainText;
-    qDebug() << "Encrypted password:" << cipherText;    
-    qDebug() << "Decrypted password:" << decryptedText;
+    // 加密密码
+    QString password = "Hello, World!";
+    QString encryptedPassword = encryptionQByteArray.encrypt(password);
+    // 将加密后的密码保存到配置文件
+    QSettings settings("settings/config.ini", QSettings::IniFormat);
+    settings.setValue("account/password", encryptedPassword);
 
     
+    
 
+    // 读取并解密密码
+    QString storedpassword = settings.value("account/password").toString();
+    QString decryptedPassword = encryptionQByteArray.decrypt(storedpassword);
+
+    qDebug() << "Original password:" << password;
+    qDebug() << "Encrypted password:" << encryptedPassword;
+    qDebug() << "Decrypted password:" << decryptedPassword;
+    
 
 
     

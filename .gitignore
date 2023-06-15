@@ -18,5 +18,6 @@ Thumbs.db
 .idea/
 x64/
 .vs/
+.settings/config.ini
 
 
