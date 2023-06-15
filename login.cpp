@@ -37,6 +37,7 @@ void Login::handleButtonClick()
     settings.setValue("account/password", encryptedPassword);
 
     
+
     
 
     // ∂¡»°≤¢Ω‚√‹√‹¬Î
