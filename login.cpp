@@ -12,6 +12,9 @@ Login::Login(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->loadConfig();
+
+
     connect(ui->pushButtonLogin, SIGNAL(clicked()), this, SLOT(handleButtonClick()));
 
 
@@ -22,6 +25,32 @@ Login::~Login()
     delete ui;
 }
 
+
+void Login::loadConfig() {
+    qDebug() << "loadConfig:";
+    QSettings settings("settings/config.ini", QSettings::IniFormat);
+    QString remember = settings.value("DEFAULT/remember").toString();
+    qDebug() << "remember:" << remember;
+    if (remember == "True") {
+        ui->lineEditUserName->setText(settings.value("DEFAULT/user_name").toString());
+
+
+        // 读取并解密密码
+        EncryptionQByteArray encryptionQByteArray;
+        QString storedpassword = settings.value("DEFAULT/password").toString();
+        QString decryptedPassword = encryptionQByteArray.decrypt(storedpassword);
+
+        ui->lineEditPassword->setText(decryptedPassword);
+        ui->checkBoxRememberPassword->setChecked(true);
+        QString login_user_type = settings.value("DEFAULT/user_type").toString();
+    }
+
+
+}
+
+
+
+
 void Login::handleButtonClick()
 {
     //QMessageBox::information(this, "Button Clicked", "The button was clicked!");       
@@ -30,7 +59,7 @@ void Login::handleButtonClick()
     EncryptionQByteArray encryptionQByteArray;
 
     // 加密密码
-    QString password = "Hello, World!";
+    QString password = "123";
     QString encryptedPassword = encryptionQByteArray.encrypt(password);
     // 将加密后的密码保存到配置文件
     QSettings settings("settings/config.ini", QSettings::IniFormat);

@@ -17,6 +17,11 @@ class Login : public QMainWindow
 public:
     explicit Login(QWidget *parent = 0);
     ~Login();
+
+    void Login::loadConfig();
+
+
+
     EPVS epvs;
 
 public slots:
