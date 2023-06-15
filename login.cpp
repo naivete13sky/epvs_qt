@@ -9,6 +9,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFile>
+#include "ccMethod/jsonutils.h" // 包含头文件
 
 
 
@@ -85,12 +86,10 @@ void Login::loadConfig() {
             ui->radioButtonUserNameTypeDMS->setChecked(true);
         }
 
-
     }
     else {
         ui->checkBoxRememberPassword->setChecked(false);
     }
-
 
 }
 
@@ -99,49 +98,22 @@ void Login::loadConfig() {
 
 void Login::handleButtonClick()
 {
-    //QMessageBox::information(this, "Button Clicked", "The button was clicked!");       
-
-
+    //加密解密方法
     EncryptionQByteArray encryptionQByteArray;
-
-    
-    QSettings settings("settings/config.ini", QSettings::IniFormat);
-
     
     QString jsonFilePath = "settings/epvs.json";
-
+    QJsonObject loadedObject;
     // 从JSON文件中读取JSON对象
     QFile loadJsonFile(jsonFilePath);
     if (loadJsonFile.open(QIODevice::ReadOnly)) {
         QByteArray jsonData = loadJsonFile.readAll();
         QJsonDocument loadedJsonDoc = QJsonDocument::fromJson(jsonData);
-        QJsonObject loadedObject = loadedJsonDoc.object();
-
-        // 修改嵌套JSON中的一个变量的值
-        modifyJsonValue(loadedObject, "nestedObject/var2", "new value");
-
-        // 将修改后的JSON对象保存回JSON文件
-        QFile saveJsonFile(jsonFilePath);
-        if (saveJsonFile.open(QIODevice::WriteOnly)) {
-            QJsonDocument modifiedJsonDoc(loadedObject);
-            saveJsonFile.write(modifiedJsonDoc.toJson());
-            saveJsonFile.close();
-            qDebug() << "Modified JSON file saved successfully.";
-        }
-        else {
-            qDebug() << "Failed to save modified JSON file.";
-        }
+        loadedObject = loadedJsonDoc.object();        
     }
     else {
         qDebug() << "Failed to load JSON file.";
     }
 
-
-
-
-
-    
-       
 
     
     loginUserName = ui->lineEditUserName->text();
@@ -155,24 +127,34 @@ void Login::handleButtonClick()
     }
 
     
-    if (ui->checkBoxRememberPassword->isChecked()) {
-        settings.setValue("DEFAULT/user_name", loginUserName);
-
-
-
-
+    if (ui->checkBoxRememberPassword->isChecked()) {        
+        // loginUserName保存到配置文件
+        modifyJsonValue(loadedObject, "login/user_name", loginUserName);
 
         // 加密密码
         QString encryptedPassword = encryptionQByteArray.encrypt(loginPassword);
         // 将加密后的密码保存到配置文件
-        settings.setValue("DEFAULT/password", encryptedPassword);
-        settings.setValue("DEFAULT/remember", "True");
+        modifyJsonValue(loadedObject, "login/password", encryptedPassword);
+        
+        modifyJsonValue(loadedObject, "login/remember", "True");
+
+        modifyJsonValue(loadedObject, "login/user_type", login_user_type);
 
     }
     else {
-        settings.setValue("DEFAULT/user_name", loginUserName);        
-        settings.setValue("DEFAULT/remember", "False");
+        // loginUserName保存到配置文件
+        modifyJsonValue(loadedObject, "login/user_name", loginUserName);
+        modifyJsonValue(loadedObject, "login/password", "");
+        modifyJsonValue(loadedObject, "login/remember", "False");
+        
     }
+
+
+
+
+
+
+
 
 
     if (loginUserName == "cc" && loginPassword == "123") {
@@ -184,6 +166,26 @@ void Login::handleButtonClick()
         
 
     }
+
+
+
+    // 将修改后的JSON对象保存回JSON文件
+    QFile saveJsonFile(jsonFilePath);
+    if (saveJsonFile.open(QIODevice::WriteOnly)) {
+        QJsonDocument modifiedJsonDoc(loadedObject);
+        saveJsonFile.write(modifiedJsonDoc.toJson());
+        saveJsonFile.close();
+        qDebug() << "Modified JSON file saved successfully.";
+    }
+    else {
+        qDebug() << "Failed to save modified JSON file.";
+    }
+
+
+
+
+
+
 
 
     //// 创建嵌套的JSON数据
