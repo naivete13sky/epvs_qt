@@ -34,15 +34,27 @@ void Login::loadConfig() {
     if (remember == "True") {
         ui->lineEditUserName->setText(settings.value("DEFAULT/user_name").toString());
 
-
         // 读取并解密密码
         EncryptionQByteArray encryptionQByteArray;
         QString storedpassword = settings.value("DEFAULT/password").toString();
         QString decryptedPassword = encryptionQByteArray.decrypt(storedpassword);
-
         ui->lineEditPassword->setText(decryptedPassword);
+
         ui->checkBoxRememberPassword->setChecked(true);
+
         QString login_user_type = settings.value("DEFAULT/user_type").toString();
+
+        if (login_user_type == "common") {
+            ui->radioButtonUserNameTypeCommon->setChecked(true);            
+        }
+        if (login_user_type == "dms") {
+            ui->radioButtonUserNameTypeDMS->setChecked(true);
+        }
+
+
+    }
+    else {
+        ui->checkBoxRememberPassword->setChecked(false);
     }
 
 
@@ -64,20 +76,7 @@ void Login::handleButtonClick()
     // 将加密后的密码保存到配置文件
     QSettings settings("settings/config.ini", QSettings::IniFormat);
     settings.setValue("account/password", encryptedPassword);
-
-    
-
-    
-
-    // 读取并解密密码
-    QString storedpassword = settings.value("account/password").toString();
-    QString decryptedPassword = encryptionQByteArray.decrypt(storedpassword);
-
-    qDebug() << "Original password:" << password;
-    qDebug() << "Encrypted password:" << encryptedPassword;
-    qDebug() << "Decrypted password:" << decryptedPassword;
-    
-
+       
 
     
     loginUserName = ui->lineEditUserName->text();
