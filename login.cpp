@@ -5,6 +5,16 @@
 #include "ccMethod/EncryptionQByteArray.h"
 #include <QSettings>
 #include <QtCore/QDebug>
+#include "global_variables.h"
+
+
+
+//login_user_type是全局变量
+QString login_user_type = "";
+
+
+
+
 
 Login::Login(QWidget *parent) :
     QMainWindow(parent),
@@ -41,8 +51,8 @@ void Login::loadConfig() {
         ui->lineEditPassword->setText(decryptedPassword);
 
         ui->checkBoxRememberPassword->setChecked(true);
-
-        QString login_user_type = settings.value("DEFAULT/user_type").toString();
+        
+        login_user_type = settings.value("DEFAULT/user_type").toString();
 
         if (login_user_type == "common") {
             ui->radioButtonUserNameTypeCommon->setChecked(true);            
@@ -70,17 +80,38 @@ void Login::handleButtonClick()
 
     EncryptionQByteArray encryptionQByteArray;
 
-    // 加密密码
-    QString password = "123";
-    QString encryptedPassword = encryptionQByteArray.encrypt(password);
-    // 将加密后的密码保存到配置文件
+    
     QSettings settings("settings/config.ini", QSettings::IniFormat);
-    settings.setValue("account/password", encryptedPassword);
+    
        
 
     
     loginUserName = ui->lineEditUserName->text();
     loginPassword = ui->lineEditPassword->text();
+
+    if (ui->radioButtonUserNameTypeCommon->isChecked()) {
+        login_user_type = "common";
+    }
+    if (ui->radioButtonUserNameTypeDMS->isChecked()) {
+        login_user_type = "dms";
+    }
+
+    
+    if (ui->checkBoxRememberPassword->isChecked()) {
+        settings.setValue("DEFAULT/user_name", loginUserName);
+        // 加密密码
+        QString encryptedPassword = encryptionQByteArray.encrypt(loginPassword);
+        // 将加密后的密码保存到配置文件
+        settings.setValue("DEFAULT/password", encryptedPassword);
+        settings.setValue("DEFAULT/remember", "True");
+
+    }
+    else {
+        settings.setValue("DEFAULT/user_name", loginUserName);        
+        settings.setValue("DEFAULT/remember", "False");
+    }
+
+
     if (loginUserName == "cc" && loginPassword == "123") {
         //QMessageBox::information(this, "cc", "cc!");
         

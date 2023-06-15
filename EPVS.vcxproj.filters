@@ -63,4 +63,9 @@
   <ItemGroup>
     <None Include=".gitignore" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="global_variables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
