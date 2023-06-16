@@ -3,11 +3,22 @@
 
 #include <QJsonObject>
 #include <QVariant>
+#include <list>
+
+
+struct Dictionary {
+    std::string name;
+    std::string value;
+};
+
+
+
+
 
 class MySoup
 {
 public:
-    void parseHtml(const QString& htmlContent);
+    std::list<Dictionary> parseHtml(const QString& htmlContent, QString xpathText);
 
 };
 

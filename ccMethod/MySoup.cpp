@@ -3,9 +3,20 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include <QtCore/QDebug>
+#include <list>
+#include <string>
+#include <map>
 
-void MySoup::parseHtml(const QString& htmlContent)
+
+
+
+
+
+std::list<Dictionary> MySoup::parseHtml(const QString& htmlContent,QString xpathText)
 {
+    
+    std::list<Dictionary> myDictList;
+
     // 初始化libxml2库
     xmlInitParser();
 
@@ -18,7 +29,7 @@ void MySoup::parseHtml(const QString& htmlContent)
 
     if (doc == nullptr) {
         qCritical("Failed to parse HTML");
-        return;
+        return myDictList;
     }
 
     // 创建XPath上下文
@@ -26,19 +37,22 @@ void MySoup::parseHtml(const QString& htmlContent)
     if (xpathCtx == nullptr) {
         qCritical("Failed to create XPath context");
         xmlFreeDoc(doc);
-        return;
+        return myDictList;
     }
 
     // 使用XPath表达式选择所有隐藏字段元素
-    xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(reinterpret_cast<const xmlChar*>("//input[@type='hidden']"), xpathCtx);
+    //xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(reinterpret_cast<const xmlChar*>("//input[@type='hidden']"), xpathCtx);
+    QByteArray byteArrayXpathText = xpathText.toUtf8();  // 或者使用 toLatin1()
+    const char* charArrayXpathText = byteArrayXpathText.constData();
+    xmlXPathObjectPtr xpathObj = xmlXPathEvalExpression(reinterpret_cast<const xmlChar*>(charArrayXpathText), xpathCtx);
     if (xpathObj == nullptr) {
         qCritical("Failed to evaluate XPath expression");
         xmlXPathFreeContext(xpathCtx);
         xmlFreeDoc(doc);
-        return;
+        return myDictList;
     }
 
-    // 提取隐藏字段值
+    // 提取字段值
     xmlNodeSetPtr nodes = xpathObj->nodesetval;
     for (int i = 0; i < nodes->nodeNr; ++i) {
         xmlNodePtr node = nodes->nodeTab[i];
@@ -48,6 +62,11 @@ void MySoup::parseHtml(const QString& htmlContent)
             QString fieldValue = reinterpret_cast<const char*>(value);
             qDebug() << "Field Name: " << fieldName;
             qDebug() << "Field Value: " << fieldValue;
+            Dictionary dictData;
+            dictData.name = fieldName.toStdString();
+            dictData.value = fieldValue.toStdString();
+            myDictList.push_back(dictData);
+
             xmlFree(value);
         }
     }
@@ -58,4 +77,6 @@ void MySoup::parseHtml(const QString& htmlContent)
     xmlFreeDoc(doc);
     xmlCleanupParser();
     
+
+    return myDictList;
 }

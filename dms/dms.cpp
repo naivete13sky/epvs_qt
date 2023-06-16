@@ -7,6 +7,12 @@
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
 #include "../ccMethod/MySoup.h"
+#include <list>
+
+
+
+
+
 
 
 DMS::DMS(QObject* parent) : QObject(parent) {
@@ -34,10 +40,10 @@ json DMS::login(const QString username, const QString password) {
 
         MySoup mySoup;
         
-        mySoup.parseHtml(decodedData);
+        //mySoup.parseHtml(decodedData, "//input[@name='csrfmiddlewaretoken']");
 
 
-
+        std::list<Dictionary> resulut = mySoup.parseHtml(decodedData, "//input[@name='csrfmiddlewaretoken']");
 
 
 
