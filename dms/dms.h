@@ -8,7 +8,7 @@
 #include <QUrl>
 #include <iostream>
 #include <nlohmann/json.hpp>
-
+#include <QUrlQuery>
 
 
 using json = nlohmann::json;
@@ -28,6 +28,7 @@ public:
 
 
     //void parseHtml(const QString& htmlContent);
+    QUrlQuery postData1;
 
 
 signals:
