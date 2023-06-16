@@ -44,8 +44,17 @@ json DMS::login(const QString username, const QString password) {
 
 
         std::list<Dictionary> resulut = mySoup.parseHtml(decodedData, "//input[@name='csrfmiddlewaretoken']");
+        if (!resulut.empty()) {
+            // 使用 front() 函数获取第一个元素
+            Dictionary firstElement = resulut.front();
+            // 现在您可以使用 firstElement 进行操作
+            std::string csrfmiddlewaretoken = firstElement.value;
+        }
+        else {
+            // 列表为空，处理空列表的情况
+        }
 
-
+        
 
 
 
