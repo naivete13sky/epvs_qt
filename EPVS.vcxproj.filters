@@ -52,6 +52,9 @@
     <ClCompile Include="dms\dms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="temp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="login.h">

@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="temp.cpp" />
     <QtRcc Include="EPVS.qrc" />
     <QtUic Include="EPVS.ui" />
     <QtMoc Include="EPVS.h" />

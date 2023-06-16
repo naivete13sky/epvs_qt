@@ -94,8 +94,6 @@ void Login::loadConfig() {
 }
 
 
-
-
 void Login::handleButtonClick()
 {
     //加密解密方法
@@ -163,54 +161,13 @@ void Login::handleButtonClick()
     }
 
 
-
-
-
-
     if (loginUserName == "cc" && loginPassword == "123") {
         //QMessageBox::information(this, "cc", "cc!");
         
         epvs.show();
-        close();
-
-        
+        close();        
 
     }
-
-
-
-    
-
-
-
-
-
-
-
-
-    //// 创建嵌套的JSON数据
-    //QJsonObject root;
-    //root["name"] = "John";
-    //root["age"] = 25;
-
-    //QJsonObject address;
-    //address["city"] = "New York";
-    //address["street"] = "123 Main St";
-
-    //root["address"] = address;
-
-    //// 将JSON数据写入文件
-    //QFile file2("config.json");
-    //if (file2.open(QIODevice::WriteOnly))
-    //{
-    //    QJsonDocument doc(root);
-    //    file2.write(doc.toJson());
-    //    file2.close();
-    //}
-
-    
-
-    
 
 
     DMS dms;
