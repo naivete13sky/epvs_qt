@@ -6,6 +6,10 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QUrl>
+#include <iostream>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class DMS : public QObject {
     Q_OBJECT
@@ -13,7 +17,12 @@ class DMS : public QObject {
 public:
     explicit DMS(QObject* parent = nullptr);
 
-    void login(const QString username, const QString password);
+    QNetworkAccessManager manager;
+
+
+
+
+    json login(const QString username, const QString password);
 
 signals:
     //void responseReceived(const QByteArray& data);

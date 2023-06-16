@@ -11,6 +11,10 @@
 #include <QFile>
 #include "ccMethod/jsonutils.h" // 包含头文件
 #include "dms/dms.h"
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 
 
 //login_user_type是全局变量
@@ -171,7 +175,14 @@ void Login::handleButtonClick()
 
 
     DMS dms;
-    dms.login("cc", "123");
+    json jsonResult = dms.login("cc", "123");
+    
+    // 将 JSON 数据转换为字符串
+    std::string jsonDataString = jsonResult.dump();
+
+    // 输出 JSON 字符串
+    qDebug().noquote() << jsonDataString.c_str();
+    qDebug() << "jsonResult:" << jsonDataString.c_str();
 
 
 
