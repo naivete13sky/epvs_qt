@@ -1,7 +1,7 @@
 #include "dms.h"
 #include <iostream>
 #include <nlohmann/json.hpp>
-
+#include <QTextCodec>
 
 
 
@@ -23,7 +23,11 @@ json DMS::login(const QString username, const QString password) {
     if (reply->error() == QNetworkReply::NoError) {
         QByteArray data = reply->readAll();
         // 处理响应数据
-        qDebug() << "cc:" << data;
+        QTextCodec* codec = QTextCodec::codecForName("UTF-8");
+        QString decodedData = codec->toUnicode(data);
+        
+        qDebug().noquote() << "decodedData:" << decodedData;
+        //qDebug() << "qPrintable,decodedData:" << qPrintable(decodedData);
         jsonData["result"] = "true";
         
     }

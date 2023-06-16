@@ -180,8 +180,7 @@ void Login::handleButtonClick()
     // 将 JSON 数据转换为字符串
     std::string jsonDataString = jsonResult.dump();
 
-    // 输出 JSON 字符串
-    qDebug().noquote() << jsonDataString.c_str();
+    // 输出 JSON 字符串    
     qDebug() << "jsonResult:" << jsonDataString.c_str();
 
 
