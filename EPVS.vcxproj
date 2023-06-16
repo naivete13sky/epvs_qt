@@ -91,6 +91,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ccMethod\MySoup.cpp" />
     <ClCompile Include="temp.cpp" />
     <QtRcc Include="EPVS.qrc" />
     <QtUic Include="EPVS.ui" />
@@ -115,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ccMethod\jsonutils.h" />
+    <ClInclude Include="ccMethod\MySoup.h" />
     <QtMoc Include="dms\dms.h" />
     <ClInclude Include="global_variables.h" />
   </ItemGroup>

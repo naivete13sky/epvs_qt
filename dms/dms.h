@@ -27,7 +27,7 @@ public:
     json login(const QString username, const QString password);
 
 
-    void parseHtml(const QString& htmlContent);
+    //void parseHtml(const QString& htmlContent);
 
 
 signals:
