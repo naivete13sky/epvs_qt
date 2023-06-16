@@ -10,7 +10,7 @@
 #include <QJsonObject>
 #include <QFile>
 #include "ccMethod/jsonutils.h" // 包含头文件
-
+#include "dms/dms.h"
 
 
 //login_user_type是全局变量
@@ -210,6 +210,11 @@ void Login::handleButtonClick()
 
     
 
+    
+
+
+    DMS dms;
+    dms.login("cc", "123");
 
 
 

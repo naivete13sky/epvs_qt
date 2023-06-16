@@ -49,12 +49,18 @@
     <ClCompile Include="ccMethod\jsonutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dms\dms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="login.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ccMethod\EncryptionQByteArray.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="dms\dms.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
