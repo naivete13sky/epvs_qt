@@ -9,6 +9,8 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
+
+
 using json = nlohmann::json;
 
 class DMS : public QObject {
@@ -23,6 +25,10 @@ public:
 
 
     json login(const QString username, const QString password);
+
+
+    void parseHtml(const QString& htmlContent);
+
 
 signals:
     //void responseReceived(const QByteArray& data);
