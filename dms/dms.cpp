@@ -100,7 +100,7 @@ json DMS::login(const QString username, const QString password) {
         QString decodedData = codec->toUnicode(data);
         qDebug().noquote() << "decodedData post result:" << decodedData;
         if (decodedData == "") {
-            FlagLoginResult = true;
+            //FlagLoginResult = true;
             
         }
         else {
@@ -131,15 +131,19 @@ json DMS::login(const QString username, const QString password) {
         // 处理响应数据
         codec = QTextCodec::codecForName("UTF-8");
         decodedData = codec->toUnicode(data);
-        qDebug().noquote() << "decodedData admin:" << decodedData;        
+        //qDebug().noquote() << "decodedData admin:" << decodedData;        
 
         if (decodedData.contains("注销")) {
             jsonData["result"] = "true";//登录成功
             std::cout << "文本中包含了\"注销\"。" << std::endl;
+            FlagLoginResult = true;
         }
         else {
             std::cout << "文本中不包含\"注销\"。" << std::endl;
             jsonData["result"] = "false";//登录失败
+            FlagLoginResult = false;
+            jsonData["info"] = "打开的admin后台中没有注销这个词，说明登录没成功！";
+            return jsonData;
         }
 
 
