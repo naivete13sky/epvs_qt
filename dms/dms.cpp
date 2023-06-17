@@ -131,7 +131,7 @@ json DMS::login(const QString username, const QString password) {
         // 处理响应数据
         codec = QTextCodec::codecForName("UTF-8");
         decodedData = codec->toUnicode(data);
-        //qDebug().noquote() << "decodedData admin:" << decodedData;        
+        qDebug().noquote() << "decodedData admin:" << decodedData;        
 
         if (decodedData.contains("注销")) {
             jsonData["result"] = "true";//登录成功
