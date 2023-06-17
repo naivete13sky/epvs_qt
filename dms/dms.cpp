@@ -40,8 +40,7 @@ json DMS::login(const QString username, const QString password) {
         FlagGetLoginUrlResult = true;       
     }
     else {
-        // 处理错误
-        //说明get登录地址没有正常回应
+        // 处理错误，说明get登录地址没有正常回应
         FlagGetLoginUrlResult = false;
         qDebug() << "Error: " << reply->errorString();
         jsonData["result"] = "false";
@@ -50,105 +49,107 @@ json DMS::login(const QString username, const QString password) {
     }
 
     //获取csrfmiddlewaretoken
-    if (FlagGetLoginUrlResult == true) {
-        QByteArray data = reply->readAll();
-        // 处理响应数据
-        QTextCodec* codec = QTextCodec::codecForName("UTF-8");
-        QString decodedData = codec->toUnicode(data);
+    QByteArray data = reply->readAll();
+    // 处理响应数据
+    QTextCodec* codec = QTextCodec::codecForName("UTF-8");
+    QString decodedData = codec->toUnicode(data);
 
-        //qDebug().noquote() << "decodedData:" << decodedData;
-        //qDebug() << "qPrintable,decodedData:" << qPrintable(decodedData);
+    //qDebug().noquote() << "decodedData:" << decodedData;
+    //qDebug() << "qPrintable,decodedData:" << qPrintable(decodedData);
 
-        MySoup mySoup;
-        resulutMySoup = mySoup.parseHtml(decodedData, "//input[@name='csrfmiddlewaretoken']");
-        if (!resulutMySoup.empty()) {
-            //获取csrf成功
-            FlagGetCsrfmiddlewaretoken = true;
-        }
-        else {
-            // 列表为空，处理空列表的情况
-        }
+    MySoup mySoup;
+    resulutMySoup = mySoup.parseHtml(decodedData, "//input[@name='csrfmiddlewaretoken']");
+    if (!resulutMySoup.empty()) {
+        //获取csrf成功
+        FlagGetCsrfmiddlewaretoken = true;
     }
     else {
-        //获取csrf失败
+        // 列表为空，处理空列表的情况，获取csrf失败        
         FlagGetCsrfmiddlewaretoken = false;
         jsonData["result"] = "false";
         jsonData["info"] = "获取登录地址的csrf失败！";
         return jsonData;
     }
+
+
     
-    //登录,post
-    if (FlagGetCsrfmiddlewaretoken == true) {
-        // 使用 front() 函数获取第一个元素
-        Dictionary firstElement = resulutMySoup.front();        
-        std::string csrfmiddlewaretoken = firstElement.value;        
+    
+    //登录,post    
+    Dictionary firstElement = resulutMySoup.front();// 使用 front() 函数获取第一个元素
+    std::string csrfmiddlewaretoken = firstElement.value;
 
-        // 设置请求头
-        requestLogin.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-        requestLogin.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
-        requestLogin.setRawHeader("Accept", "*/*");
+    // 设置请求头
+    requestLogin.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    requestLogin.setRawHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
+    requestLogin.setRawHeader("Accept", "*/*");
 
-        // 构建 POST 数据            
-        postData.addQueryItem("csrfmiddlewaretoken", QString::fromStdString(csrfmiddlewaretoken));
-        postData.addQueryItem("username", username);
-        postData.addQueryItem("password", password);
-        postData.addQueryItem("next", "%2Fadmin%2F");
-        reply = manager.post(requestLogin, postData.toString(QUrl::FullyEncoded).toUtf8());        
-        QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-        loop.exec();
+    // 构建 POST 数据            
+    postData.addQueryItem("csrfmiddlewaretoken", QString::fromStdString(csrfmiddlewaretoken));
+    postData.addQueryItem("username", username);
+    postData.addQueryItem("password", password);
+    postData.addQueryItem("next", "%2Fadmin%2F");
+    reply = manager.post(requestLogin, postData.toString(QUrl::FullyEncoded).toUtf8());
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
 
-        if (reply->error() == QNetworkReply::NoError) {
-
-            qDebug() << "reply:" << reply;
-            QByteArray data2 = reply->readAll();
-            // 处理响应数据
-            QTextCodec* codec2 = QTextCodec::codecForName("UTF-8");
-            QString decodedData2 = codec2->toUnicode(data2);
-            qDebug().noquote() << "decodedData2:" << decodedData2;
-            if (decodedData2 == "") {
-                FlagLoginResult = true;
-                qDebug() << "FlagLoginResult:" << FlagLoginResult;
-            }
-            else {
-                FlagLoginResult = false;
-                jsonData["result"] = "false";
-                jsonData["info"] = "登录失败，请输入正确的用户名或密码！";
-                return jsonData;
-
-            }
-
+    if (reply->error() == QNetworkReply::NoError) {
+        qDebug() << "reply:" << reply;
+        data = reply->readAll();
+        // 处理响应数据
+        codec = QTextCodec::codecForName("UTF-8");
+        QString decodedData = codec->toUnicode(data);
+        qDebug().noquote() << "decodedData post result:" << decodedData;
+        if (decodedData == "") {
+            FlagLoginResult = true;
+            
         }
-
-        
-
-
-
-
-        
+        else {
+            FlagLoginResult = false;
+            jsonData["result"] = "false";
+            jsonData["info"] = "登录失败，请输入正确的用户名或密码！";
+            return jsonData;
+        }
+        qDebug() << "FlagLoginResult:" << FlagLoginResult;
 
     }
-
-
-    QNetworkReply* reply3 = manager.get(QNetworkRequest(QUrl("http://10.97.80.119/admin/")));
-    QEventLoop loop3;
-
-    QObject::connect(reply3, &QNetworkReply::finished, &loop3, &QEventLoop::quit);
-
-    loop3.exec();
-    QByteArray data3 = reply3->readAll();
-    // 处理响应数据
-    QTextCodec* codec3 = QTextCodec::codecForName("UTF-8");
-    QString decodedData3 = codec3->toUnicode(data3);
-    qDebug().noquote() << "decodedData3:" << decodedData3;
-
-
-
-
-
-    jsonData["result"] = "true";
+    else {
+        // 处理错误，说明post录地址没有正常回应
+        FlagLoginResult = false;
+        qDebug() << "Error: " << reply->errorString();
+        jsonData["result"] = "false";
+        jsonData["info"] = "登录时未能正常响应！";
+        return jsonData;
+    }
     
+    // 再打开一下admin，如果能搜索到“注销”说明登录成功，否则可能登录还是失败的
+    reply = manager.get(QNetworkRequest(QUrl("http://10.97.80.119/admin/")));
+    QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    if (reply->error() == QNetworkReply::NoError) {
+        data = reply->readAll();
+        // 处理响应数据
+        codec = QTextCodec::codecForName("UTF-8");
+        decodedData = codec->toUnicode(data);
+        qDebug().noquote() << "decodedData admin:" << decodedData;
+
+
+
+
+
+        //jsonData["result"] = "true";
+    }
+    else {
+        // 处理错误，说明打开admin地址没有正常回应
+        FlagLoginResult = false;
+        qDebug() << "Error: " << reply->errorString();
+        jsonData["result"] = "false";
+        jsonData["info"] = "未能打开admin后台，说明登录没成功！";
+        return jsonData;
+    }
     
-    
+
+    // 释放资源    
     reply->deleteLater();
     
 
