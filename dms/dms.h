@@ -28,7 +28,7 @@ public:
 
 
     //void parseHtml(const QString& htmlContent);
-    QUrlQuery postData1;
+    
 
 
 signals:

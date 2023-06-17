@@ -175,7 +175,7 @@ void Login::handleButtonClick()
 
 
     DMS dms;
-    json jsonResult = dms.login("cc", "123");
+    json jsonResult = dms.login("cc", "cc");
     
     // 将 JSON 数据转换为字符串
     std::string jsonDataString = jsonResult.dump();
