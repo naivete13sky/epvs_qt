@@ -44,7 +44,7 @@ json DMS::login(const QString username, const QString password) {
         FlagGetLoginUrlResult = false;
         qDebug() << "Error: " << reply->errorString();
         jsonData["result"] = "false";
-        jsonData["info"] = "打开登录地址失败";
+        jsonData["info"] = u8"打开登录地址失败";
         return jsonData;
     }
 
@@ -67,7 +67,7 @@ json DMS::login(const QString username, const QString password) {
         // 列表为空，处理空列表的情况，获取csrf失败        
         FlagGetCsrfmiddlewaretoken = false;
         jsonData["result"] = "false";
-        jsonData["info"] = "获取登录地址的csrf失败！";
+        jsonData["info"] = u8"获取登录地址的csrf失败！";
         return jsonData;
     }
 
@@ -106,7 +106,7 @@ json DMS::login(const QString username, const QString password) {
         else {
             FlagLoginResult = false;
             jsonData["result"] = "false";
-            jsonData["info"] = "登录失败，请输入正确的用户名或密码！";
+            jsonData["info"] = u8"登录失败，请输入正确的用户名或密码！";
             return jsonData;
         }
         qDebug() << "FlagLoginResult:" << FlagLoginResult;
@@ -117,7 +117,7 @@ json DMS::login(const QString username, const QString password) {
         FlagLoginResult = false;
         qDebug() << "Error: " << reply->errorString();
         jsonData["result"] = "false";
-        jsonData["info"] = "登录时未能正常响应！";
+        jsonData["info"] = u8"登录时未能正常响应！";
         return jsonData;
     }
     
@@ -133,7 +133,7 @@ json DMS::login(const QString username, const QString password) {
         decodedData = codec->toUnicode(data);
         qDebug().noquote() << "decodedData admin:" << decodedData;        
 
-        if (decodedData.contains("注销")) {
+        if (decodedData.contains(u8"注销")) {
             jsonData["result"] = "true";//登录成功
             std::cout << "文本中包含了\"注销\"。" << std::endl;
             FlagLoginResult = true;
@@ -142,7 +142,7 @@ json DMS::login(const QString username, const QString password) {
             std::cout << "文本中不包含\"注销\"。" << std::endl;
             jsonData["result"] = "false";//登录失败
             FlagLoginResult = false;
-            jsonData["info"] = "打开的admin后台中没有注销这个词，说明登录没成功！";
+            jsonData["info"] = u8"打开的admin后台中没有注销这个词，说明登录没成功！";
             return jsonData;
         }
 
@@ -155,7 +155,7 @@ json DMS::login(const QString username, const QString password) {
         FlagLoginResult = false;
         qDebug() << "Error: " << reply->errorString();
         jsonData["result"] = "false";
-        jsonData["info"] = "未能打开admin后台，说明登录没成功！";
+        jsonData["info"] = u8"未能打开admin后台，说明登录没成功！";
         return jsonData;
     }
     

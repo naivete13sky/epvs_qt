@@ -177,6 +177,9 @@ void Login::handleButtonClick()
     DMS dms;
     json jsonResult = dms.login("cc", "cc");
     
+    json jsonResult2;
+    jsonResult2["cc"] = u8"hellob成";//使用 u8 前缀将字符串字面值标记为 UTF-8 编码，这将确保中文字符能够正确地被 nlohmann::json 库处理。
+    
     // 将 JSON 数据转换为字符串
     std::string jsonDataString = jsonResult.dump();
 
