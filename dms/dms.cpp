@@ -131,13 +131,20 @@ json DMS::login(const QString username, const QString password) {
         // 处理响应数据
         codec = QTextCodec::codecForName("UTF-8");
         decodedData = codec->toUnicode(data);
-        qDebug().noquote() << "decodedData admin:" << decodedData;
+        qDebug().noquote() << "decodedData admin:" << decodedData;        
+
+        if (decodedData.contains("注销")) {
+            jsonData["result"] = "true";//登录成功
+            std::cout << "文本中包含了\"注销\"。" << std::endl;
+        }
+        else {
+            std::cout << "文本中不包含\"注销\"。" << std::endl;
+            jsonData["result"] = "false";//登录失败
+        }
 
 
 
-
-
-        //jsonData["result"] = "true";
+        
     }
     else {
         // 处理错误，说明打开admin地址没有正常回应
