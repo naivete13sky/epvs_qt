@@ -128,7 +128,7 @@ void Login::handleButtonClick()
         login_user_type = "dms";
     }
 
-    
+    //记住登录信息
     if (ui->checkBoxRememberPassword->isChecked()) {        
         // loginUserName保存到配置文件
         modifyJsonValue(loadedObject, "login/user_name", loginUserName);
@@ -165,26 +165,53 @@ void Login::handleButtonClick()
     }
 
 
-    if (loginUserName == "cc" && loginPassword == "123") {
-        //QMessageBox::information(this, "cc", "cc!");
-        
-        epvs.show();
-        close();        
+
+    if (login_user_type == "common") {
+        if (loginUserName == "cc" && loginPassword == "123") {
+            //QMessageBox::information(this, "cc", "cc!");
+
+            epvs.show();
+            close();
+        }
+        else {
+            // 创建一个警告框
+            QMessageBox::warning(nullptr, u8"登录错误", u8"用户名或密码错误!");
+            ui->lineEditUserName->setFocus();
+        }
 
     }
 
 
-    DMS dms;
-    json jsonResult = dms.login("cc", "cc");
-    
-    json jsonResult2;
-    jsonResult2["cc"] = u8"hellob成";//使用 u8 前缀将字符串字面值标记为 UTF-8 编码，这将确保中文字符能够正确地被 nlohmann::json 库处理。
-    
-    // 将 JSON 数据转换为字符串
-    std::string jsonDataString = jsonResult.dump();
+    if (login_user_type == "dms") {
+        DMS dms;
+        json jsonResult = dms.login(loginUserName, loginPassword);
+        // 将 JSON 数据转换为字符串
+        std::string jsonDataString = jsonResult.dump();
+        // 输出 JSON 字符串    
+        qDebug() << "jsonResult:" << jsonDataString.c_str();
 
-    // 输出 JSON 字符串    
-    qDebug() << "jsonResult:" << jsonDataString.c_str();
+        
+        json loginResultJson = json::parse(jsonDataString);
+        std::string loginResult = loginResultJson["result"];
+        qDebug() << "Result: " << loginResult.c_str();
+
+
+        
+        if (loginResult == "true") {
+            epvs.show();
+            close();
+        }
+        else {
+            // 创建一个警告框
+            QMessageBox::warning(nullptr, u8"登录错误", u8"用户名或密码错误!");
+            ui->lineEditUserName->setFocus();
+        }
+
+    }
+    
+
+
+    
 
 
 

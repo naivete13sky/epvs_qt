@@ -98,7 +98,7 @@ json DMS::login(const QString username, const QString password) {
         // 处理响应数据
         codec = QTextCodec::codecForName("UTF-8");
         QString decodedData = codec->toUnicode(data);
-        qDebug().noquote() << "decodedData post result:" << decodedData;
+        //qDebug().noquote() << "decodedData post result:" << decodedData;
         if (decodedData == "") {
             //FlagLoginResult = true;
             
@@ -131,7 +131,7 @@ json DMS::login(const QString username, const QString password) {
         // 处理响应数据
         codec = QTextCodec::codecForName("UTF-8");
         decodedData = codec->toUnicode(data);
-        qDebug().noquote() << "decodedData admin:" << decodedData;        
+        //qDebug().noquote() << "decodedData admin:" << decodedData;        
 
         if (decodedData.contains(u8"注销")) {
             jsonData["result"] = "true";//登录成功
