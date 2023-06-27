@@ -1,3 +1,4 @@
+#pragma execution_character_set("utf-8")
 #include "../../Include/dms/dms.h"
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -8,6 +9,8 @@
 #include <libxml/xpathInternals.h>
 #include "../../Include/ccMethod/MySoup.h"
 #include <list>
+#include <QString>
+
 
 
 
@@ -53,6 +56,9 @@ json DMS::login(const QString username, const QString password) {
     // 处理响应数据
     QTextCodec* codec = QTextCodec::codecForName("UTF-8");
     QString decodedData = codec->toUnicode(data);
+
+    //QString decodedData = QString::fromUtf8(data);
+
 
     //qDebug().noquote() << "decodedData:" << decodedData;
     //qDebug() << "qPrintable,decodedData:" << qPrintable(decodedData);

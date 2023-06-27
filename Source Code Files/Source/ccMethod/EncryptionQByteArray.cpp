@@ -1,5 +1,6 @@
 // EncryptionQByteArray.cpp
 #include "../../Include/ccMethod/EncryptionQByteArray.h"
+#include <QString>
 
 EncryptionQByteArray::EncryptionQByteArray(QObject* parent) : QObject(parent)
 {
