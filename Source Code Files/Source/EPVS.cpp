@@ -3,13 +3,18 @@
 #include <QTabWidget>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QGroupBox>
+#include <QLabel>
+#include <QComboBox>
+#include <QTableWidget>
+#include <QTextBrowser>
 
 EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
 
-
+    setWindowTitle("悦谱转图比对系统 EPVS-V1.0");
 
     setGeometry(100, 25, 1600, 1000);
 
@@ -77,11 +82,115 @@ EPVS::EPVS(QWidget *parent)
     QWidget* tabMainEPVS = new QWidget();
     QWidget* widget_vs_left = new QWidget(tabMainEPVS);
     widget_vs_left->setGeometry(0, 0, 901, 821);
+    QWidget* widget_vs_left_top = new QWidget(widget_vs_left);
+    widget_vs_left_top->setGeometry(-1, -1, 901, 151);
+    QGroupBox* groupBoxJobA = new QGroupBox(widget_vs_left_top);
+    groupBoxJobA->setTitle("料号A");
+    groupBoxJobA->setGeometry(30, 0, 278, 139);
+    groupBoxJobA->setAlignment(Qt::AlignCenter);
+    QPushButton* pushButtonInputA = new QPushButton(groupBoxJobA);
+    pushButtonInputA->setText("Input");
+    pushButtonInputA->setGeometry(40, 50, 81, 31);
+    QPushButton* pushButtonImportA = new QPushButton(groupBoxJobA);
+    pushButtonImportA->setText("Import");
+    pushButtonImportA->setGeometry(180, 50, 81, 31);
+    QLabel* labelStatusJobA = new QLabel(groupBoxJobA);
+    labelStatusJobA->setText("状态：");
+    labelStatusJobA->setGeometry(10, 110, 171, 16);
+    QPushButton* pushButtonJobAReset = new QPushButton(groupBoxJobA);
+    pushButtonJobAReset->setText("重置A");
+    pushButtonJobAReset->setGeometry(180, 100, 81, 31);
+
+    QGroupBox* groupBoxJobB = new QGroupBox(widget_vs_left_top);
+    groupBoxJobB->setTitle("料号B");
+    groupBoxJobB->setGeometry(590, 0, 311, 139);
+    groupBoxJobB->setAlignment(Qt::AlignCenter);
+    QPushButton* pushButtonImportB = new QPushButton(groupBoxJobB);
+    pushButtonImportB->setText("Import");
+    pushButtonImportB->setGeometry(170, 50, 81, 31);
+    QPushButton* pushButtonInputB = new QPushButton(groupBoxJobB);
+    pushButtonInputB->setText("Input");
+    pushButtonInputB->setGeometry(30, 50, 81, 31);
+    QLabel* labelStatusJobB = new QLabel(groupBoxJobB);
+    labelStatusJobB->setText("状态：");
+    labelStatusJobB->setGeometry(10, 110, 161, 16);
+    QPushButton* pushButtonJobBReset = new QPushButton(groupBoxJobB);
+    pushButtonJobBReset->setText("重置B");
+    pushButtonJobBReset->setGeometry(170, 100, 81, 31);
+
+    QGroupBox* groupBoxVS = new QGroupBox(widget_vs_left_top);
+    groupBoxVS->setTitle("比图");
+    groupBoxVS->setGeometry(370, 0, 171, 131);
+    groupBoxVS->setAlignment(Qt::AlignCenter);
+    QPushButton* pushButtonVS = new QPushButton(groupBoxVS);
+    pushButtonVS->setText("比图");
+    pushButtonVS->setGeometry(30, 20, 116, 23);
+    QComboBox* comboBoxVSMethod = new QComboBox(groupBoxVS);
+    comboBoxVSMethod->setItemText(0, "方案1：G比图");
+    comboBoxVSMethod->setItemText(1, "方案2：悦谱比图");
+    comboBoxVSMethod->setGeometry(30, 64, 116, 20);
+    comboBoxVSMethod->addItem("");
+    comboBoxVSMethod->addItem("");
+    QPushButton* pushButtonAllReset = new QPushButton(groupBoxVS);
+    pushButtonAllReset->setText("重置所有");
+    pushButtonAllReset->setGeometry(30, 105, 116, 23);
+
+    QWidget* widget_vs_left_bot = new QWidget(widget_vs_left);
+    widget_vs_left_bot->setGeometry(-1, 159, 901, 651);
+    QTableWidget* tableWidgetVS = new QTableWidget(widget_vs_left_bot);
+    tableWidgetVS->setGeometry(10, 10, 891, 641);
+    tableWidgetVS->setColumnCount(0);
+    tableWidgetVS->setRowCount(0);
+    QWidget* widget_vs_right = new QWidget(tabMainEPVS);
+    widget_vs_right->setGeometry(910, 0, 221, 821);
+
+    QWidget* widget_vs_right_top = new QWidget(widget_vs_right);
+    widget_vs_right_top->setGeometry(0, 0, 221, 151);
+    QPushButton* pushButtonHelp = new QPushButton(widget_vs_right_top);
+    pushButtonHelp->setText("帮助");
+    pushButtonHelp->setGeometry(140, 120, 75, 23);
+    QPushButton* pushButtonLoadEPCAM = new QPushButton(widget_vs_right_top);
+    pushButtonLoadEPCAM->setText("加载EPCAM");
+    pushButtonLoadEPCAM->setGeometry(20, 10, 75, 21);
+    QPushButton* pushButtonSettings = new QPushButton(widget_vs_right_top);
+    pushButtonSettings->setText("配置");
+    pushButtonSettings->setGeometry(140, 80, 75, 23);
+
+    QPushButton* pushButtonSaveLocal = new QPushButton(widget_vs_right_top);
+    pushButtonSaveLocal->setText("保存至本地");
+    pushButtonSaveLocal->setGeometry(140, 50, 75, 23);
+
+    QPushButton* pushButtonSaveDMS = new QPushButton(widget_vs_right_top);
+    pushButtonSaveDMS->setText("保存至DMS");
+    pushButtonSaveDMS->setGeometry(140, 10, 75, 23);
+
+    QWidget* widget_vs_right_bot = new QWidget(widget_vs_right);
+    widget_vs_right_bot->setGeometry(-1, 159, 221, 651);
+
+    QTextBrowser* textBrowserMain = new QTextBrowser(widget_vs_right_bot);
+    textBrowserMain->setGeometry(0, 10, 221, 631);
+
     tabWidget->addTab(tabMainEPVS, "");
+
+
+    setCentralWidget(centralWidget);
+    QMenuBar* menubar = new QMenuBar(this);
+    menubar->setGeometry(0, 0, 1179, 23);
+    setMenuBar(menubar);
+    QStatusBar* statusbar = new QStatusBar(this);
+    statusbar->setObjectName("statusbar");
+    setStatusBar(statusbar);
+
+
+
 
 
     tabWidget->setTabText(tabWidget->indexOf(tabMainFileExplorer), "文件管理");
     tabWidget->setTabText(tabWidget->indexOf(tabMainEPVS), "转图比对");
+
+
+    tabWidget->setCurrentIndex(0);
+
 
 
 }
