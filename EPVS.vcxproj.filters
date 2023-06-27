@@ -46,7 +46,7 @@
     <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ccMethod\jsonutils.cpp">
+    <ClCompile Include="Source Code Files\Source\ccMethod\jsonutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Code Files\Source\dms\dms.cpp">
@@ -55,7 +55,7 @@
     <ClCompile Include="temp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ccMethod\MySoup.cpp">
+    <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,10 +83,10 @@
     <ClInclude Include="global_variables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ccMethod\jsonutils.h">
+    <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ccMethod\MySoup.h">
+    <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

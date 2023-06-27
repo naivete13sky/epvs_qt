@@ -91,13 +91,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ccMethod\MySoup.cpp" />
+    <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp" />
     <ClCompile Include="temp.cpp" />
     <QtRcc Include="EPVS.qrc" />
     <QtUic Include="EPVS.ui" />
     <QtMoc Include="EPVS.h" />
     <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp" />
-    <ClCompile Include="ccMethod\jsonutils.cpp" />
+    <ClCompile Include="Source Code Files\Source\ccMethod\jsonutils.cpp" />
     <ClCompile Include="Source Code Files\Source\dms\dms.cpp" />
     <ClCompile Include="EPVS.cpp" />
     <ClCompile Include="login.cpp" />
@@ -115,8 +115,8 @@
     <QtMoc Include="Source Code Files\Include\ccMethod\EncryptionQByteArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ccMethod\jsonutils.h" />
-    <ClInclude Include="ccMethod\MySoup.h" />
+    <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h" />
+    <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h" />
     <QtMoc Include="Source Code Files\Include\dms\dms.h" />
     <ClInclude Include="global_variables.h" />
   </ItemGroup>
