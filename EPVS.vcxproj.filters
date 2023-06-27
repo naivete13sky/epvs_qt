@@ -29,18 +29,18 @@
     <QtUic Include="EPVS.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="EPVS.h">
+    <QtMoc Include="Source Code Files\Include\EPVS.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="EPVS.cpp">
+    <ClCompile Include="Source Code Files\Source\EPVS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Source Code Files\Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="login.cpp">
+    <ClCompile Include="Source Code Files\Source\login.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp">
@@ -60,7 +60,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="login.h">
+    <QtMoc Include="Source Code Files\Include\login.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Source Code Files\Include\ccMethod\EncryptionQByteArray.h">
@@ -80,7 +80,7 @@
     <None Include="..\..\..\..\Users\cheng.chen\Desktop\config.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="global_variables.h">
+    <ClInclude Include="Source Code Files\Include\global_variables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h">

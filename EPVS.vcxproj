@@ -95,17 +95,17 @@
     <ClCompile Include="temp.cpp" />
     <QtRcc Include="EPVS.qrc" />
     <QtUic Include="EPVS.ui" />
-    <QtMoc Include="EPVS.h" />
+    <QtMoc Include="Source Code Files\Include\EPVS.h" />
     <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp" />
     <ClCompile Include="Source Code Files\Source\ccMethod\jsonutils.cpp" />
     <ClCompile Include="Source Code Files\Source\dms\dms.cpp" />
-    <ClCompile Include="EPVS.cpp" />
-    <ClCompile Include="login.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source Code Files\Source\EPVS.cpp" />
+    <ClCompile Include="Source Code Files\Source\login.cpp" />
+    <ClCompile Include="Source Code Files\Source\main.cpp" />
     <QtUic Include="login.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="login.h" />
+    <QtMoc Include="Source Code Files\Include\login.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Users\cheng.chen\Desktop\config.json" />
@@ -118,7 +118,7 @@
     <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h" />
     <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h" />
     <QtMoc Include="Source Code Files\Include\dms\dms.h" />
-    <ClInclude Include="global_variables.h" />
+    <ClInclude Include="Source Code Files\Include\global_variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

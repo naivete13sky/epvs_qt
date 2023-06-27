@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QPushButton>
-#include "EPVS.h"
+#include "./EPVS.h"
 
 namespace Ui {
 class Login;

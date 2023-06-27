@@ -1,4 +1,4 @@
-#include "EPVS.h"
+#include "../Include/EPVS.h"
 
 EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)

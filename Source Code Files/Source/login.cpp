@@ -1,16 +1,16 @@
-#include "login.h"
+#include "./../Include/login.h"
 #include "ui_login.h"
 #include <QMessageBox>
-#include "EPVS.h"
-#include "./Source Code Files/Include/ccMethod/EncryptionQByteArray.h"
+#include "../Include/EPVS.h"
+#include "./../Include/ccMethod/EncryptionQByteArray.h"
 #include <QSettings>
 #include <QtCore/QDebug>
-#include "global_variables.h"
+#include "./../Include/global_variables.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFile>
-#include "./Source Code Files/Include/ccMethod/jsonutils.h" // 包含头文件
-#include "./Source Code Files/Include/dms/dms.h"
+#include "./../Include/ccMethod/jsonutils.h" // 包含头文件
+#include "./../Include/dms/dms.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;

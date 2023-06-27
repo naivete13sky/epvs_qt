@@ -1,5 +1,5 @@
-#include "EPVS.h"
-#include "login.h"
+#include "../Include/EPVS.h"
+#include "./../Include/login.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
