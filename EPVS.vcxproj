@@ -93,8 +93,8 @@
   <ItemGroup>
     <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp" />
     <ClCompile Include="temp.cpp" />
-    <QtRcc Include="EPVS.qrc" />
-    <QtUic Include="EPVS.ui" />
+    <QtRcc Include="Resources\forms\EPVS.qrc" />
+    <QtUic Include="Resources\forms\EPVS.ui" />
     <QtMoc Include="Source Code Files\Include\EPVS.h" />
     <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp" />
     <ClCompile Include="Source Code Files\Source\ccMethod\jsonutils.cpp" />
@@ -102,13 +102,12 @@
     <ClCompile Include="Source Code Files\Source\EPVS.cpp" />
     <ClCompile Include="Source Code Files\Source\login.cpp" />
     <ClCompile Include="Source Code Files\Source\main.cpp" />
-    <QtUic Include="login.ui" />
+    <QtUic Include="Resources\forms\login.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Source Code Files\Include\login.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Users\cheng.chen\Desktop\config.json" />
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
