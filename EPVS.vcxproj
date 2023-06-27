@@ -96,7 +96,7 @@
     <QtRcc Include="EPVS.qrc" />
     <QtUic Include="EPVS.ui" />
     <QtMoc Include="EPVS.h" />
-    <ClCompile Include="ccMethod\EncryptionQByteArray.cpp" />
+    <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp" />
     <ClCompile Include="ccMethod\jsonutils.cpp" />
     <ClCompile Include="Source Code Files\Source\dms\dms.cpp" />
     <ClCompile Include="EPVS.cpp" />
@@ -112,7 +112,7 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ccMethod\EncryptionQByteArray.h" />
+    <QtMoc Include="Source Code Files\Include\ccMethod\EncryptionQByteArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ccMethod\jsonutils.h" />

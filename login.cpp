@@ -2,7 +2,7 @@
 #include "ui_login.h"
 #include <QMessageBox>
 #include "EPVS.h"
-#include "ccMethod/EncryptionQByteArray.h"
+#include "./Source Code Files/Include/ccMethod/EncryptionQByteArray.h"
 #include <QSettings>
 #include <QtCore/QDebug>
 #include "global_variables.h"
@@ -10,7 +10,7 @@
 #include <QJsonObject>
 #include <QFile>
 #include "ccMethod/jsonutils.h" // 包含头文件
-#include "dms/dms.h"
+#include "./Source Code Files/Include/dms/dms.h"
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;

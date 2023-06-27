@@ -43,7 +43,7 @@
     <ClCompile Include="login.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ccMethod\EncryptionQByteArray.cpp">
+    <ClCompile Include="Source Code Files\Source\ccMethod\EncryptionQByteArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ccMethod\jsonutils.cpp">
@@ -63,7 +63,7 @@
     <QtMoc Include="login.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ccMethod\EncryptionQByteArray.h">
+    <QtMoc Include="Source Code Files\Include\ccMethod\EncryptionQByteArray.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Source Code Files\Include\dms\dms.h">
