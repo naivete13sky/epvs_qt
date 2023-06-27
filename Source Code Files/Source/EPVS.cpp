@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QTableWidget>
 #include <QTextBrowser>
+#include <QVBoxLayout>
 
 EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)
@@ -16,14 +17,18 @@ EPVS::EPVS(QWidget *parent)
 
     setWindowTitle("悦谱转图比对系统 EPVS-V1.0");
 
-    setGeometry(100, 25, 1600, 1000);
+    setGeometry(200, 35, 1200, 900);
+
+    
+
+
 
     
     // 创建一个QWidget对象
     QWidget* centralWidget = new QWidget(this);
 
     // 设置QWidget的位置和大小
-    centralWidget->setGeometry(100, 25, 1600, 1000);
+    centralWidget->setGeometry(200, 35, 1600, 1000);
 
     // 设置QWidget的背景颜色
     //centralWidget->setStyleSheet("background-color: red;");
@@ -182,15 +187,23 @@ EPVS::EPVS(QWidget *parent)
     setStatusBar(statusbar);
 
 
-
-
-
     tabWidget->setTabText(tabWidget->indexOf(tabMainFileExplorer), "文件管理");
     tabWidget->setTabText(tabWidget->indexOf(tabMainEPVS), "转图比对");
 
-
     tabWidget->setCurrentIndex(0);
 
+
+
+    //为了使得tab widget随着主窗口大小变化跟着调整, 需要设置一下layout。
+    QVBoxLayout* layout_main = new QVBoxLayout();
+    //将Tab Widget放置在布局管理器中
+    layout_main->addWidget(tabWidget);
+    //创建一个容器窗口部件
+    QWidget* central_widget = new QWidget();
+    //将布局管理器设置为容器窗口部件的布局
+    central_widget->setLayout(layout_main);
+    //将容器窗口部件设置为主窗口的中央部件
+    setCentralWidget(central_widget);
 
 
 }
