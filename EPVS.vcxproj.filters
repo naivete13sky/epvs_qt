@@ -58,6 +58,9 @@
     <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Source Code Files\Include\login.h">
@@ -67,6 +70,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Source Code Files\Include\dms\dms.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Source Code Files\Include\QListWidgetCommonFolder.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -95,6 +95,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp" />
+    <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp" />
     <ClCompile Include="temp.cpp" />
     <QtRcc Include="Resources\forms\EPVS.qrc" />
     <QtUic Include="Resources\forms\EPVS.ui" />
@@ -119,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h" />
     <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h" />
+    <QtMoc Include="Source Code Files\Include\QListWidgetCommonFolder.h" />
     <QtMoc Include="Source Code Files\Include\dms\dms.h" />
     <ClInclude Include="Source Code Files\Include\global_variables.h" />
   </ItemGroup>
