@@ -1,4 +1,4 @@
-#include "dms.h"
+#include "../../Include/dms/dms.h"
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <QTextCodec>
@@ -6,7 +6,7 @@
 #include <libxml/HTMLparser.h>
 #include <libxml/xpath.h>
 #include <libxml/xpathInternals.h>
-#include "../ccMethod/MySoup.h"
+#include "../../../ccMethod/MySoup.h"
 #include <list>
 
 

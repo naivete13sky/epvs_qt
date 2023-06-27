@@ -98,7 +98,7 @@
     <QtMoc Include="EPVS.h" />
     <ClCompile Include="ccMethod\EncryptionQByteArray.cpp" />
     <ClCompile Include="ccMethod\jsonutils.cpp" />
-    <ClCompile Include="dms\dms.cpp" />
+    <ClCompile Include="Source Code Files\Source\dms\dms.cpp" />
     <ClCompile Include="EPVS.cpp" />
     <ClCompile Include="login.cpp" />
     <ClCompile Include="main.cpp" />
@@ -117,7 +117,7 @@
   <ItemGroup>
     <ClInclude Include="ccMethod\jsonutils.h" />
     <ClInclude Include="ccMethod\MySoup.h" />
-    <QtMoc Include="dms\dms.h" />
+    <QtMoc Include="Source Code Files\Include\dms\dms.h" />
     <ClInclude Include="global_variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
