@@ -65,7 +65,7 @@ void ListViewFile::showContextMenu(const QPoint& pos)
 }
 
 
-void ListViewFile::setPath(const QString pathText) {
+void ListViewFile::setPath(const QString& pathText) {
     path = pathText;
 }
 

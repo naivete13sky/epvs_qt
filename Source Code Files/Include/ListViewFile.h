@@ -29,6 +29,7 @@ class ListViewFile : public QListView
 public:
     explicit ListViewFile(const QString& path, QWidget* parent = nullptr);
     void openFolder(const QString& folderPath);
+    void setPath(const QString& pathText);
 
 signals:
     void triggerListViewFileStr(const QString& content);
@@ -52,7 +53,7 @@ private slots:
 private:
     void customizeContextMenu();
     void createShortcuts();
-    void setPath(const QString pathText);
+    
 
     QString path;
     QString absolutePath;

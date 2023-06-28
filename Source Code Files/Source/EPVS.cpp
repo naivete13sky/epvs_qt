@@ -22,6 +22,7 @@
 #include "../Include/FileNameDelegate.h"
 #include <Filter.h>
 #include <QModelIndex>
+#include <algorithm>
 
 
 
@@ -478,12 +479,18 @@ void EPVS::updateFolderContents(const QString& path) {
     // 更新地址栏
      comboBoxMainFileExplorerPath->setCurrentText(path);
 
-    //folderListView->setPath(path);  // 更新path
+    folderListView->setPath(path);  // 更新path
 
     // 更新历史记录到地址栏
-    //QStringList itemsList = back_history.filter([](const QString& item) { return item.length() > 0; }).toSet().toList();
+    //QStringList itemsList = backHistory.filter([](const QString& item) { return item.length() > 0; }).toSet().toList();
+    QStringList itemsList;
+    std::copy_if(backHistory.begin(), backHistory.end(), std::back_inserter(itemsList),
+        [](const QString& item) { return item.length() > 0; });
+    QSet<QString> uniqueItemsSet = QSet<QString>::fromList(itemsList);
+    itemsList = uniqueItemsSet.toList();
+
     comboBoxMainFileExplorerPath->clear();
-    //comboBoxMainFileExplorerPath->addItems(itemsList);
+    comboBoxMainFileExplorerPath->addItems(itemsList);
     // 更新地址栏
     comboBoxMainFileExplorerPath->setCurrentText(path);
 }
