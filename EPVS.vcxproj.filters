@@ -64,6 +64,9 @@
     <ClCompile Include="Source Code Files\Source\CustomComboBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code Files\Source\ListViewFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Source Code Files\Include\login.h">
@@ -79,6 +82,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Source Code Files\Include\CustomComboBox.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Source Code Files\Include\ListViewFile.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

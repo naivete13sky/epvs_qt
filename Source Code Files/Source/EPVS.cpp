@@ -21,25 +21,15 @@ EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-
     setWindowTitle("悦谱转图比对系统 EPVS-V1.0");
-
     setGeometry(200, 35, 1200, 900);
-
-    
-
-
-
-    
+        
     // 创建一个QWidget对象
     QWidget* centralWidget = new QWidget(this);
-
     // 设置QWidget的位置和大小
     centralWidget->setGeometry(200, 35, 1600, 1000);
-
     // 设置QWidget的背景颜色
     //centralWidget->setStyleSheet("background-color: red;");
-
     // 设置QWidget作为EPVS类的子部件
     setCentralWidget(centralWidget);
 
@@ -50,7 +40,6 @@ EPVS::EPVS(QWidget *parent)
 
     //tabMainFileExplorer
     QWidget* tabMainFileExplorer = new QWidget();
-
 
     //tabMainFileExplorer--widget_fileExplorer_top
     QWidget* widget_fileExplorer_top = new QWidget(tabMainFileExplorer);
@@ -218,8 +207,12 @@ EPVS::EPVS(QWidget *parent)
     QVBoxLayout* layout = new QVBoxLayout();
     widgetLeftSiderTop->setLayout(layout);
     // 创建常用文件夹列表
-    QListWidgetCommonFolder* folder_list = new QListWidgetCommonFolder();
+    folder_list = new QListWidgetCommonFolder(widgetLeftSiderTop);
     //folder_list->triggerQListWidgetCommonFolderStr->connect(triggerQListWidgetCommonFolderStr_update);
+    
+    QObject::connect(folder_list, &QListWidgetCommonFolder::triggerQListWidgetCommonFolderStr, this, &EPVS::triggerQListWidgetCommonFolderStr_update);
+
+
     // 将子QListWidget添加到布局管理器中
     layout->addWidget(folder_list);
 
@@ -327,3 +320,15 @@ EPVS::EPVS(QWidget *parent)
 
 EPVS::~EPVS()
 {}
+
+
+
+void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
+    int index = message.toInt();
+    QListWidgetItem* item = folder_list->takeItem(index);
+    delete item;
+    folder_list->repaint();
+    
+
+}
+    
