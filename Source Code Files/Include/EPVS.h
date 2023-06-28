@@ -26,8 +26,8 @@ public:
     
 
 public slots:
-    void go_to_back_history_folder();
-    void go_forward();
+    void goBack();
+    void goForward();
     void goUp();
     void on_folderListItemClicked(QListWidgetItem* item);
     void on_folderSelectedDoubleClicked(const QModelIndex& index);

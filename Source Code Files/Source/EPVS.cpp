@@ -328,8 +328,8 @@ EPVS::EPVS(QWidget *parent)
 
 
     
-    QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(go_to_back_history_folder()));
-    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(go_forward()));
+    QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
+    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(goForward()));
     QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(goUp()));
     QObject::connect(folder_list, &QListWidget::itemClicked, this,&EPVS::on_folderListItemClicked);    
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
@@ -354,7 +354,7 @@ void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
 }
     
 
-void EPVS::go_to_back_history_folder()
+void EPVS::goBack()
 {
     // 文件夹导航，后退
 
@@ -367,7 +367,7 @@ void EPVS::go_to_back_history_folder()
 }
 
 
-void EPVS::go_forward()
+void EPVS::goForward()
 {
     // 文件夹导航，前进
     QString forwardFolder;

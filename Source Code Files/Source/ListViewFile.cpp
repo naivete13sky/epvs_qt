@@ -64,6 +64,15 @@ void ListViewFile::showContextMenu(const QPoint& pos)
     contextMenu->exec(mapToGlobal(pos));
 }
 
+
+void ListViewFile::setPath(const QString pathText) {
+    path = pathText;
+}
+
+
+
+
+
 void ListViewFile::openSelected()
 {
     QModelIndex index = currentIndex();

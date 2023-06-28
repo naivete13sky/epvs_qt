@@ -52,6 +52,7 @@ private slots:
 private:
     void customizeContextMenu();
     void createShortcuts();
+    void setPath(const QString pathText);
 
     QString path;
     QString absolutePath;
