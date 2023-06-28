@@ -327,8 +327,8 @@ EPVS::EPVS(QWidget *parent)
     lineEditMainFileExplorerSearch->setPlaceholderText("ËÑË÷");
 
 
-    QObject::connect(folder_list, &QListWidget::itemClicked, this,&EPVS::on_folderListItemClicked);
-
+    QObject::connect(folder_list, &QListWidget::itemClicked, this,&EPVS::on_folderListItemClicked);    
+    QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
 
 
 }
