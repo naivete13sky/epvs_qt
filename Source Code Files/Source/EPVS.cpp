@@ -312,9 +312,9 @@ EPVS::EPVS(QWidget *parent)
 
     
     //QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
-    QObject::connect(pushButtonMainFileExplorerBack, &QPushButton::clicked, this, &EPVS::goBack);
-    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(goForward()));
-    QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(goUp()));
+    QObject::connect(pushButtonMainFileExplorerBack, &QPushButton::clicked, this, &EPVS::on_goBackClicked);
+    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(on_goForwardClicked()));
+    QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(on_goUpClicked()));
     QObject::connect(common_folder_list, &QListWidget::itemClicked, this,&EPVS::on_commonFolderListItemClicked);
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
 
@@ -338,7 +338,7 @@ void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
 }
     
 
-void EPVS::goBack()
+void EPVS::on_goBackClicked()
 {
     // 文件夹导航，后退
     if (!backHistory.empty()) {
@@ -349,7 +349,7 @@ void EPVS::goBack()
 }
 
 
-void EPVS::goForward()
+void EPVS::on_goForwardClicked()
 {
     // 文件夹导航，前进
     QString forwardFolder;
@@ -369,7 +369,7 @@ void EPVS::goForward()
 }
 
 
-void EPVS::goUp()
+void EPVS::on_goUpClicked()
 {
     // 文件夹导航，向上
     QString currentText = comboBoxMainFileExplorerPath->currentText();
