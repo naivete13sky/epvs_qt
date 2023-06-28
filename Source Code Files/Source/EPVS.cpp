@@ -14,6 +14,7 @@
 #include <QFileSystemModel>
 #include <QDir>
 #include <QSplitter>
+#include "../Include/CustomComboBox.h"
 
 
 EPVS::EPVS(QWidget *parent)
@@ -269,14 +270,30 @@ EPVS::EPVS(QWidget *parent)
     layout_tabMainFileExplorer->addWidget(splitter_tabMainFileExplorer_top_bot);
 
 
-    //// 设置top里的多个部分可以拖拽调整大小
-    //QSplitter* splitter_tabMainFileExplorer_top = new QSplitter();
-    //splitter_tabMainFileExplorer_top->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
-    //splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerBack);
-    //splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerForward);
-    //splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerUp);
-    //splitter_tabMainFileExplorer_top->setHandleWidth(1);
+    // 设置top里的多个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_top = new QSplitter();
+    splitter_tabMainFileExplorer_top->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerBack);
+    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerForward);
+    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerUp);
+    splitter_tabMainFileExplorer_top->setHandleWidth(1);
 
+
+
+    // Qt设计师画的Qcombox没有回车事件，为了实现这个效果，需要自己写一个类来实现，这在个类中重写keyPressEvent方法
+    CustomComboBox* comboBoxMainFileExplorerPath = new CustomComboBox(this);
+    QObject::connect(comboBoxMainFileExplorerPath, SIGNAL(activated(const QString&)), this, SLOT(comboBoxMainFileExplorerPath_enter_do(const QString&)));    
+    comboBoxMainFileExplorerPath->setEditable(true);
+    splitter_tabMainFileExplorer_top->addWidget(comboBoxMainFileExplorerPath);
+
+    splitter_tabMainFileExplorer_top->addWidget(lineEditMainFileExplorerSearch);
+    QHBoxLayout* layout_tabMainFileExplorerTop = new QHBoxLayout(widget_fileExplorer_top);
+    layout_tabMainFileExplorerTop->addWidget(splitter_tabMainFileExplorer_top);
+    QList<int> sizes;
+    sizes << 20 << 20 << 20 << 800 << 200;
+    splitter_tabMainFileExplorer_top->setSizes(sizes);
+
+    
 
 
 

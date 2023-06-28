@@ -95,6 +95,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp" />
+    <ClCompile Include="Source Code Files\Source\CustomComboBox.cpp" />
     <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -127,6 +128,7 @@
     <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h" />
     <QtMoc Include="Source Code Files\Include\QListWidgetCommonFolder.h" />
     <QtMoc Include="Source Code Files\Include\dms\dms.h" />
+    <QtMoc Include="Source Code Files\Include\CustomComboBox.h" />
     <ClInclude Include="Source Code Files\Include\global_variables.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

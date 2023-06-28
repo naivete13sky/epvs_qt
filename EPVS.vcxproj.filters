@@ -61,6 +61,9 @@
     <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code Files\Source\CustomComboBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Source Code Files\Include\login.h">
@@ -73,6 +76,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Source Code Files\Include\QListWidgetCommonFolder.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Source Code Files\Include\CustomComboBox.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
