@@ -15,6 +15,13 @@
 #include <QDir>
 #include <QSplitter>
 #include "../Include/CustomComboBox.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QFile>
+#include "../Include/ListViewFile.h"
+#include "../Include/FileNameDelegate.h"
+#include <Filter.h>
+
 
 
 EPVS::EPVS(QWidget *parent)
@@ -39,6 +46,12 @@ EPVS::EPVS(QWidget *parent)
     tabWidget->setTabPosition(QTabWidget::West);
 
     //tabMainFileExplorer
+    current_folder = "";  // 当前所选文件夹的路径
+    back_history.clear();  // 文件夹路径的历史记录
+    forward_history.clear();  // 前进路径的历史记录
+
+
+
     QWidget* tabMainFileExplorer = new QWidget();
 
     //tabMainFileExplorer--widget_fileExplorer_top
@@ -274,7 +287,7 @@ EPVS::EPVS(QWidget *parent)
 
 
     // Qt设计师画的Qcombox没有回车事件，为了实现这个效果，需要自己写一个类来实现，这在个类中重写keyPressEvent方法
-    CustomComboBox* comboBoxMainFileExplorerPath = new CustomComboBox(this);
+    comboBoxMainFileExplorerPath = new CustomComboBox(this);
     QObject::connect(comboBoxMainFileExplorerPath, SIGNAL(activated(const QString&)), this, SLOT(comboBoxMainFileExplorerPath_enter_do(const QString&)));    
     comboBoxMainFileExplorerPath->setEditable(true);
     splitter_tabMainFileExplorer_top->addWidget(comboBoxMainFileExplorerPath);
@@ -313,6 +326,7 @@ EPVS::EPVS(QWidget *parent)
     lineEditMainFileExplorerSearch->setPlaceholderText("搜索");
 
 
+    QObject::connect(folder_list, &QListWidget::itemClicked, this,&EPVS::on_folderListItemClicked);
 
 
 
@@ -324,11 +338,147 @@ EPVS::~EPVS()
 
 
 void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
+    qDebug() << "ccabc";
     int index = message.toInt();
     QListWidgetItem* item = folder_list->takeItem(index);
     delete item;
     folder_list->repaint();
     
+    
 
 }
     
+
+
+
+
+void EPVS::on_folderListItemClicked(QListWidgetItem* item)
+{
+    QString folder_name = item->text();
+
+
+    
+    // 设置自定义常用文件夹，从配置文件读取
+    // 读取配置文件
+    QFile file("settings/epvs.json");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QString file_contents = file.readAll();
+        file.close();
+
+        QJsonDocument json_doc = QJsonDocument::fromJson(file_contents.toUtf8());
+        QJsonObject settings_dict = json_doc.object();
+        QJsonObject general_dict = settings_dict["general"].toObject();
+        QJsonObject common_folder_dict = general_dict["common_folder"].toObject();
+
+        QString folder_path;
+
+        if (folder_name == "桌面")
+            folder_path = QDir::homePath() + "/Desktop";
+        else if (folder_name == "下载")
+            folder_path = QDir::homePath() + "/Downloads";
+        else if (folder_name == "文档")
+            folder_path = QDir::homePath() + "/Documents";
+        else if (folder_name == "图片")
+            folder_path = QDir::homePath() + "/Pictures";
+        else if (folder_name == "音乐")
+            folder_path = QDir::homePath() + "/Music";
+        else if (folder_name == "视频")
+            folder_path = QDir::homePath() + "/Videos";
+        else if (!common_folder_dict.isEmpty())
+        {
+            for (auto it = common_folder_dict.constBegin(); it != common_folder_dict.constEnd(); ++it)
+            {
+                QString k = it.key();
+                QString v = it.value().toString();
+                if (folder_name == k)
+                {
+                    folder_path = v;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            return;
+        }
+
+        back_history.push_back(current_folder);  // 将当前文件夹路径添加到历史记录中
+        current_folder = folder_path;  // 更新当前文件夹路径
+        updateFolderContents(folder_path);
+    }
+}
+
+
+void EPVS::updateFolderContents(const QString& path) {
+    // 更新文件夹视图
+    QWidget* contentWidget = findChild<QWidget*>("content_widget");
+
+    // 清空内容
+    while (contentWidget->layout()->count() > 0) {
+        QLayoutItem* child = contentWidget->layout()->takeAt(0);
+        if (child->widget()) {
+            child->widget()->deleteLater();
+        }
+        delete child;
+    }
+
+    // 创建文件夹内容部件
+    QWidget* folderContentsWidget = new QWidget();
+    QGridLayout* folderContentsLayout = new QGridLayout(folderContentsWidget);
+    folderContentsLayout->setContentsMargins(10, 10, 10, 10);
+    folderContentsLayout->setSpacing(10);
+
+    ListViewFile* folderListView = new ListViewFile(path);
+    // 设置自定义委托来绘制文件名的自动换行
+    FileNameDelegate* delegate = new FileNameDelegate(folderListView);
+    folderListView->setItemDelegate(delegate);
+
+    //connect(folderListView, &ListViewFile::doubleClicked, this, SLOT(folderSelected));
+    ///*connect(folderListView, &ListViewFile::triggerListViewFileStr, this, &MyClass::updateTriggerListViewFileStr);
+    //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputA, this, &MyClass::updateTriggerListViewFileStrVsInputA);
+    //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputB, this, &MyClass::updateTriggerListViewFileStrVsInputB);
+    //connect(folderListView, &ListViewFile::triggerListViewFileStrSwitchTab, this, &MyClass::updateTriggerListViewFileStrSwitchTab);*/
+
+    //// 将文件夹内容部件添加到布局中
+    //folderContentsLayout->addWidget(folderListView);
+
+    //// 将文件夹内容部件设置为右边窗口B的子部件
+    //contentWidget->layout()->addWidget(folderContentsWidget);
+
+    //// 将当前文件夹路径添加到前进路径的历史记录
+    //forward_history.push_back(path);
+
+    //// 更新地址栏
+    //// comboBoxMainFileExplorerPath->setCurrentText(path);
+
+    ////folderListView->setPath(path);  // 更新path
+
+    //// 更新历史记录到地址栏
+    ////QStringList itemsList = back_history.filter([](const QString& item) { return item.length() > 0; }).toSet().toList();
+    //comboBoxMainFileExplorerPath->clear();
+    ////comboBoxMainFileExplorerPath->addItems(itemsList);
+    //// 更新地址栏
+    //comboBoxMainFileExplorerPath->setCurrentText(path);
+}
+
+
+
+//void EPVS::folderSelected(const QModelIndex& index)
+//{
+//    QFileSystemModel* folderModel = qobject_cast<QFileSystemModel*>(index.model());
+//    if (folderModel->isDir(index))
+//    {
+//        //back_history.push_back(currentFolder);  // 将当前文件夹路径添加到历史记录中
+//        // forwardHistory.append(currentFolder);  // 将当前文件夹路径添加到 forward 记录中
+//        //currentFolder = folderModel->filePath(index);  // 更新当前文件夹路径
+//        //updateFolderContents(currentFolder);
+//    }
+//    else
+//    {
+//        // 处理选择的是文件的情况
+//        QString filePath = folderModel->filePath(index);
+//        QUrl url = QUrl::fromLocalFile(filePath);
+//        QDesktopServices::openUrl(url);
+//    }
+//}
