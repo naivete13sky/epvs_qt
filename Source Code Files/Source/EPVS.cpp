@@ -9,6 +9,7 @@
 #include <QTableWidget>
 #include <QTextBrowser>
 #include <QVBoxLayout>
+#include "../Include/QListWidgetCommonFolder.h"
 
 EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)
@@ -204,6 +205,17 @@ EPVS::EPVS(QWidget *parent)
     central_widget->setLayout(layout_main);
     //将容器窗口部件设置为主窗口的中央部件
     setCentralWidget(central_widget);
+
+
+
+    // 创建布局管理器，常用文件夹
+    QVBoxLayout* layout = new QVBoxLayout();
+    widgetLeftSiderTop->setLayout(layout);
+    // 创建常用文件夹列表
+    QListWidgetCommonFolder* folder_list = new QListWidgetCommonFolder();
+    //folder_list->triggerQListWidgetCommonFolderStr->connect(triggerQListWidgetCommonFolderStr_update);
+    // 将子QListWidget添加到布局管理器中
+    layout->addWidget(folder_list);
 
 
 }

@@ -10,6 +10,9 @@ public:
 
     ~QListWidgetCommonFolder();
 
+signals:
+    void triggerQListWidgetCommonFolderStr(QString value);
+
 private:
     
 };
