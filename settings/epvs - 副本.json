@@ -1,0 +1,27 @@
+{
+    "epcam": {
+        "bin_path": "C:\\cc\\ep_local\\product\\EP-CAM\\version\\20230626\\EP-CAM_release_1.1.6.8_jiami\\Release",
+        "user": "root",
+        "vs": {
+            "map_layer_res": "200",
+            "vs_tol_ep": "0.9",
+            "vs_tol_g": "0.3"
+        }
+    },
+    "general": {
+        "common_folder": {
+            "gerber": "C:/temp\\gerber",
+            "temp": "C:\\temp"
+        },
+        "dmsIpPort": "10.97.80.119",
+        "flag_epcam_startup": "0",
+        "temp_path": "C:\\cc\\share\\epvs"
+    },
+    "login": {
+        "cc": "hi cc3",
+        "password": "59324d3d",
+        "remember": "True",
+        "user_name": "cc",
+        "user_type": "dms"
+    }
+}

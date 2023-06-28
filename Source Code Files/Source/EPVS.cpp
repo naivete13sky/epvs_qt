@@ -13,6 +13,7 @@
 #include <QTreeView>
 #include <QFileSystemModel>
 #include <QDir>
+#include <QSplitter>
 
 
 EPVS::EPVS(QWidget *parent)
@@ -240,6 +241,45 @@ EPVS::EPVS(QWidget *parent)
     file_tree_view->setColumnHidden(3, true);  // 修改时间列
     // 将子QListWidget添加到布局管理器中
     layout2->addWidget(file_tree_view);
+
+
+    // 创建布局管理器，右侧主窗口
+    QVBoxLayout* layout3 = new QVBoxLayout();
+    widgetMainFileExplorerRightMain->setLayout(layout3);
+    // 创建主体窗口B部件
+    QWidget* content_widget = new QWidget();
+    content_widget->setStyleSheet("background-color: white;");
+    content_widget->setObjectName("content_widget");
+    QGridLayout* content_layout = new QGridLayout(content_widget);
+    content_widget->setLayout(content_layout);
+    layout3->addWidget(content_widget);
+
+
+    // 设置top与 bot 2个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_top_bot = new QSplitter();
+    //    # splitter_tabMainFileExplorer_top_bot.setStyleSheet("QSplitter::handle { background-color: darkGray; }")
+    splitter_tabMainFileExplorer_top_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    // 设置手柄宽度为1个像素
+    splitter_tabMainFileExplorer_top_bot->setHandleWidth(1);
+
+    splitter_tabMainFileExplorer_top_bot->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
+    splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_top);
+    splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_bot);
+    QHBoxLayout* layout_tabMainFileExplorer = new QHBoxLayout(tabMainFileExplorer);
+    layout_tabMainFileExplorer->addWidget(splitter_tabMainFileExplorer_top_bot);
+
+
+    //// 设置top里的多个部分可以拖拽调整大小
+    //QSplitter* splitter_tabMainFileExplorer_top = new QSplitter();
+    //splitter_tabMainFileExplorer_top->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    //splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerBack);
+    //splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerForward);
+    //splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerUp);
+    //splitter_tabMainFileExplorer_top->setHandleWidth(1);
+
+
+
+
 
 
 
