@@ -318,6 +318,8 @@ EPVS::EPVS(QWidget *parent)
     QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(on_goUpClicked()));
     QObject::connect(common_folder_list, &QListWidget::itemClicked, this,&EPVS::on_commonFolderListItemClicked);
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
+    connect(comboBoxMainFileExplorerPath, QOverload<int>::of(&QComboBox::activated), this, &EPVS::on_comboBoxMainFileExplorerPath_activated);
+
 
 
 }
@@ -481,8 +483,7 @@ void EPVS::updateFolderContents(const QString& path) {
 
     folderListView->setPath(path);  // 更新path
 
-    // 更新历史记录到地址栏
-    //QStringList itemsList = backHistory.filter([](const QString& item) { return item.length() > 0; }).toSet().toList();
+    // 更新历史记录到地址栏    
     QStringList itemsList;
     std::copy_if(backHistory.begin(), backHistory.end(), std::back_inserter(itemsList),
         [](const QString& item) { return item.length() > 0; });
@@ -515,4 +516,9 @@ void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
         QUrl url = QUrl::fromLocalFile(filePath);
         QDesktopServices::openUrl(url);
     }
+}
+
+
+void EPVS::on_comboBoxMainFileExplorerPath_activated() {
+    updateFolderContents(comboBoxMainFileExplorerPath->currentText());
 }

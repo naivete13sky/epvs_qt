@@ -31,6 +31,7 @@ public slots:
     void on_goUpClicked();
     void on_commonFolderListItemClicked(QListWidgetItem* item);
     void on_folderSelectedDoubleClicked(const QModelIndex& index);
+    void on_comboBoxMainFileExplorerPath_activated();
 
 
 private:
