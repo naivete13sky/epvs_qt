@@ -56,7 +56,7 @@ EPVS::EPVS(QWidget *parent)
     QWidget* widget_fileExplorer_top = new QWidget(tabMainFileExplorer);
     widget_fileExplorer_top->setGeometry(0, 10, 1141, 31);
     // 搜索
-    QWidget* lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
+    QLineEdit* lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
     lineEditMainFileExplorerSearch->setGeometry(880, 0, 241, 20);
     // 前进
     QPushButton* pushButtonMainFileExplorerForward = new QPushButton(widget_fileExplorer_top);
@@ -294,12 +294,30 @@ EPVS::EPVS(QWidget *parent)
     splitter_tabMainFileExplorer_top->setSizes(sizes);
 
     
+    // 设置底部的侧边栏与右边主窗口2个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_bot = new QSplitter();
+    splitter_tabMainFileExplorer_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    splitter_tabMainFileExplorer_bot->addWidget(widgetMainFileExplorerSideBar);
+    splitter_tabMainFileExplorer_bot->addWidget(widgetMainFileExplorerRightMain);
+    splitter_tabMainFileExplorer_bot->setHandleWidth(1);        
+    QHBoxLayout* layout_tabMainFileExplorerBot = new QHBoxLayout(widget_fileExplorer_bot);
+    layout_tabMainFileExplorerBot->addWidget(splitter_tabMainFileExplorer_bot);
+
+
+    // 设置侧边栏上下2个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_SideBar = new QSplitter();
+    splitter_tabMainFileExplorer_SideBar->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    splitter_tabMainFileExplorer_SideBar->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
+    splitter_tabMainFileExplorer_SideBar->addWidget(widgetLeftSiderTop);
+    splitter_tabMainFileExplorer_SideBar->addWidget(widgetLeftSiderBot);
+    splitter_tabMainFileExplorer_SideBar->setHandleWidth(1);
+    QHBoxLayout* layout_tabMainFileExplorerSideBar = new QHBoxLayout(widgetMainFileExplorerSideBar);
+    layout_tabMainFileExplorerSideBar->addWidget(splitter_tabMainFileExplorer_SideBar);
 
 
 
-
-
-
+    // 设置搜索栏
+    lineEditMainFileExplorerSearch->setPlaceholderText("搜索");
 
 
 
