@@ -21,6 +21,7 @@
 #include "../Include/ListViewFile.h"
 #include "../Include/FileNameDelegate.h"
 #include <Filter.h>
+#include <QModelIndex>
 
 
 
@@ -434,7 +435,8 @@ void EPVS::updateFolderContents(const QString& path) {
     FileNameDelegate* delegate = new FileNameDelegate(folderListView);
     folderListView->setItemDelegate(delegate);
 
-    //connect(folderListView, &ListViewFile::doubleClicked, this, SLOT(folderSelected));
+    QObject::connect(folderListView, &ListViewFile::doubleClicked, this, &EPVS::on_folderSelectedDoubleClicked);
+    
     ///*connect(folderListView, &ListViewFile::triggerListViewFileStr, this, &MyClass::updateTriggerListViewFileStr);
     //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputA, this, &MyClass::updateTriggerListViewFileStrVsInputA);
     //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputB, this, &MyClass::updateTriggerListViewFileStrVsInputB);
@@ -450,7 +452,7 @@ void EPVS::updateFolderContents(const QString& path) {
     forward_history.push_back(path);
 
     // 更新地址栏
-    // comboBoxMainFileExplorerPath->setCurrentText(path);
+     comboBoxMainFileExplorerPath->setCurrentText(path);
 
     //folderListView->setPath(path);  // 更新path
 
@@ -464,21 +466,23 @@ void EPVS::updateFolderContents(const QString& path) {
 
 
 
-//void EPVS::folderSelected(const QModelIndex& index)
-//{
-//    QFileSystemModel* folderModel = qobject_cast<QFileSystemModel*>(index.model());
-//    if (folderModel->isDir(index))
-//    {
-//        //back_history.push_back(currentFolder);  // 将当前文件夹路径添加到历史记录中
-//        // forwardHistory.append(currentFolder);  // 将当前文件夹路径添加到 forward 记录中
-//        //currentFolder = folderModel->filePath(index);  // 更新当前文件夹路径
-//        //updateFolderContents(currentFolder);
-//    }
-//    else
-//    {
-//        // 处理选择的是文件的情况
-//        QString filePath = folderModel->filePath(index);
-//        QUrl url = QUrl::fromLocalFile(filePath);
-//        QDesktopServices::openUrl(url);
-//    }
-//}
+void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
+{
+    //QFileSystemModel* folderModel = qobject_cast<QFileSystemModel*>(index.model());
+    QFileSystemModel* folderModel = static_cast<QFileSystemModel*>(const_cast<QAbstractItemModel*>(index.model()));
+
+    if (folderModel->isDir(index))
+    {
+        back_history.push_back(current_folder);  // 将当前文件夹路径添加到历史记录中
+        forward_history.push_back(current_folder);  // 将当前文件夹路径添加到 forward 记录中
+        current_folder = folderModel->filePath(index);  // 更新当前文件夹路径
+        updateFolderContents(current_folder);
+    }
+    else
+    {
+        // 处理选择的是文件的情况
+        QString filePath = folderModel->filePath(index);
+        QUrl url = QUrl::fromLocalFile(filePath);
+        QDesktopServices::openUrl(url);
+    }
+}

@@ -5,6 +5,7 @@
 #include "../Include/QListWidgetCommonFolder.h"
 #include <vector>
 #include "../Include/CustomComboBox.h"
+#include <QModelIndex>
 
 class EPVS : public QMainWindow
 {
@@ -26,7 +27,7 @@ public:
 
 public slots:
     void on_folderListItemClicked(QListWidgetItem* item);
-    //void folderSelected(const QModelIndex& index);
+    void on_folderSelectedDoubleClicked(const QModelIndex& index);
 
 private:
     Ui::EPVSClass ui;
