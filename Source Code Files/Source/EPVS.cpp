@@ -440,26 +440,26 @@ void EPVS::updateFolderContents(const QString& path) {
     //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputB, this, &MyClass::updateTriggerListViewFileStrVsInputB);
     //connect(folderListView, &ListViewFile::triggerListViewFileStrSwitchTab, this, &MyClass::updateTriggerListViewFileStrSwitchTab);*/
 
-    //// 将文件夹内容部件添加到布局中
-    //folderContentsLayout->addWidget(folderListView);
+    // 将文件夹内容部件添加到布局中
+    folderContentsLayout->addWidget(folderListView);
 
-    //// 将文件夹内容部件设置为右边窗口B的子部件
-    //contentWidget->layout()->addWidget(folderContentsWidget);
+    // 将文件夹内容部件设置为右边窗口B的子部件
+    contentWidget->layout()->addWidget(folderContentsWidget);
 
-    //// 将当前文件夹路径添加到前进路径的历史记录
-    //forward_history.push_back(path);
+    // 将当前文件夹路径添加到前进路径的历史记录
+    forward_history.push_back(path);
 
-    //// 更新地址栏
-    //// comboBoxMainFileExplorerPath->setCurrentText(path);
+    // 更新地址栏
+    // comboBoxMainFileExplorerPath->setCurrentText(path);
 
-    ////folderListView->setPath(path);  // 更新path
+    //folderListView->setPath(path);  // 更新path
 
-    //// 更新历史记录到地址栏
-    ////QStringList itemsList = back_history.filter([](const QString& item) { return item.length() > 0; }).toSet().toList();
-    //comboBoxMainFileExplorerPath->clear();
-    ////comboBoxMainFileExplorerPath->addItems(itemsList);
-    //// 更新地址栏
-    //comboBoxMainFileExplorerPath->setCurrentText(path);
+    // 更新历史记录到地址栏
+    //QStringList itemsList = back_history.filter([](const QString& item) { return item.length() > 0; }).toSet().toList();
+    comboBoxMainFileExplorerPath->clear();
+    //comboBoxMainFileExplorerPath->addItems(itemsList);
+    // 更新地址栏
+    comboBoxMainFileExplorerPath->setCurrentText(path);
 }
 
 
