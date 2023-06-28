@@ -47,9 +47,9 @@ EPVS::EPVS(QWidget *parent)
     tabWidget->setTabPosition(QTabWidget::West);
 
     //tabMainFileExplorer
-    current_folder = "";  // 当前所选文件夹的路径
-    back_history.clear();  // 文件夹路径的历史记录
-    forward_history.clear();  // 前进路径的历史记录
+    currentFolder = "";  // 当前所选文件夹的路径
+    backHistory.clear();  // 文件夹路径的历史记录
+    forwardHistory.clear();  // 前进路径的历史记录
 
 
 
@@ -327,6 +327,10 @@ EPVS::EPVS(QWidget *parent)
     lineEditMainFileExplorerSearch->setPlaceholderText("搜索");
 
 
+    
+    QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(go_to_back_history_folder()));
+    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(go_forward()));
+    QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(goUp()));
     QObject::connect(folder_list, &QListWidget::itemClicked, this,&EPVS::on_folderListItemClicked);    
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
 
@@ -350,7 +354,48 @@ void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
 }
     
 
+void EPVS::go_to_back_history_folder()
+{
+    // 文件夹导航，后退
 
+    if (!backHistory.empty()) {
+        QString backFolder = backHistory.back();
+        backHistory.pop_back();
+
+        updateFolderContents(backFolder);
+    }
+}
+
+
+void EPVS::go_forward()
+{
+    // 文件夹导航，前进
+    QString forwardFolder;
+    if (!forwardHistory.empty()) {
+        if (forwardHistory.size() > 0) {
+            forwardFolder = forwardHistory.back();
+            forwardHistory.pop_back();
+        }
+        if (forwardHistory.size() > 0) {
+            forwardFolder = forwardHistory.back();
+            forwardHistory.pop_back();
+        }
+        backHistory.push_back(currentFolder);  // 将当前文件夹路径添加到历史记录中
+        currentFolder = forwardFolder;  // 更新当前文件夹路径
+
+        updateFolderContents(forwardFolder);
+    }
+}
+
+
+void EPVS::goUp()
+{
+    // 文件夹导航，向上
+    QString currentText = comboBoxMainFileExplorerPath->currentText();
+    QString upFolder = QFileInfo(currentText).dir().path();
+
+    updateFolderContents(upFolder);
+}
 
 
 void EPVS::on_folderListItemClicked(QListWidgetItem* item)
@@ -404,8 +449,8 @@ void EPVS::on_folderListItemClicked(QListWidgetItem* item)
             return;
         }
 
-        back_history.push_back(current_folder);  // 将当前文件夹路径添加到历史记录中
-        current_folder = folder_path;  // 更新当前文件夹路径
+        backHistory.push_back(currentFolder);  // 将当前文件夹路径添加到历史记录中
+        currentFolder = folder_path;  // 更新当前文件夹路径
         updateFolderContents(folder_path);
     }
 }
@@ -449,7 +494,7 @@ void EPVS::updateFolderContents(const QString& path) {
     contentWidget->layout()->addWidget(folderContentsWidget);
 
     // 将当前文件夹路径添加到前进路径的历史记录
-    forward_history.push_back(path);
+    forwardHistory.push_back(path);
 
     // 更新地址栏
      comboBoxMainFileExplorerPath->setCurrentText(path);
@@ -473,10 +518,10 @@ void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
 
     if (folderModel->isDir(index))
     {
-        back_history.push_back(current_folder);  // 将当前文件夹路径添加到历史记录中
-        forward_history.push_back(current_folder);  // 将当前文件夹路径添加到 forward 记录中
-        current_folder = folderModel->filePath(index);  // 更新当前文件夹路径
-        updateFolderContents(current_folder);
+        backHistory.push_back(currentFolder);  // 将当前文件夹路径添加到历史记录中
+        forwardHistory.push_back(currentFolder);  // 将当前文件夹路径添加到 forward 记录中
+        currentFolder = folderModel->filePath(index);  // 更新当前文件夹路径
+        updateFolderContents(currentFolder);
     }
     else
     {

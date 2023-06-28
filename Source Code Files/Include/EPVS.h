@@ -14,9 +14,9 @@ class EPVS : public QMainWindow
 public:
     EPVS(QWidget *parent = nullptr);
     ~EPVS();
-    QString current_folder;// 当前所选文件夹的路径
-    std::vector<QString> back_history;// 文件夹路径的历史记录
-    std::vector<QString> forward_history;// 前进路径的历史记录
+    QString currentFolder;// 当前所选文件夹的路径
+    std::vector<QString> backHistory;// 文件夹路径的历史记录
+    std::vector<QString> forwardHistory;// 前进路径的历史记录
     CustomComboBox* comboBoxMainFileExplorerPath;
 
     void triggerQListWidgetCommonFolderStr_update(const QString& message);
@@ -26,8 +26,12 @@ public:
     
 
 public slots:
+    void go_to_back_history_folder();
+    void go_forward();
+    void goUp();
     void on_folderListItemClicked(QListWidgetItem* item);
     void on_folderSelectedDoubleClicked(const QModelIndex& index);
+
 
 private:
     Ui::EPVSClass ui;
