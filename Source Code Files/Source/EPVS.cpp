@@ -10,6 +10,10 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 #include "../Include/QListWidgetCommonFolder.h"
+#include <QTreeView>
+#include <QFileSystemModel>
+#include <QDir>
+
 
 EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)
@@ -216,6 +220,32 @@ EPVS::EPVS(QWidget *parent)
     //folder_list->triggerQListWidgetCommonFolderStr->connect(triggerQListWidgetCommonFolderStr_update);
     // 将子QListWidget添加到布局管理器中
     layout->addWidget(folder_list);
+
+
+
+    // 创建布局管理器，文件系统，树形结构
+    QVBoxLayout* layout2 = new QVBoxLayout();
+    widgetLeftSiderBot->setLayout(layout2);
+    // 创建文件树视图
+    QTreeView* file_tree_view = new QTreeView();
+    file_tree_view->setStyleSheet("background-color: lightgray;");
+    file_tree_view->setHeaderHidden(true);
+    // 创建文件系统模型
+    QFileSystemModel* file_system_model = new QFileSystemModel();
+    file_system_model->setRootPath(QDir::rootPath());
+    file_tree_view->setModel(file_system_model);
+    // 隐藏文件类型和时间列
+    file_tree_view->setColumnHidden(1, true);  // 文件类型列
+    file_tree_view->setColumnHidden(2, true);  // 修改时间列
+    file_tree_view->setColumnHidden(3, true);  // 修改时间列
+    // 将子QListWidget添加到布局管理器中
+    layout2->addWidget(file_tree_view);
+
+
+
+
+
+
 
 
 }

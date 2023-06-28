@@ -95,7 +95,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp" />
-    <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp" />
+    <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="temp.cpp" />
     <QtRcc Include="Resources\forms\EPVS.qrc" />
     <QtUic Include="Resources\forms\EPVS.ui" />

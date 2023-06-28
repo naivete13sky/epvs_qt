@@ -11,8 +11,11 @@ public:
     ~QListWidgetCommonFolder();
 
 signals:
-    void triggerQListWidgetCommonFolderStr(QString value);
+    void triggerQListWidgetCommonFolderStr(const QString&);
 
 private:
+    bool isFixedCommonFolder(const QString& folderName);
+private slots:
+    void folderListHandleRightClick(const QPoint& pos);
     
 };
