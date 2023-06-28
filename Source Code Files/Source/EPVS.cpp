@@ -51,10 +51,7 @@ EPVS::EPVS(QWidget *parent)
     backHistory.clear();  // 文件夹路径的历史记录
     forwardHistory.clear();  // 前进路径的历史记录
 
-
-
     QWidget* tabMainFileExplorer = new QWidget();
-
     //tabMainFileExplorer--widget_fileExplorer_top
     QWidget* widget_fileExplorer_top = new QWidget(tabMainFileExplorer);
     widget_fileExplorer_top->setGeometry(0, 10, 1141, 31);
@@ -187,7 +184,6 @@ EPVS::EPVS(QWidget *parent)
 
     tabWidget->addTab(tabMainEPVS, "");
 
-
     setCentralWidget(centralWidget);
     QMenuBar* menubar = new QMenuBar(this);
     menubar->setGeometry(0, 0, 1179, 23);
@@ -196,12 +192,10 @@ EPVS::EPVS(QWidget *parent)
     statusbar->setObjectName("statusbar");
     setStatusBar(statusbar);
 
-
     tabWidget->setTabText(tabWidget->indexOf(tabMainFileExplorer), "文件管理");
     tabWidget->setTabText(tabWidget->indexOf(tabMainEPVS), "转图比对");
 
     tabWidget->setCurrentIndex(0);
-
 
 
     //为了使得tab widget随着主窗口大小变化跟着调整, 需要设置一下layout。
@@ -216,20 +210,14 @@ EPVS::EPVS(QWidget *parent)
     setCentralWidget(central_widget);
 
 
-
     // 创建布局管理器，常用文件夹
     QVBoxLayout* layout = new QVBoxLayout();
     widgetLeftSiderTop->setLayout(layout);
     // 创建常用文件夹列表
-    folder_list = new QListWidgetCommonFolder(widgetLeftSiderTop);
-    //folder_list->triggerQListWidgetCommonFolderStr->connect(triggerQListWidgetCommonFolderStr_update);
-    
-    QObject::connect(folder_list, &QListWidgetCommonFolder::triggerQListWidgetCommonFolderStr, this, &EPVS::triggerQListWidgetCommonFolderStr_update);
-
-
+    common_folder_list = new QListWidgetCommonFolder(widgetLeftSiderTop);    
+    QObject::connect(common_folder_list, &QListWidgetCommonFolder::triggerQListWidgetCommonFolderStr, this, &EPVS::triggerQListWidgetCommonFolderStr_update);
     // 将子QListWidget添加到布局管理器中
-    layout->addWidget(folder_list);
-
+    layout->addWidget(common_folder_list);
 
 
     // 创建布局管理器，文件系统，树形结构
@@ -264,12 +252,10 @@ EPVS::EPVS(QWidget *parent)
 
 
     // 设置top与 bot 2个部分可以拖拽调整大小
-    QSplitter* splitter_tabMainFileExplorer_top_bot = new QSplitter();
-    //    # splitter_tabMainFileExplorer_top_bot.setStyleSheet("QSplitter::handle { background-color: darkGray; }")
+    QSplitter* splitter_tabMainFileExplorer_top_bot = new QSplitter();    
     splitter_tabMainFileExplorer_top_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
     // 设置手柄宽度为1个像素
     splitter_tabMainFileExplorer_top_bot->setHandleWidth(1);
-
     splitter_tabMainFileExplorer_top_bot->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
     splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_top);
     splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_bot);
@@ -286,13 +272,11 @@ EPVS::EPVS(QWidget *parent)
     splitter_tabMainFileExplorer_top->setHandleWidth(1);
 
 
-
     // Qt设计师画的Qcombox没有回车事件，为了实现这个效果，需要自己写一个类来实现，这在个类中重写keyPressEvent方法
     comboBoxMainFileExplorerPath = new CustomComboBox(this);
     QObject::connect(comboBoxMainFileExplorerPath, SIGNAL(activated(const QString&)), this, SLOT(comboBoxMainFileExplorerPath_enter_do(const QString&)));    
     comboBoxMainFileExplorerPath->setEditable(true);
     splitter_tabMainFileExplorer_top->addWidget(comboBoxMainFileExplorerPath);
-
     splitter_tabMainFileExplorer_top->addWidget(lineEditMainFileExplorerSearch);
     QHBoxLayout* layout_tabMainFileExplorerTop = new QHBoxLayout(widget_fileExplorer_top);
     layout_tabMainFileExplorerTop->addWidget(splitter_tabMainFileExplorer_top);
@@ -322,16 +306,16 @@ EPVS::EPVS(QWidget *parent)
     layout_tabMainFileExplorerSideBar->addWidget(splitter_tabMainFileExplorer_SideBar);
 
 
-
     // 设置搜索栏
     lineEditMainFileExplorerSearch->setPlaceholderText("搜索");
 
 
     
-    QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
+    //QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
+    QObject::connect(pushButtonMainFileExplorerBack, &QPushButton::clicked, this, &EPVS::goBack);
     QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(goForward()));
     QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(goUp()));
-    QObject::connect(folder_list, &QListWidget::itemClicked, this,&EPVS::on_folderListItemClicked);    
+    QObject::connect(common_folder_list, &QListWidget::itemClicked, this,&EPVS::on_commonFolderListItemClicked);
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
 
 
@@ -343,11 +327,11 @@ EPVS::~EPVS()
 
 
 void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
-    qDebug() << "ccabc";
+    //qDebug() << "ccabc";
     int index = message.toInt();
-    QListWidgetItem* item = folder_list->takeItem(index);
+    QListWidgetItem* item = common_folder_list->takeItem(index);
     delete item;
-    folder_list->repaint();
+    common_folder_list->repaint();
     
     
 
@@ -357,11 +341,9 @@ void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
 void EPVS::goBack()
 {
     // 文件夹导航，后退
-
     if (!backHistory.empty()) {
         QString backFolder = backHistory.back();
         backHistory.pop_back();
-
         updateFolderContents(backFolder);
     }
 }
@@ -382,7 +364,6 @@ void EPVS::goForward()
         }
         backHistory.push_back(currentFolder);  // 将当前文件夹路径添加到历史记录中
         currentFolder = forwardFolder;  // 更新当前文件夹路径
-
         updateFolderContents(forwardFolder);
     }
 }
@@ -398,11 +379,9 @@ void EPVS::goUp()
 }
 
 
-void EPVS::on_folderListItemClicked(QListWidgetItem* item)
+void EPVS::on_commonFolderListItemClicked(QListWidgetItem* item)
 {
     QString folder_name = item->text();
-
-
     
     // 设置自定义常用文件夹，从配置文件读取
     // 读取配置文件
@@ -508,7 +487,6 @@ void EPVS::updateFolderContents(const QString& path) {
     // 更新地址栏
     comboBoxMainFileExplorerPath->setCurrentText(path);
 }
-
 
 
 void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
