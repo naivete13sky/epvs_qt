@@ -10,6 +10,7 @@
 #include <QTableWidget>
 #include <QPushButton>
 #include <QTreeView>
+#include <QVBoxLayout>
 
 
 class EPVS : public QMainWindow
@@ -28,6 +29,8 @@ public:
 
     QWidget* centralWidget;
     QTabWidget* tabWidget;
+    QVBoxLayout* layout_main;
+    QWidget* central_widget;
     QWidget* tabMainFileExplorer;
 
     QWidget* widget_fileExplorer_top;//tabMainFileExplorer--widget_fileExplorer_top

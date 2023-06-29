@@ -133,7 +133,9 @@ EPVS::EPVS(QWidget *parent)
 
     tabWidget->addTab(tabMainEPVS, "");
 
-    setCentralWidget(centralWidget);
+    
+
+
     QMenuBar* menubar = new QMenuBar(this);
     menubar->setGeometry(0, 0, 1179, 23);
     setMenuBar(menubar);
@@ -148,11 +150,11 @@ EPVS::EPVS(QWidget *parent)
 
 
     //为了使得tab widget随着主窗口大小变化跟着调整, 需要设置一下layout。
-    QVBoxLayout* layout_main = new QVBoxLayout();
+    layout_main = new QVBoxLayout();
     //将Tab Widget放置在布局管理器中
     layout_main->addWidget(tabWidget);
     //创建一个容器窗口部件
-    QWidget* central_widget = new QWidget();
+    central_widget = new QWidget();
     //将布局管理器设置为容器窗口部件的布局
     central_widget->setLayout(layout_main);
     //将容器窗口部件设置为主窗口的中央部件
@@ -185,8 +187,14 @@ void EPVS::createCentralWidget()
 {
     centralWidget = new QWidget(this);// 创建一个QWidget对象
     centralWidget->setGeometry(200, 35, 1600, 1000);// 设置QWidget的位置和大小    
-    //centralWidget->setStyleSheet("background-color: red;");// 设置QWidget的背景颜色
+    centralWidget->setStyleSheet("background-color: red;");// 设置QWidget的背景颜色
     setCentralWidget(centralWidget);// 设置QWidget作为EPVS类的子部件
+
+
+
+
+
+
 }
 
 void EPVS::createQTabWidget() {
