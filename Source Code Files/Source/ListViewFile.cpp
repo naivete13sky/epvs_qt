@@ -1,3 +1,4 @@
+#pragma execution_character_set("utf-8")
 #include "./../Include/ListViewFile.h"
 #include "./../Include/global_variables.h"
 

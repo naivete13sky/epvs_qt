@@ -22,7 +22,7 @@
 #include <Filter.h>
 #include <QModelIndex>
 #include <algorithm>
-
+#include <QStandardItemModel>
 
 
 EPVS::EPVS(QWidget *parent)
@@ -439,7 +439,7 @@ void EPVS::on_commonFolderListItemClicked(QListWidgetItem* item)
 }
 
 
-void EPVS::updateFolderContents(const QString& path) {
+void EPVS::updateFolderContents(const QString& pathText) {
     // 更新文件夹视图
     QWidget* contentWidget = findChild<QWidget*>("content_widget");
 
@@ -458,7 +458,7 @@ void EPVS::updateFolderContents(const QString& path) {
     folderContentsLayout->setContentsMargins(10, 10, 10, 10);
     folderContentsLayout->setSpacing(10);
 
-    folderListView = new ListViewFile(path);
+    folderListView = new ListViewFile(pathText);
     // 设置自定义委托来绘制文件名的自动换行
     FileNameDelegate* delegate = new FileNameDelegate(folderListView);
     folderListView->setItemDelegate(delegate);
@@ -477,12 +477,12 @@ void EPVS::updateFolderContents(const QString& path) {
     contentWidget->layout()->addWidget(folderContentsWidget);
 
     // 将当前文件夹路径添加到前进路径的历史记录
-    forwardHistory.push_back(path);
+    forwardHistory.push_back(pathText);
 
     // 更新地址栏
-     comboBoxMainFileExplorerPath->setCurrentText(path);
+     comboBoxMainFileExplorerPath->setCurrentText(pathText);
 
-    folderListView->setPath(path);  // 更新path
+    folderListView->setPath(pathText);  // 更新path
 
     // 更新历史记录到地址栏    
     QStringList itemsList;
@@ -494,7 +494,9 @@ void EPVS::updateFolderContents(const QString& path) {
     comboBoxMainFileExplorerPath->clear();
     comboBoxMainFileExplorerPath->addItems(itemsList);
     // 更新地址栏
-    comboBoxMainFileExplorerPath->setCurrentText(path);
+    comboBoxMainFileExplorerPath->setCurrentText(pathText);
+
+    path = pathText;
 }
 
 
@@ -547,12 +549,12 @@ void EPVS::on_lineEditMainFileExplorerSearchReturnPressed()
         folder_contents_layout->setContentsMargins(10, 10, 10, 10);
         folder_contents_layout->setSpacing(10);
 
-        ListViewFileForList* folder_list_view = new ListViewFileForList(filePaths, this);
+        folderListViewForList = new ListViewFileForList(filePaths, this);
 
-        connect(folder_list_view, &ListViewFileForList::doubleClicked, this, &EPVS::searchResultSelected);
+        connect(folderListViewForList, &ListViewFileForList::doubleClicked, this, &EPVS::searchResultSelected);
 
         // 将文件夹内容部件添加到布局中
-        folder_contents_layout->addWidget(folder_list_view);
+        folder_contents_layout->addWidget(folderListViewForList);
 
         // 将文件夹内容部件设置为右边窗口B的子部件
         content_widget->layout()->addWidget(folder_contents_widget);
@@ -565,12 +567,22 @@ void EPVS::on_lineEditMainFileExplorerSearchReturnPressed()
 
 void EPVS::searchResultSelected(const QModelIndex& index)
 {   
-    QAbstractItemModel* model = folderListView->model();
-    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model);
-    QStandardItem* item = standardModel->itemFromIndex(index);
+    
+    // 选中文件夹
+    QAbstractItemModel* abstractModel = folderListViewForList->model;
+    QStandardItemModel* model = static_cast<QStandardItemModel*>(abstractModel);
+
+
+    //QStandardItemModel* model = qobject_cast<QStandardItemModel*>(folderListViewForList->model());
+    QStandardItem* item = model->itemFromIndex(index);
+    
 
     
     QString pathStr = item->text();
+
+
+
+
     if (QDir(pathStr).exists()) {
         backHistory.push_back(currentFolder); // 将当前文件夹路径添加到历史记录中
         currentFolder = pathStr; // 更新当前文件夹路径

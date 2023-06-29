@@ -20,15 +20,17 @@ public:
     std::vector<QString> backHistory;// 文件夹路径的历史记录
     std::vector<QString> forwardHistory;// 前进路径的历史记录
     CustomComboBox* comboBoxMainFileExplorerPath;
+    QString path;
 
     void triggerQListWidgetCommonFolderStr_update(const QString& message);
     QListWidgetCommonFolder* common_folder_list;
     
-    void updateFolderContents(const QString& path);
+    void updateFolderContents(const QString& pathText);
     void searchResultSelected(const QModelIndex& index);
     
     QLineEdit* lineEditMainFileExplorerSearch;
     ListViewFile* folderListView;
+    ListViewFileForList* folderListViewForList;
 
 public slots:
     void on_goBackClicked();

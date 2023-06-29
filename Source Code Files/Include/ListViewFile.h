@@ -94,6 +94,8 @@ class ListViewFileForList : public QListView
 public:
     explicit ListViewFileForList(const QStringList& listPath, QWidget* parent = nullptr);
 
+    QStandardItemModel* model;
+
 protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
     void customizeContextMenu();
@@ -109,7 +111,7 @@ private slots:
     void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    QStandardItemModel* model;
+    
     QStringList listPath;
     QMenu* contextMenu;
     QAction* openAction;
