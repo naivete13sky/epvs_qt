@@ -6,7 +6,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QComboBox>
-#include <QTableWidget>
+
 #include <QTextBrowser>
 #include <QVBoxLayout>
 #include "../Include/QListWidgetCommonFolder.h"
@@ -31,64 +31,13 @@ EPVS::EPVS(QWidget *parent)
     ui.setupUi(this);
     setWindowTitle("悦谱转图比对系统 EPVS-V1.0");
     setGeometry(200, 35, 1200, 900);
-        
-    // 创建一个QWidget对象
-    QWidget* centralWidget = new QWidget(this);
-    // 设置QWidget的位置和大小
-    centralWidget->setGeometry(200, 35, 1600, 1000);
-    // 设置QWidget的背景颜色
-    //centralWidget->setStyleSheet("background-color: red;");
-    // 设置QWidget作为EPVS类的子部件
-    setCentralWidget(centralWidget);
 
-    // QTabWidget
-    QTabWidget* tabWidget = new QTabWidget(centralWidget);
-    tabWidget->setGeometry(10, 0, 1550, 950);
-    tabWidget->setTabPosition(QTabWidget::West);
-
-    //tabMainFileExplorer
-    currentFolder = "";  // 当前所选文件夹的路径
-    backHistory.clear();  // 文件夹路径的历史记录
-    forwardHistory.clear();  // 前进路径的历史记录
-
-    QWidget* tabMainFileExplorer = new QWidget();
-    //tabMainFileExplorer--widget_fileExplorer_top
-    QWidget* widget_fileExplorer_top = new QWidget(tabMainFileExplorer);
-    widget_fileExplorer_top->setGeometry(0, 10, 1141, 31);
-    // 搜索
-    lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
-    lineEditMainFileExplorerSearch->setGeometry(880, 0, 241, 20);
-    // 前进
-    QPushButton* pushButtonMainFileExplorerForward = new QPushButton(widget_fileExplorer_top);
-    pushButtonMainFileExplorerForward->setGeometry(90, 0, 75, 23);
-    pushButtonMainFileExplorerForward->setText("前进");
-    // 向上
-    QPushButton* pushButtonMainFileExplorerUp = new QPushButton(widget_fileExplorer_top);
-    pushButtonMainFileExplorerUp->setGeometry(180, 0, 75, 23);
-    pushButtonMainFileExplorerUp->setText("上级");
-    // 回退
-    QPushButton* pushButtonMainFileExplorerBack = new QPushButton(widget_fileExplorer_top);
-    pushButtonMainFileExplorerBack->setGeometry(0, 0, 75, 23);
-    pushButtonMainFileExplorerBack->setText("后退");
-
-    //tabMainFileExplorer--widget_fileExplorer_bot
-    QWidget* widget_fileExplorer_bot = new QWidget(tabMainFileExplorer);
-    widget_fileExplorer_bot->setGeometry(-1, 59, 1141, 751);
-    //tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerRightMain
-    QWidget* widgetMainFileExplorerRightMain = new QWidget(widget_fileExplorer_bot);
-    widgetMainFileExplorerRightMain->setGeometry(260, 0, 881, 781);
-    //tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar
-    QWidget* widgetMainFileExplorerSideBar = new QWidget(widget_fileExplorer_bot);
-    widgetMainFileExplorerSideBar->setGeometry(0, 0, 251, 781);
-    //tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar--widgetLeftSiderTop
-    QWidget* widgetLeftSiderTop = new QWidget(widgetMainFileExplorerSideBar);
-    widgetLeftSiderTop->setGeometry(0, 0, 231, 331);
-    //tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar--widgetLeftSiderBot
-    QWidget* widgetLeftSiderBot = new QWidget(widgetMainFileExplorerSideBar);
-    widgetLeftSiderBot->setGeometry(0, 340, 231, 351);
-
-    tabWidget->addTab(tabMainFileExplorer, "");
-
+    initPublicVariable();//初始化公共变量
+    createCentralWidget();
+    createQTabWidget();
+    createMainFileExplorerTab();
+         
+       
 
     //tabMainEPVS
     QWidget* tabMainEPVS = new QWidget();
@@ -195,7 +144,7 @@ EPVS::EPVS(QWidget *parent)
     tabWidget->setTabText(tabWidget->indexOf(tabMainFileExplorer), "文件管理");
     tabWidget->setTabText(tabWidget->indexOf(tabMainEPVS), "转图比对");
 
-    tabWidget->setCurrentIndex(0);
+    
 
 
     //为了使得tab widget随着主窗口大小变化跟着调整, 需要设置一下layout。
@@ -209,47 +158,13 @@ EPVS::EPVS(QWidget *parent)
     //将容器窗口部件设置为主窗口的中央部件
     setCentralWidget(central_widget);
 
-
-    // 创建布局管理器，常用文件夹
-    QVBoxLayout* layout = new QVBoxLayout();
-    widgetLeftSiderTop->setLayout(layout);
-    // 创建常用文件夹列表
-    common_folder_list = new QListWidgetCommonFolder(widgetLeftSiderTop);    
-    QObject::connect(common_folder_list, &QListWidgetCommonFolder::triggerQListWidgetCommonFolderStr, this, &EPVS::triggerQListWidgetCommonFolderStr_update);
-    // 将子QListWidget添加到布局管理器中
-    layout->addWidget(common_folder_list);
+    
 
 
-    // 创建布局管理器，文件系统，树形结构
-    QVBoxLayout* layout2 = new QVBoxLayout();
-    widgetLeftSiderBot->setLayout(layout2);
-    // 创建文件树视图
-    QTreeView* file_tree_view = new QTreeView();
-    file_tree_view->setStyleSheet("background-color: lightgray;");
-    file_tree_view->setHeaderHidden(true);
-    // 创建文件系统模型
-    QFileSystemModel* file_system_model = new QFileSystemModel();
-    file_system_model->setRootPath(QDir::rootPath());
-    file_tree_view->setModel(file_system_model);
-    // 隐藏文件类型和时间列
-    file_tree_view->setColumnHidden(1, true);  // 文件类型列
-    file_tree_view->setColumnHidden(2, true);  // 修改时间列
-    file_tree_view->setColumnHidden(3, true);  // 修改时间列
-    // 将子QListWidget添加到布局管理器中
-    layout2->addWidget(file_tree_view);
+    
 
 
-    // 创建布局管理器，右侧主窗口
-    QVBoxLayout* layout3 = new QVBoxLayout();
-    widgetMainFileExplorerRightMain->setLayout(layout3);
-    // 创建主体窗口B部件
-    QWidget* content_widget = new QWidget();
-    content_widget->setStyleSheet("background-color: white;");
-    content_widget->setObjectName("content_widget");
-    QGridLayout* content_layout = new QGridLayout(content_widget);
-    content_widget->setLayout(content_layout);
-    layout3->addWidget(content_widget);
-
+    
 
     // 设置top与 bot 2个部分可以拖拽调整大小
     QSplitter* splitter_tabMainFileExplorer_top_bot = new QSplitter();    
@@ -263,26 +178,7 @@ EPVS::EPVS(QWidget *parent)
     layout_tabMainFileExplorer->addWidget(splitter_tabMainFileExplorer_top_bot);
 
 
-    // 设置top里的多个部分可以拖拽调整大小
-    QSplitter* splitter_tabMainFileExplorer_top = new QSplitter();
-    splitter_tabMainFileExplorer_top->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
-    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerBack);
-    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerForward);
-    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerUp);
-    splitter_tabMainFileExplorer_top->setHandleWidth(1);
-
-
-    // Qt设计师画的Qcombox没有回车事件，为了实现这个效果，需要自己写一个类来实现，这在个类中重写keyPressEvent方法
-    comboBoxMainFileExplorerPath = new CustomComboBox(this);
-    QObject::connect(comboBoxMainFileExplorerPath, SIGNAL(activated(const QString&)), this, SLOT(comboBoxMainFileExplorerPath_enter_do(const QString&)));    
-    comboBoxMainFileExplorerPath->setEditable(true);
-    splitter_tabMainFileExplorer_top->addWidget(comboBoxMainFileExplorerPath);
-    splitter_tabMainFileExplorer_top->addWidget(lineEditMainFileExplorerSearch);
-    QHBoxLayout* layout_tabMainFileExplorerTop = new QHBoxLayout(widget_fileExplorer_top);
-    layout_tabMainFileExplorerTop->addWidget(splitter_tabMainFileExplorer_top);
-    QList<int> sizes;
-    sizes << 20 << 20 << 20 << 800 << 200;
-    splitter_tabMainFileExplorer_top->setSizes(sizes);
+    
 
     
     // 设置底部的侧边栏与右边主窗口2个部分可以拖拽调整大小
@@ -295,15 +191,7 @@ EPVS::EPVS(QWidget *parent)
     layout_tabMainFileExplorerBot->addWidget(splitter_tabMainFileExplorer_bot);
 
 
-    // 设置侧边栏上下2个部分可以拖拽调整大小
-    QSplitter* splitter_tabMainFileExplorer_SideBar = new QSplitter();
-    splitter_tabMainFileExplorer_SideBar->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
-    splitter_tabMainFileExplorer_SideBar->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
-    splitter_tabMainFileExplorer_SideBar->addWidget(widgetLeftSiderTop);
-    splitter_tabMainFileExplorer_SideBar->addWidget(widgetLeftSiderBot);
-    splitter_tabMainFileExplorer_SideBar->setHandleWidth(1);
-    QHBoxLayout* layout_tabMainFileExplorerSideBar = new QHBoxLayout(widgetMainFileExplorerSideBar);
-    layout_tabMainFileExplorerSideBar->addWidget(splitter_tabMainFileExplorer_SideBar);
+    
 
 
     // 设置搜索栏
@@ -325,8 +213,196 @@ EPVS::EPVS(QWidget *parent)
 
 }
 
+
 EPVS::~EPVS()
 {}
+
+
+void EPVS::initPublicVariable() {
+    currentFolder = "";  // 当前所选文件夹的路径
+    backHistory.clear();  // 文件夹路径的历史记录
+    forwardHistory.clear();  // 前进路径的历史记录
+
+}
+
+void EPVS::createCentralWidget()
+{
+    centralWidget = new QWidget(this);// 创建一个QWidget对象
+    centralWidget->setGeometry(200, 35, 1600, 1000);// 设置QWidget的位置和大小    
+    //centralWidget->setStyleSheet("background-color: red;");// 设置QWidget的背景颜色
+    setCentralWidget(centralWidget);// 设置QWidget作为EPVS类的子部件
+}
+
+void EPVS::createQTabWidget() {
+    // QTabWidget
+    tabWidget = new QTabWidget(centralWidget);
+    tabWidget->setGeometry(10, 0, 1550, 950);
+    tabWidget->setTabPosition(QTabWidget::West);
+}
+
+void EPVS::createMainFileExplorerTab()
+{
+    tabMainFileExplorer = new QWidget();
+    // 创建文件管理的子部件
+    createMainFileExplorerWidget(tabMainFileExplorer);
+    // 添加到Tab Widget中
+    tabWidget->addTab(tabMainFileExplorer, "");
+
+    // 设置tabWidget为当前活动Tab
+    tabWidget->setCurrentIndex(0);
+}
+
+void EPVS::createMainFileExplorerWidget(QWidget* tabMainFileExplorer)
+{
+    // 创建文件管理的子部件
+    widget_fileExplorer_top = new QWidget(tabMainFileExplorer);//tabMainFileExplorer--widget_fileExplorer_top
+    widget_fileExplorer_top->setGeometry(0, 10, 1141, 31);
+
+    widget_fileExplorer_bot = new QWidget(tabMainFileExplorer);
+    widget_fileExplorer_bot->setGeometry(-1, 59, 1141, 751);
+
+    widgetMainFileExplorerRightMain = new QWidget(widget_fileExplorer_bot);
+    widgetMainFileExplorerRightMain->setGeometry(260, 0, 881, 781);
+
+    widgetMainFileExplorerSideBar = new QWidget(widget_fileExplorer_bot);
+    widgetMainFileExplorerSideBar->setGeometry(0, 0, 251, 781);
+
+    widgetLeftSiderTop = new QWidget(widgetMainFileExplorerSideBar);
+    widgetLeftSiderTop->setGeometry(0, 0, 231, 331);
+
+    widgetLeftSiderBot = new QWidget(widgetMainFileExplorerSideBar);
+    widgetLeftSiderBot->setGeometry(0, 340, 231, 351);
+
+
+    // 添加布局和控件到各个子部件中
+    createFileExplorerTopLayout(widget_fileExplorer_top);
+    createFileExplorerBotLayout(widget_fileExplorer_bot);
+    createMainFileExplorerRightMainLayout(widgetMainFileExplorerRightMain);
+    createMainFileExplorerSideBarLayout(widgetMainFileExplorerSideBar);
+    createLeftSiderTopLayout(widgetLeftSiderTop);
+    createLeftSiderBotLayout(widgetLeftSiderBot);
+
+    
+}
+
+void EPVS::createFileExplorerTopLayout(QWidget* widget_fileExplorer_top)
+{
+    
+    lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
+    lineEditMainFileExplorerSearch->setGeometry(880, 0, 241, 20);
+    pushButtonMainFileExplorerForward = new QPushButton(widget_fileExplorer_top);
+    pushButtonMainFileExplorerForward->setGeometry(90, 0, 75, 23);
+    pushButtonMainFileExplorerForward->setText("前进");
+    pushButtonMainFileExplorerUp = new QPushButton(widget_fileExplorer_top);
+    pushButtonMainFileExplorerUp->setGeometry(180, 0, 75, 23);
+    pushButtonMainFileExplorerUp->setText("上级");
+    pushButtonMainFileExplorerBack = new QPushButton(widget_fileExplorer_top);
+    pushButtonMainFileExplorerBack->setGeometry(0, 0, 75, 23);
+    pushButtonMainFileExplorerBack->setText("后退");
+    
+
+    // 设置top里的多个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_top = new QSplitter();
+    splitter_tabMainFileExplorer_top->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerBack);
+    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerForward);
+    splitter_tabMainFileExplorer_top->addWidget(pushButtonMainFileExplorerUp);
+    splitter_tabMainFileExplorer_top->setHandleWidth(1);
+
+    comboBoxMainFileExplorerPath = new CustomComboBox(this);
+    QObject::connect(comboBoxMainFileExplorerPath, SIGNAL(activated(const QString&)), this, SLOT(comboBoxMainFileExplorerPath_enter_do(const QString&)));
+    comboBoxMainFileExplorerPath->setEditable(true);
+    splitter_tabMainFileExplorer_top->addWidget(comboBoxMainFileExplorerPath);
+    splitter_tabMainFileExplorer_top->addWidget(lineEditMainFileExplorerSearch);
+    QHBoxLayout* layout_tabMainFileExplorerTop = new QHBoxLayout(widget_fileExplorer_top);
+    layout_tabMainFileExplorerTop->addWidget(splitter_tabMainFileExplorer_top);
+    QList<int> sizes;
+    sizes << 20 << 20 << 20 << 800 << 200;
+    splitter_tabMainFileExplorer_top->setSizes(sizes);
+
+}
+
+void EPVS::createFileExplorerBotLayout(QWidget* widget_fileExplorer_bot)
+{
+    /*QSplitter* splitterMainFileExplorer = new QSplitter(Qt::Horizontal, widget_fileExplorer_bot);
+    splitterMainFileExplorer->setGeometry(QRect(10, 0, 980, 700));*/
+
+    //createMainFileExplorerRightMainLayout(splitterMainFileExplorer);
+    //createMainFileExplorerSideBarLayout(splitterMainFileExplorer);
+}
+
+void EPVS::createMainFileExplorerRightMainLayout(QWidget* widgetMainFileExplorerRightMain)
+{
+    // 创建布局管理器，右侧主窗口
+    QVBoxLayout* layout3 = new QVBoxLayout();
+    widgetMainFileExplorerRightMain->setLayout(layout3);
+    // 创建主体窗口B部件
+    QWidget* content_widget = new QWidget();
+    content_widget->setStyleSheet("background-color: white;");
+    content_widget->setObjectName("content_widget");
+    QGridLayout* content_layout = new QGridLayout(content_widget);
+    content_widget->setLayout(content_layout);
+    layout3->addWidget(content_widget);
+
+}
+
+void EPVS::createMainFileExplorerSideBarLayout(QWidget* widgetMainFileExplorerSideBar)
+{
+    // 设置侧边栏上下2个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_SideBar = new QSplitter();
+    splitter_tabMainFileExplorer_SideBar->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    splitter_tabMainFileExplorer_SideBar->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
+    splitter_tabMainFileExplorer_SideBar->addWidget(widgetLeftSiderTop);
+    splitter_tabMainFileExplorer_SideBar->addWidget(widgetLeftSiderBot);
+    splitter_tabMainFileExplorer_SideBar->setHandleWidth(1);
+    QHBoxLayout* layout_tabMainFileExplorerSideBar = new QHBoxLayout(widgetMainFileExplorerSideBar);
+    layout_tabMainFileExplorerSideBar->addWidget(splitter_tabMainFileExplorer_SideBar);
+}
+
+void EPVS::createLeftSiderTopLayout(QWidget* widgetLeftSiderTop)
+{
+    
+    // 创建布局管理器，常用文件夹
+    QVBoxLayout* layout = new QVBoxLayout();
+    widgetLeftSiderTop->setLayout(layout);
+    // 创建常用文件夹列表
+    common_folder_list = new QListWidgetCommonFolder(widgetLeftSiderTop);
+    QObject::connect(common_folder_list, &QListWidgetCommonFolder::triggerQListWidgetCommonFolderStr, this, &EPVS::triggerQListWidgetCommonFolderStr_update);
+    // 将子QListWidget添加到布局管理器中
+    layout->addWidget(common_folder_list);
+    
+    
+    /*QVBoxLayout* layout = new QVBoxLayout(widgetLeftSiderTop);
+    QPushButton* pushButtonSiderTop = new QPushButton(widgetLeftSiderTop);
+    QLabel* labelFileList = new QLabel(widgetLeftSiderTop);
+    layout->addWidget(pushButtonSiderTop);
+    layout->addWidget(labelFileList);*/
+}
+
+void EPVS::createLeftSiderBotLayout(QWidget* widgetLeftSiderBot)
+{
+    // 创建布局管理器，文件系统，树形结构
+    QVBoxLayout* layout2 = new QVBoxLayout();
+    widgetLeftSiderBot->setLayout(layout2);
+    // 创建文件树视图
+    file_tree_view = new QTreeView();
+    file_tree_view->setStyleSheet("background-color: lightgray;");
+    file_tree_view->setHeaderHidden(true);
+    // 创建文件系统模型
+    QFileSystemModel* file_system_model = new QFileSystemModel();
+    file_system_model->setRootPath(QDir::rootPath());
+    file_tree_view->setModel(file_system_model);
+    // 隐藏文件类型和时间列
+    file_tree_view->setColumnHidden(1, true);  // 文件类型列
+    file_tree_view->setColumnHidden(2, true);  // 修改时间列
+    file_tree_view->setColumnHidden(3, true);  // 修改时间列
+    // 将子QListWidget添加到布局管理器中
+    layout2->addWidget(file_tree_view);
+}
+
+
+
+
 
 
 

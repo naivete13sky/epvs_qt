@@ -7,6 +7,9 @@
 #include "../Include/CustomComboBox.h"
 #include <QModelIndex>
 #include "../Include/ListViewFile.h"
+#include <QTableWidget>
+#include <QPushButton>
+#include <QTreeView>
 
 
 class EPVS : public QMainWindow
@@ -16,11 +19,49 @@ class EPVS : public QMainWindow
 public:
     EPVS(QWidget *parent = nullptr);
     ~EPVS();
+
     QString currentFolder;// 当前所选文件夹的路径
     std::vector<QString> backHistory;// 文件夹路径的历史记录
     std::vector<QString> forwardHistory;// 前进路径的历史记录
     CustomComboBox* comboBoxMainFileExplorerPath;
     QString path;
+
+    QWidget* centralWidget;
+    QTabWidget* tabWidget;
+    QWidget* tabMainFileExplorer;
+
+    QWidget* widget_fileExplorer_top;//tabMainFileExplorer--widget_fileExplorer_top
+    QPushButton* pushButtonMainFileExplorerForward;// 前进
+    QPushButton* pushButtonMainFileExplorerUp;// 向上
+    QPushButton* pushButtonMainFileExplorerBack;// 回退
+    QLineEdit* lineEditMainFileExplorerSearch;// 搜索
+
+    QWidget* widget_fileExplorer_bot;//tabMainFileExplorer--widget_fileExplorer_bot
+    QWidget* widgetMainFileExplorerRightMain;//tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerRightMain
+    QWidget* widgetMainFileExplorerSideBar;//tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar
+    QWidget* widgetLeftSiderTop;//tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar--widgetLeftSiderTop
+    QWidget* widgetLeftSiderBot;//tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar--widgetLeftSiderBot
+
+
+    QTreeView* file_tree_view;
+
+
+    ListViewFile* folderListView;
+    ListViewFileForList* folderListViewForList;
+
+    void initPublicVariable();
+    void createCentralWidget();
+    void createQTabWidget();
+    void createMainFileExplorerTab();
+    void createMainFileExplorerWidget(QWidget* tabMainFileExplorer);
+    void createFileExplorerTopLayout(QWidget* widget_fileExplorer_top);
+    void createFileExplorerBotLayout(QWidget* widget_fileExplorer_bot);
+    void createMainFileExplorerRightMainLayout(QWidget* widgetMainFileExplorerRightMain);
+    void createMainFileExplorerSideBarLayout(QWidget* widgetMainFileExplorerSideBar);
+    void createLeftSiderTopLayout(QWidget* widgetLeftSiderTop);
+    void createLeftSiderBotLayout(QWidget* widgetLeftSiderBot);
+
+
 
     void triggerQListWidgetCommonFolderStr_update(const QString& message);
     QListWidgetCommonFolder* common_folder_list;
@@ -28,9 +69,9 @@ public:
     void updateFolderContents(const QString& pathText);
     void searchResultSelected(const QModelIndex& index);
     
-    QLineEdit* lineEditMainFileExplorerSearch;
-    ListViewFile* folderListView;
-    ListViewFileForList* folderListViewForList;
+
+
+    
 
 public slots:
     void on_goBackClicked();
