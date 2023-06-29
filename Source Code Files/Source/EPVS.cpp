@@ -549,7 +549,21 @@ void EPVS::on_lineEditMainFileExplorerSearchReturnPressed()
         folder_contents_layout->setContentsMargins(10, 10, 10, 10);
         folder_contents_layout->setSpacing(10);
 
-        folderListViewForList = new ListViewFileForList(filePaths, this);
+
+        QStringList modifiedList;
+
+        // 使用迭代器遍历并修改字符串列表
+        for (QStringList::const_iterator it = filePaths.begin(); it != filePaths.end(); ++it) {
+            // 使用静态函数拼接路径
+            QString modifiedString = QDir::cleanPath(QDir(path).filePath(*it));
+            
+            modifiedList.append(modifiedString);
+        }
+
+        
+
+
+        folderListViewForList = new ListViewFileForList(modifiedList, this);
 
         connect(folderListViewForList, &ListViewFileForList::doubleClicked, this, &EPVS::searchResultSelected);
 
@@ -570,15 +584,15 @@ void EPVS::searchResultSelected(const QModelIndex& index)
     
     // 选中文件夹
     QAbstractItemModel* abstractModel = folderListViewForList->model;
-    QStandardItemModel* model = static_cast<QStandardItemModel*>(abstractModel);
-
-
-    //QStandardItemModel* model = qobject_cast<QStandardItemModel*>(folderListViewForList->model());
+    QStandardItemModel* model = static_cast<QStandardItemModel*>(abstractModel);    
     QStandardItem* item = model->itemFromIndex(index);
     
 
     
     QString pathStr = item->text();
+
+
+
 
 
 
