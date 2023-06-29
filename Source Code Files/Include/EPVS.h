@@ -27,10 +27,10 @@ public:
     CustomComboBox* comboBoxMainFileExplorerPath;
     QString path;
 
-    QWidget* centralWidget;
-    QTabWidget* tabWidget;
+    QWidget* centralWidget;// 主widget，设置这个主要是为了缩放用
+    QTabWidget* tabWidget;//centralWidget-->tabWidget
     QVBoxLayout* layout_main;
-    QWidget* central_widget;
+    QWidget* centralwidgetTabWidget;//centralWidget-->tabWidget-->centralwidgetTabWidget
     QWidget* tabMainFileExplorer;
 
     QWidget* widget_fileExplorer_top;//tabMainFileExplorer--widget_fileExplorer_top
