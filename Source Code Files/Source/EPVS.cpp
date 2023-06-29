@@ -40,7 +40,7 @@ EPVS::EPVS(QWidget *parent)
        
 
     //tabMainEPVS
-    QWidget* tabMainEPVS = new QWidget();
+    tabMainEPVS = new QWidget();
     QWidget* widget_vs_left = new QWidget(tabMainEPVS);
     widget_vs_left->setGeometry(0, 0, 901, 821);
     QWidget* widget_vs_left_top = new QWidget(widget_vs_left);
@@ -143,13 +143,13 @@ EPVS::EPVS(QWidget *parent)
     statusbar->setObjectName("statusbar");
     setStatusBar(statusbar);
 
+    
+
+    
+
+
     tabWidget->setTabText(tabWidget->indexOf(tabMainFileExplorer), "文件管理");
     tabWidget->setTabText(tabWidget->indexOf(tabMainEPVS), "转图比对");
-
-    
-
-
-    
 
     
 
@@ -201,6 +201,7 @@ void EPVS::createQTabWidget() {
     setCentralWidget(centralwidgetTabWidget);
 
 
+    
 
 
 }

@@ -23,20 +23,22 @@ public:
 
     QString currentFolder;// 当前所选文件夹的路径
     std::vector<QString> backHistory;// 文件夹路径的历史记录
-    std::vector<QString> forwardHistory;// 前进路径的历史记录
-    CustomComboBox* comboBoxMainFileExplorerPath;
+    std::vector<QString> forwardHistory;// 前进路径的历史记录    
     QString path;
+
 
     QWidget* centralWidget;// 主widget，设置这个主要是为了缩放用
     QTabWidget* tabWidget;//centralWidget-->tabWidget
     QVBoxLayout* layout_main;
     QWidget* centralwidgetTabWidget;//centralWidget-->tabWidget-->centralwidgetTabWidget
-    QWidget* tabMainFileExplorer;
 
+
+    QWidget* tabMainFileExplorer;
     QWidget* widget_fileExplorer_top;//tabMainFileExplorer--widget_fileExplorer_top
     QPushButton* pushButtonMainFileExplorerForward;// 前进
     QPushButton* pushButtonMainFileExplorerUp;// 向上
     QPushButton* pushButtonMainFileExplorerBack;// 回退
+    CustomComboBox* comboBoxMainFileExplorerPath;
     QLineEdit* lineEditMainFileExplorerSearch;// 搜索
 
     QWidget* widget_fileExplorer_bot;//tabMainFileExplorer--widget_fileExplorer_bot
@@ -45,12 +47,20 @@ public:
     QWidget* widgetLeftSiderTop;//tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar--widgetLeftSiderTop
     QWidget* widgetLeftSiderBot;//tabMainFileExplorer--widget_fileExplorer_bot--widgetMainFileExplorerSideBar--widgetLeftSiderBot
 
-
     QTreeView* file_tree_view;
-
-
     ListViewFile* folderListView;
     ListViewFileForList* folderListViewForList;
+
+
+
+    QWidget* tabMainEPVS;
+
+
+
+
+
+
+
 
     void initPublicVariable();
     void createCentralWidget();
