@@ -585,16 +585,8 @@ void EPVS::searchResultSelected(const QModelIndex& index)
     // 选中文件夹
     QAbstractItemModel* abstractModel = folderListViewForList->model;
     QStandardItemModel* model = static_cast<QStandardItemModel*>(abstractModel);    
-    QStandardItem* item = model->itemFromIndex(index);
-    
-
-    
+    QStandardItem* item = model->itemFromIndex(index);           
     QString pathStr = item->text();
-
-
-
-
-
 
 
     if (QDir(pathStr).exists()) {
