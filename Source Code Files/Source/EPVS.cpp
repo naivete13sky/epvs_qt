@@ -161,52 +161,8 @@ EPVS::EPVS(QWidget *parent)
     
 
 
-    
-
-
-    
-
-    // 设置top与 bot 2个部分可以拖拽调整大小
-    QSplitter* splitter_tabMainFileExplorer_top_bot = new QSplitter();    
-    splitter_tabMainFileExplorer_top_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
-    // 设置手柄宽度为1个像素
-    splitter_tabMainFileExplorer_top_bot->setHandleWidth(1);
-    splitter_tabMainFileExplorer_top_bot->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
-    splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_top);
-    splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_bot);
-    QHBoxLayout* layout_tabMainFileExplorer = new QHBoxLayout(tabMainFileExplorer);
-    layout_tabMainFileExplorer->addWidget(splitter_tabMainFileExplorer_top_bot);
-
-
-    
-
-    
-    // 设置底部的侧边栏与右边主窗口2个部分可以拖拽调整大小
-    QSplitter* splitter_tabMainFileExplorer_bot = new QSplitter();
-    splitter_tabMainFileExplorer_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
-    splitter_tabMainFileExplorer_bot->addWidget(widgetMainFileExplorerSideBar);
-    splitter_tabMainFileExplorer_bot->addWidget(widgetMainFileExplorerRightMain);
-    splitter_tabMainFileExplorer_bot->setHandleWidth(1);        
-    QHBoxLayout* layout_tabMainFileExplorerBot = new QHBoxLayout(widget_fileExplorer_bot);
-    layout_tabMainFileExplorerBot->addWidget(splitter_tabMainFileExplorer_bot);
-
-
-    
-
-
-    // 设置搜索栏
-    lineEditMainFileExplorerSearch->setPlaceholderText("搜索");
-
-
-    
-    //QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
-    QObject::connect(pushButtonMainFileExplorerBack, &QPushButton::clicked, this, &EPVS::on_goBackClicked);
-    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(on_goForwardClicked()));
-    QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(on_goUpClicked()));
-    QObject::connect(common_folder_list, &QListWidget::itemClicked, this,&EPVS::on_commonFolderListItemClicked);
-    QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
-    connect(comboBoxMainFileExplorerPath, QOverload<int>::of(&QComboBox::activated), this, &EPVS::on_comboBoxMainFileExplorerPath_activated);
-    connect(lineEditMainFileExplorerSearch, &QLineEdit::returnPressed, this, &EPVS::on_lineEditMainFileExplorerSearchReturnPressed);
+        
+    setConnect();
     
     
 
@@ -245,6 +201,22 @@ void EPVS::createMainFileExplorerTab()
     tabMainFileExplorer = new QWidget();
     // 创建文件管理的子部件
     createMainFileExplorerWidget(tabMainFileExplorer);
+    
+    
+
+    // 设置top与 bot 2个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_top_bot = new QSplitter();
+    splitter_tabMainFileExplorer_top_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    // 设置手柄宽度为1个像素
+    splitter_tabMainFileExplorer_top_bot->setHandleWidth(1);
+    splitter_tabMainFileExplorer_top_bot->setOrientation(Qt::Vertical);  // 设置为垂直方向分割
+    splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_top);
+    splitter_tabMainFileExplorer_top_bot->addWidget(widget_fileExplorer_bot);
+    QHBoxLayout* layout_tabMainFileExplorer = new QHBoxLayout(tabMainFileExplorer);
+    layout_tabMainFileExplorer->addWidget(splitter_tabMainFileExplorer_top_bot);
+    
+    
+    
     // 添加到Tab Widget中
     tabWidget->addTab(tabMainFileExplorer, "");
 
@@ -290,6 +262,7 @@ void EPVS::createFileExplorerTopLayout(QWidget* widget_fileExplorer_top)
     
     lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
     lineEditMainFileExplorerSearch->setGeometry(880, 0, 241, 20);
+    lineEditMainFileExplorerSearch->setPlaceholderText("搜索");
     pushButtonMainFileExplorerForward = new QPushButton(widget_fileExplorer_top);
     pushButtonMainFileExplorerForward->setGeometry(90, 0, 75, 23);
     pushButtonMainFileExplorerForward->setText("前进");
@@ -324,11 +297,14 @@ void EPVS::createFileExplorerTopLayout(QWidget* widget_fileExplorer_top)
 
 void EPVS::createFileExplorerBotLayout(QWidget* widget_fileExplorer_bot)
 {
-    /*QSplitter* splitterMainFileExplorer = new QSplitter(Qt::Horizontal, widget_fileExplorer_bot);
-    splitterMainFileExplorer->setGeometry(QRect(10, 0, 980, 700));*/
-
-    //createMainFileExplorerRightMainLayout(splitterMainFileExplorer);
-    //createMainFileExplorerSideBarLayout(splitterMainFileExplorer);
+    // 设置底部的侧边栏与右边主窗口2个部分可以拖拽调整大小
+    QSplitter* splitter_tabMainFileExplorer_bot = new QSplitter();
+    splitter_tabMainFileExplorer_bot->setStyleSheet("QSplitter::handle { background-color: darkGray; }");
+    splitter_tabMainFileExplorer_bot->addWidget(widgetMainFileExplorerSideBar);
+    splitter_tabMainFileExplorer_bot->addWidget(widgetMainFileExplorerRightMain);
+    splitter_tabMainFileExplorer_bot->setHandleWidth(1);
+    QHBoxLayout* layout_tabMainFileExplorerBot = new QHBoxLayout(widget_fileExplorer_bot);
+    layout_tabMainFileExplorerBot->addWidget(splitter_tabMainFileExplorer_bot);
 }
 
 void EPVS::createMainFileExplorerRightMainLayout(QWidget* widgetMainFileExplorerRightMain)
@@ -677,4 +653,16 @@ void EPVS::searchResultSelected(const QModelIndex& index)
         QUrl url = QUrl::fromLocalFile(filePath);
         QDesktopServices::openUrl(url);
     }
+}
+
+
+void EPVS::setConnect() {
+    //QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
+    QObject::connect(pushButtonMainFileExplorerBack, &QPushButton::clicked, this, &EPVS::on_goBackClicked);
+    QObject::connect(pushButtonMainFileExplorerForward, SIGNAL(clicked()), this, SLOT(on_goForwardClicked()));
+    QObject::connect(pushButtonMainFileExplorerUp, SIGNAL(clicked()), this, SLOT(on_goUpClicked()));
+    QObject::connect(common_folder_list, &QListWidget::itemClicked, this, &EPVS::on_commonFolderListItemClicked);
+    QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
+    connect(comboBoxMainFileExplorerPath, QOverload<int>::of(&QComboBox::activated), this, &EPVS::on_comboBoxMainFileExplorerPath_activated);
+    connect(lineEditMainFileExplorerSearch, &QLineEdit::returnPressed, this, &EPVS::on_lineEditMainFileExplorerSearchReturnPressed);
 }

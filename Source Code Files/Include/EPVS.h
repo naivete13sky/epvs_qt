@@ -62,6 +62,8 @@ public:
     void createLeftSiderBotLayout(QWidget* widgetLeftSiderBot);
 
 
+    void setConnect();
+
 
     void triggerQListWidgetCommonFolderStr_update(const QString& message);
     QListWidgetCommonFolder* common_folder_list;
