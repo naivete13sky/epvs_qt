@@ -74,3 +74,49 @@ private:
 };
 
 #endif // LISTVIEWFILE_H
+
+
+
+
+#ifndef LISTVIEWFILEFORLIST_H
+#define LISTVIEWFILEFORLIST_H
+
+#include <QListView>
+#include <QStandardItemModel>
+#include <QContextMenuEvent>
+#include <QMenu>
+#include <QAction>
+#include <QShortcut>
+
+class ListViewFileForList : public QListView
+{
+    Q_OBJECT
+public:
+    explicit ListViewFileForList(const QStringList& listPath, QWidget* parent = nullptr);
+
+protected:
+    void contextMenuEvent(QContextMenuEvent* event) override;
+    void customizeContextMenu();
+    void showContextMenu(const QPoint& position);
+
+private slots:
+    void openSelected();
+    void copySelected();
+    void cutSelected();
+    void deleteSelected();
+    void renameSelected();
+    void createShortcuts();
+    void keyPressEvent(QKeyEvent* event) override;
+
+private:
+    QStandardItemModel* model;
+    QStringList listPath;
+    QMenu* contextMenu;
+    QAction* openAction;
+    QAction* copyAction;
+    QAction* cutAction;
+    QAction* deleteAction;
+    QAction* renameAction;
+};
+
+#endif // LISTVIEWFILEFORLIST_H

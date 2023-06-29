@@ -18,7 +18,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QFile>
-#include "../Include/ListViewFile.h"
 #include "../Include/FileNameDelegate.h"
 #include <Filter.h>
 #include <QModelIndex>
@@ -57,7 +56,7 @@ EPVS::EPVS(QWidget *parent)
     QWidget* widget_fileExplorer_top = new QWidget(tabMainFileExplorer);
     widget_fileExplorer_top->setGeometry(0, 10, 1141, 31);
     // 搜索
-    QLineEdit* lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
+    lineEditMainFileExplorerSearch = new QLineEdit(widget_fileExplorer_top);
     lineEditMainFileExplorerSearch->setGeometry(880, 0, 241, 20);
     // 前进
     QPushButton* pushButtonMainFileExplorerForward = new QPushButton(widget_fileExplorer_top);
@@ -319,7 +318,9 @@ EPVS::EPVS(QWidget *parent)
     QObject::connect(common_folder_list, &QListWidget::itemClicked, this,&EPVS::on_commonFolderListItemClicked);
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
     connect(comboBoxMainFileExplorerPath, QOverload<int>::of(&QComboBox::activated), this, &EPVS::on_comboBoxMainFileExplorerPath_activated);
-
+    connect(lineEditMainFileExplorerSearch, &QLineEdit::returnPressed, this, &EPVS::on_lineEditMainFileExplorerSearchReturnPressed);
+    
+    
 
 
 }
@@ -457,7 +458,7 @@ void EPVS::updateFolderContents(const QString& path) {
     folderContentsLayout->setContentsMargins(10, 10, 10, 10);
     folderContentsLayout->setSpacing(10);
 
-    ListViewFile* folderListView = new ListViewFile(path);
+    folderListView = new ListViewFile(path);
     // 设置自定义委托来绘制文件名的自动换行
     FileNameDelegate* delegate = new FileNameDelegate(folderListView);
     folderListView->setItemDelegate(delegate);
@@ -521,4 +522,65 @@ void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
 
 void EPVS::on_comboBoxMainFileExplorerPath_activated() {
     updateFolderContents(comboBoxMainFileExplorerPath->currentText());
+}
+
+void EPVS::on_lineEditMainFileExplorerSearchReturnPressed()
+{
+    QString keyword = lineEditMainFileExplorerSearch->text();
+    if (!keyword.isEmpty()) {
+        QString search_path = comboBoxMainFileExplorerPath->currentText();        
+        QStringList filePaths = QDir(search_path).entryList(QStringList() << "*" + keyword + "*", QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot, QDir::DirsFirst | QDir::IgnoreCase);
+
+        /* 更新文件夹视图 */
+        QWidget* content_widget = findChild<QWidget*>("content_widget");
+        // 清空内容
+        while (content_widget->layout()->count() > 0) {
+            QLayoutItem* child = content_widget->layout()->takeAt(0);
+            if (child->widget()) {
+                child->widget()->deleteLater();
+            }
+        }
+
+        // 创建文件夹内容部件
+        QWidget* folder_contents_widget = new QWidget();
+        QGridLayout* folder_contents_layout = new QGridLayout(folder_contents_widget);
+        folder_contents_layout->setContentsMargins(10, 10, 10, 10);
+        folder_contents_layout->setSpacing(10);
+
+        ListViewFileForList* folder_list_view = new ListViewFileForList(filePaths, this);
+
+        connect(folder_list_view, &ListViewFileForList::doubleClicked, this, &EPVS::searchResultSelected);
+
+        // 将文件夹内容部件添加到布局中
+        folder_contents_layout->addWidget(folder_list_view);
+
+        // 将文件夹内容部件设置为右边窗口B的子部件
+        content_widget->layout()->addWidget(folder_contents_widget);
+    }
+    else {
+        // 如果关键字为空，执行其他操作
+        updateFolderContents(comboBoxMainFileExplorerPath->currentText());
+    }
+}
+
+void EPVS::searchResultSelected(const QModelIndex& index)
+{   
+    QAbstractItemModel* model = folderListView->model();
+    QStandardItemModel* standardModel = qobject_cast<QStandardItemModel*>(model);
+    QStandardItem* item = standardModel->itemFromIndex(index);
+
+    
+    QString pathStr = item->text();
+    if (QDir(pathStr).exists()) {
+        backHistory.push_back(currentFolder); // 将当前文件夹路径添加到历史记录中
+        currentFolder = pathStr; // 更新当前文件夹路径
+        updateFolderContents(currentFolder);
+    }
+    else {
+        // 处理选择的是文件的情况
+        QString filePath = pathStr;
+
+        QUrl url = QUrl::fromLocalFile(filePath);
+        QDesktopServices::openUrl(url);
+    }
 }

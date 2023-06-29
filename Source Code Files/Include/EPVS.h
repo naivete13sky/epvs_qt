@@ -6,6 +6,8 @@
 #include <vector>
 #include "../Include/CustomComboBox.h"
 #include <QModelIndex>
+#include "../Include/ListViewFile.h"
+
 
 class EPVS : public QMainWindow
 {
@@ -23,7 +25,10 @@ public:
     QListWidgetCommonFolder* common_folder_list;
     
     void updateFolderContents(const QString& path);
+    void searchResultSelected(const QModelIndex& index);
     
+    QLineEdit* lineEditMainFileExplorerSearch;
+    ListViewFile* folderListView;
 
 public slots:
     void on_goBackClicked();
@@ -32,7 +37,7 @@ public slots:
     void on_commonFolderListItemClicked(QListWidgetItem* item);
     void on_folderSelectedDoubleClicked(const QModelIndex& index);
     void on_comboBoxMainFileExplorerPath_activated();
-
+    void on_lineEditMainFileExplorerSearchReturnPressed();
 
 private:
     Ui::EPVSClass ui;

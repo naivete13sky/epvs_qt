@@ -197,3 +197,169 @@ void ListViewFile::openFolder(const QString& folderPath)
     emit triggerListViewFileStrVsInputB(folderPath);
     emit triggerListViewFileStrSwitchTab("0");
 }
+
+
+
+
+
+
+#include "./../Include/ListViewFile.h"
+#include <QDesktopServices>
+#include <QUrl>
+#include <QApplication>
+#include <QClipboard>
+#include <QMessageBox>
+#include <QDebug>
+
+ListViewFileForList::ListViewFileForList(const QStringList& listPath, QWidget* parent)
+    : QListView(parent), listPath(listPath)
+{
+    model = new QStandardItemModel(this);
+    setModel(model);
+
+    for (const QString& path : listPath) {
+        QStandardItem* item = new QStandardItem(path);
+        model->appendRow(item);
+    }
+
+    setResizeMode(QListView::Adjust);
+
+    contextMenu = new QMenu(this);
+    contextMenu->setStyleSheet("QMenu::item:selected { color: black; }");
+
+    openAction = new QAction("打开", this);
+    copyAction = new QAction("复制", this);
+    cutAction = new QAction("剪切", this);
+    deleteAction = new QAction("删除", this);
+    renameAction = new QAction("重命名", this);
+
+    contextMenu->addAction(openAction);
+    contextMenu->addAction(copyAction);
+    contextMenu->addAction(cutAction);
+    contextMenu->addAction(deleteAction);
+    contextMenu->addAction(renameAction);
+
+    setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(this, &ListViewFileForList::customContextMenuRequested, this, &ListViewFileForList::showContextMenu);
+
+    connect(openAction, &QAction::triggered, this, &ListViewFileForList::openSelected);
+    connect(copyAction, &QAction::triggered, this, &ListViewFileForList::copySelected);
+    connect(cutAction, &QAction::triggered, this, &ListViewFileForList::cutSelected);
+    connect(deleteAction, &QAction::triggered, this, &ListViewFileForList::deleteSelected);
+    connect(renameAction, &QAction::triggered, this, &ListViewFileForList::renameSelected);
+
+    createShortcuts();
+}
+
+void ListViewFileForList::contextMenuEvent(QContextMenuEvent* event)
+{
+    Q_UNUSED(event);
+}
+
+void ListViewFileForList::customizeContextMenu()
+{
+    contextMenu->clear();
+
+    openAction = new QAction("打开", this);
+    copyAction = new QAction("复制", this);
+    cutAction = new QAction("剪切", this);
+    deleteAction = new QAction("删除", this);
+    renameAction = new QAction("重命名", this);
+
+    contextMenu->addAction(openAction);
+    contextMenu->addAction(copyAction);
+    contextMenu->addAction(cutAction);
+    contextMenu->addAction(deleteAction);
+    contextMenu->addAction(renameAction);
+
+    connect(openAction, &QAction::triggered, this, &ListViewFileForList::openSelected);
+    connect(copyAction, &QAction::triggered, this, &ListViewFileForList::copySelected);
+    connect(cutAction, &QAction::triggered, this, &ListViewFileForList::cutSelected);
+    connect(deleteAction, &QAction::triggered, this, &ListViewFileForList::deleteSelected);
+    connect(renameAction, &QAction::triggered, this, &ListViewFileForList::renameSelected);
+
+    QModelIndexList selectedIndexes = selectionModel()->selectedIndexes();
+    if (!selectedIndexes.isEmpty()) {
+        // 根据选中的项目动态设置上下文菜单的状态
+    }
+}
+
+void ListViewFileForList::showContextMenu(const QPoint& position)
+{
+    customizeContextMenu();
+    contextMenu->exec(mapToGlobal(position));
+}
+
+void ListViewFileForList::openSelected()
+{
+    QModelIndexList selectedIndexes = selectionModel()->selectedIndexes();
+    if (!selectedIndexes.isEmpty()) {
+        QString path = selectedIndexes.first().data().toString();
+        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    }
+}
+
+void ListViewFileForList::copySelected()
+{
+    QModelIndexList selectedIndexes = selectionModel()->selectedIndexes();
+    if (!selectedIndexes.isEmpty()) {
+        QString path = selectedIndexes.first().data().toString();
+        QClipboard* clipboard = QApplication::clipboard();
+        clipboard->setText(path);
+    }
+}
+
+void ListViewFileForList::cutSelected()
+{
+    QModelIndexList selectedIndexes = selectionModel()->selectedIndexes();
+    if (!selectedIndexes.isEmpty()) {
+        QString path = selectedIndexes.first().data().toString();
+        QClipboard* clipboard = QApplication::clipboard();
+        clipboard->setText(path);
+
+        // 删除选中的项目
+        model->removeRow(selectedIndexes.first().row());
+    }
+}
+
+void ListViewFileForList::deleteSelected()
+{
+    QModelIndexList selectedIndexes = selectionModel()->selectedIndexes();
+    if (!selectedIndexes.isEmpty()) {
+        QString path = selectedIndexes.first().data().toString();
+        // 执行删除操作，例如使用QFile::remove(path)删除文件
+
+        // 删除选中的项目
+        model->removeRow(selectedIndexes.first().row());
+    }
+}
+
+void ListViewFileForList::renameSelected()
+{
+    QModelIndexList selectedIndexes = selectionModel()->selectedIndexes();
+    if (!selectedIndexes.isEmpty()) {
+        QString path = selectedIndexes.first().data().toString();
+        // 执行重命名操作，例如使用QFile::rename(oldPath, newPath)重命名文件
+
+        // 更新显示的项目名称
+        QString newName = "New Name"; // 替换为实际的新名称
+        model->setData(selectedIndexes.first(), newName);
+    }
+}
+
+void ListViewFileForList::createShortcuts()
+{
+    QShortcut* deleteShortcut = new QShortcut(QKeySequence::Delete, this);
+    connect(deleteShortcut, &QShortcut::activated, this, &ListViewFileForList::deleteSelected);
+}
+
+void ListViewFileForList::keyPressEvent(QKeyEvent* event)
+{
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        openSelected();
+    }
+    else {
+        QListView::keyPressEvent(event);
+    }
+}
+
