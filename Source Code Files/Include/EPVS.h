@@ -66,6 +66,11 @@ public:
 
 
 
+    QPushButton* pushButtonJobBReset;
+
+
+
+
 
     void initPublicVariable();
     void createCentralWidget();
@@ -113,6 +118,10 @@ public slots:
     void on_comboBoxMainFileExplorerPath_activated();
     void on_lineEditMainFileExplorerSearchReturnPressed();
     void updateTriggerListViewFileStr(const QString& message);
+
+
+
+    void on_buttonTestClicked();
 
 private:
     Ui::EPVSClass ui;

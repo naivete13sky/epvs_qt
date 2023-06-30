@@ -97,6 +97,7 @@
     <ClCompile Include="Source Code Files\Source\ccMethod\MySoup.cpp" />
     <ClCompile Include="Source Code Files\Source\CustomComboBox.cpp" />
     <ClCompile Include="Source Code Files\Source\FileNameDelegate.cpp" />
+    <ClCompile Include="Source Code Files\Source\g\g.cpp" />
     <ClCompile Include="Source Code Files\Source\ListViewFile.cpp" />
     <ClCompile Include="Source Code Files\Source\QListWidgetCommonFolder.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -128,6 +129,7 @@
   <ItemGroup>
     <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h" />
     <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h" />
+    <ClInclude Include="Source Code Files\Include\g\g.h" />
     <QtMoc Include="Source Code Files\Include\ListViewFile.h" />
     <QtMoc Include="Source Code Files\Include\QListWidgetCommonFolder.h" />
     <QtMoc Include="Source Code Files\Include\dms\dms.h" />

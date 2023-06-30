@@ -22,6 +22,9 @@
 #include <algorithm>
 #include <QStandardItemModel>
 #include "../Include/global_variables.h"
+#include "../Include/g/g.h"
+#include <iostream>
+
 
 
 EPVS::EPVS(QWidget *parent)
@@ -376,7 +379,7 @@ void EPVS::createMainEPVSLeftTopLayout(QWidget* widget_vs_left_top) {
     QLabel* labelStatusJobB = new QLabel(groupBoxJobB);
     labelStatusJobB->setText("×´Ì¬£º");
     labelStatusJobB->setGeometry(10, 110, 161, 16);
-    QPushButton* pushButtonJobBReset = new QPushButton(groupBoxJobB);
+    pushButtonJobBReset = new QPushButton(groupBoxJobB);
     pushButtonJobBReset->setText("ÖØÖÃB");
     pushButtonJobBReset->setGeometry(170, 100, 81, 31);
 
@@ -844,6 +847,11 @@ void EPVS::setConnect() {
     QObject::connect(file_tree_view, &QListView::clicked, this, &EPVS::on_folderSelectedDoubleClicked);
     connect(comboBoxMainFileExplorerPath, QOverload<int>::of(&QComboBox::activated), this, &EPVS::on_comboBoxMainFileExplorerPath_activated);
     connect(lineEditMainFileExplorerSearch, &QLineEdit::returnPressed, this, &EPVS::on_lineEditMainFileExplorerSearchReturnPressed);
+
+
+    connect(pushButtonJobBReset, &QPushButton::clicked, this, &EPVS::on_buttonTestClicked);
+
+
 }
 
 
@@ -869,4 +877,17 @@ void EPVS::closeEvent(QCloseEvent* event) {
     else {
         event->ignore();
     }
+}
+
+
+void EPVS::on_buttonTestClicked() {
+
+    qDebug() << "ccout3";
+
+    G* g = new G("C:/cc/python/epwork/epvs/config_g/bin/gateway.exe");
+    //const char* str = R"(COM info,args=-t root -m display -d JOBS_LIST,out_file=\\vmware-host\Shared Folders\share\epvs\job_list.txt,write_mode=replace,units=inch)";
+    QString cmd = R"(COM info,args=-t root -m display -d JOBS_LIST,out_file=\\vmware-host\Shared Folders\share\epvs\job_list.txt,write_mode=replace,units=inch)";
+    g->exec_cmd(cmd);
+
+
 }
