@@ -7,6 +7,7 @@
 #include "../Include/CustomComboBox.h"
 #include <QModelIndex>
 #include "../Include/ListViewFile.h"
+#include <QTabWidget>
 #include <QTableWidget>
 #include <QPushButton>
 #include <QTreeView>
@@ -54,10 +55,13 @@ public:
 
 
     QWidget* tabMainEPVS;
+    QWidget* widget_vs_left;//tabMainEPVS-->widget_vs_left
+    QWidget* widget_vs_left_top;//tabMainEPVS-->widget_vs_left-->widget_vs_left_top
+    QWidget* widget_vs_left_bot;//tabMainEPVS-->widget_vs_left-->widget_vs_left_bot
 
-
-
-
+    QWidget* widget_vs_right;//tabMainEPVS-->widget_vs_right
+    QWidget* widget_vs_right_top;//tabMainEPVS-->widget_vs_right-->widget_vs_right_top
+    QWidget* widget_vs_right_bot;//tabMainEPVS-->widget_vs_right-->widget_vs_right_bot
 
 
 
@@ -65,6 +69,7 @@ public:
     void initPublicVariable();
     void createCentralWidget();
     void createQTabWidget();
+
     void createMainFileExplorerTab();
     void createMainFileExplorerWidget(QWidget* tabMainFileExplorer);
     void createFileExplorerTopLayout(QWidget* widget_fileExplorer_top);
@@ -73,6 +78,14 @@ public:
     void createMainFileExplorerSideBarLayout(QWidget* widgetMainFileExplorerSideBar);
     void createLeftSiderTopLayout(QWidget* widgetLeftSiderTop);
     void createLeftSiderBotLayout(QWidget* widgetLeftSiderBot);
+
+    void createMainEPVSTab();
+    void createMainEPVSWidget(QWidget* tabMainEPVS);
+    void createMainEPVSLeftTopLayout(QWidget* widget_vs_left_top);
+    void createMainEPVSLeftBotLayout(QWidget* widget_vs_left_bot);
+
+    void createMainEPVSRightLayout(QWidget* widget_vs_right);
+
 
 
     void setConnect();
