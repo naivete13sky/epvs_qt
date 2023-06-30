@@ -83,8 +83,10 @@ public:
     void createMainEPVSWidget(QWidget* tabMainEPVS);
     void createMainEPVSLeftTopLayout(QWidget* widget_vs_left_top);
     void createMainEPVSLeftBotLayout(QWidget* widget_vs_left_bot);
-
     void createMainEPVSRightLayout(QWidget* widget_vs_right);
+
+
+    void set_column_width_ratios(QTableWidget* tableWidget, const QList<int>& ratios);
 
 
 

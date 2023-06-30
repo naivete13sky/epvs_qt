@@ -1,6 +1,5 @@
 #pragma execution_character_set("utf-8")
 #include "../Include/EPVS.h"
-
 #include <QLineEdit>
 #include <QPushButton>
 #include <QGroupBox>
@@ -22,54 +21,26 @@
 #include <QModelIndex>
 #include <algorithm>
 #include <QStandardItemModel>
+#include "../Include/global_variables.h"
 
 
 EPVS::EPVS(QWidget *parent)
     : QMainWindow(parent)
 {
+    //UI设置
     ui.setupUi(this);
     setWindowTitle("悦谱转图比对系统 EPVS-V1.0");
-    setGeometry(200, 35, 1200, 900);
-
+    setGeometry(200, 35, 1300, 900);
+    
     initPublicVariable();//初始化公共变量
-
-    createCentralWidget();
-    createQTabWidget();
-
-    createMainFileExplorerTab();
-         
-    createMainEPVSTab();
-
-        
-
-
-    QMenuBar* menubar = new QMenuBar(this);
-    menubar->setGeometry(0, 0, 1179, 23);
-    setMenuBar(menubar);
-
-    QStatusBar* statusbar = new QStatusBar(this);
-    statusbar->setObjectName("statusbar");
-    setStatusBar(statusbar);
-
-    
-
-    
-
-
-    
-    
-
-    
-
-
-        
-    setConnect();
-    
-    
-
+    createCentralWidget();//设置主窗口部件
+    createQTabWidget();//主窗口中放置QTabWidget部件。
+    createMainFileExplorerTab();//添加tab页面--文件管理     
+    createMainEPVSTab();//添加tab页面--悦谱比图
+                  
+    setConnect();//连接信号槽
 
 }
-
 
 EPVS::~EPVS()
 {}
@@ -88,6 +59,17 @@ void EPVS::createCentralWidget()
     centralWidget->setGeometry(0, 35, 1600, 1000);// 设置QWidget的位置和大小    
     centralWidget->setStyleSheet("background-color: red;");// 设置QWidget的背景颜色
     setCentralWidget(centralWidget);// 设置QWidget作为EPVS类的子部件
+
+
+    QMenuBar* menubar = new QMenuBar(this);
+    menubar->setGeometry(0, 0, 1179, 23);
+    setMenuBar(menubar);
+
+    QStatusBar* statusbar = new QStatusBar(this);
+    statusbar->setObjectName("statusbar");
+    setStatusBar(statusbar);
+
+
 
 }
 
@@ -114,6 +96,7 @@ void EPVS::createQTabWidget() {
 
 }
 
+//文件管理页面
 void EPVS::createMainFileExplorerTab()
 {
     tabMainFileExplorer = new QWidget();
@@ -295,7 +278,7 @@ void EPVS::createLeftSiderBotLayout(QWidget* widgetLeftSiderBot)
     layout2->addWidget(file_tree_view);
 }
 
-
+//比图页面
 void EPVS::createMainEPVSTab() {
     //tabMainEPVS
     tabMainEPVS = new QWidget();
@@ -361,7 +344,6 @@ void EPVS::createMainEPVSWidget(QWidget* tabMainEPVS) {
 
 }
 
-
 void EPVS::createMainEPVSLeftTopLayout(QWidget* widget_vs_left_top) {
 
     QGroupBox* groupBoxJobA = new QGroupBox(widget_vs_left_top);
@@ -415,6 +397,46 @@ void EPVS::createMainEPVSLeftTopLayout(QWidget* widget_vs_left_top) {
     pushButtonAllReset->setText("重置所有");
     pushButtonAllReset->setGeometry(30, 105, 116, 23);
 
+
+    // 创建布局管理器，VS左侧主窗口上部的按钮区域
+    QHBoxLayout* layout_vs_left_top = new QHBoxLayout();
+    widget_vs_left_top->setLayout(layout_vs_left_top);
+    layout_vs_left_top->addWidget(groupBoxJobA);
+    layout_vs_left_top->addWidget(groupBoxVS);
+    layout_vs_left_top->addWidget(groupBoxJobB);
+
+    //设置QgroupBox中的部件布局, 使得里面的部件大小可以随着窗口变化而自动调整
+    // groupBoxJobA，创建一个网格布局
+    QGridLayout* layout_groupBoxJobA = new QGridLayout(groupBoxJobA);
+    layout_groupBoxJobA->addWidget(pushButtonInputA, 0, 0);
+    layout_groupBoxJobA->addWidget(pushButtonImportA, 0, 1);
+    layout_groupBoxJobA->addWidget(labelStatusJobA, 1, 0);
+    layout_groupBoxJobA->addWidget(pushButtonJobAReset, 1, 1);
+    // 设置布局中各个部件的间距
+    layout_groupBoxJobA->setSpacing(10);
+
+    // groupBoxVS，创建一个网格布局
+    QGridLayout* layout_groupBoxVS = new QGridLayout(groupBoxVS);
+    layout_groupBoxVS->addWidget(pushButtonVS, 0, 0);
+    layout_groupBoxVS->addWidget(comboBoxVSMethod, 1, 0);
+    layout_groupBoxVS->addWidget(pushButtonAllReset, 2, 0);
+    // 设置布局中各个部件的间距
+    layout_groupBoxVS->setSpacing(10);
+
+    // groupBoxJobB，创建一个网格布局
+    QGridLayout* layout_groupBoxJobB = new QGridLayout(groupBoxJobB);
+    layout_groupBoxJobB->addWidget(pushButtonInputB, 0, 0);
+    layout_groupBoxJobB->addWidget(pushButtonImportB, 0, 1);
+    layout_groupBoxJobB->addWidget(labelStatusJobB, 1, 0);
+    layout_groupBoxJobB->addWidget(pushButtonJobBReset, 1, 1);
+    // 设置布局中各个部件的间距
+    layout_groupBoxJobB->setSpacing(10);
+
+
+
+
+
+
 }
 
 void EPVS::createMainEPVSLeftBotLayout(QWidget* widget_vs_left_bot) {
@@ -422,6 +444,47 @@ void EPVS::createMainEPVSLeftBotLayout(QWidget* widget_vs_left_bot) {
     tableWidgetVS->setGeometry(10, 10, 891, 641);
     tableWidgetVS->setColumnCount(0);
     tableWidgetVS->setRowCount(0);
+
+    // region 设置比对主表格
+    QHBoxLayout* layout_vs_left_bot = new QHBoxLayout();
+    widget_vs_left_bot->setLayout(layout_vs_left_bot);
+    layout_vs_left_bot->addWidget(tableWidgetVS);
+    tableWidgetVS->setRowCount(0);
+    tableWidgetVS->setColumnCount(5);
+    // 设置列标签
+    QStringList column_labels = { "文件名", "料号A转图结果", "比图结果", "料号B转图结果", "说明" };
+    tableWidgetVS->setHorizontalHeaderLabels(column_labels);
+    // 设置固定宽度为多少像素
+    tableWidgetVS->setColumnWidth(0, 200);
+    tableWidgetVS->setColumnWidth(1, 100);
+    tableWidgetVS->setColumnWidth(2, 300);
+    tableWidgetVS->setColumnWidth(3, 100);
+    tableWidgetVS->setColumnWidth(4, 200);
+    // 设置表格的水平表头
+    QHeaderView* header = tableWidgetVS->horizontalHeader();
+    header->setSectionResizeMode(QHeaderView::Stretch);
+    // 设置列宽的比例
+    QList<int> column_width_ratios = { 15, 15, 40, 15, 15 };
+    set_column_width_ratios(tableWidgetVS, column_width_ratios);
+
+}
+
+void EPVS::set_column_width_ratios(QTableWidget* tableWidget, const QList<int>& ratios)
+{
+    int total_width = tableWidget->viewport()->width();
+    QHeaderView* header = tableWidget->horizontalHeader();
+
+    for (int i = 0; i < ratios.size(); ++i)
+    {
+        // 设置列为自动调整模式
+        header->setSectionResizeMode(i, QHeaderView::Interactive);
+        // 设置列宽为比例乘以总宽度
+        int width = total_width * ratios[i] / 100;
+        header->resizeSection(i, width);
+    }
+
+    // 最后一列设置为自动填充剩余空间
+    header->setSectionResizeMode(ratios.size() - 1, QHeaderView::Stretch);
 }
 
 void EPVS::createMainEPVSRightLayout(QWidget* widget_vs_right) {
@@ -445,6 +508,20 @@ void EPVS::createMainEPVSRightLayout(QWidget* widget_vs_right) {
     pushButtonSaveDMS->setText("保存至DMS");
     pushButtonSaveDMS->setGeometry(140, 10, 75, 23);
 
+    // widget_vs_right_top，创建一个网格布局
+    QGridLayout* layout_widget_vs_right_top = new QGridLayout(widget_vs_right_top);
+    layout_widget_vs_right_top->addWidget(pushButtonLoadEPCAM, 0, 0);
+    layout_widget_vs_right_top->addWidget(pushButtonSaveDMS, 0, 1);
+    if (login_user_type != "dms") {
+        pushButtonSaveDMS->setDisabled(true);
+    }    
+    layout_widget_vs_right_top->addWidget(pushButtonSaveLocal, 1, 1);
+    layout_widget_vs_right_top->addWidget(pushButtonSettings, 2, 1);
+    layout_widget_vs_right_top->addWidget(pushButtonHelp, 3, 1);
+    // 设置布局中各个部件的间距
+    layout_widget_vs_right_top->setSpacing(10);
+
+
     widget_vs_right_bot = new QWidget(widget_vs_right);
     widget_vs_right_bot->setGeometry(-1, 159, 221, 651);
 
@@ -452,10 +529,10 @@ void EPVS::createMainEPVSRightLayout(QWidget* widget_vs_right) {
     textBrowserMain->setGeometry(0, 10, 221, 631);
     QVBoxLayout* layout_widget_vs_right_bot = new QVBoxLayout(widget_vs_right_bot);
     layout_widget_vs_right_bot->addWidget(textBrowserMain);
+
+
+    
 }
-
-
-
 
 
 
@@ -473,7 +550,6 @@ void EPVS::triggerQListWidgetCommonFolderStr_update(const QString& message) {
     
 
 }
-    
 
 void EPVS::on_goBackClicked()
 {
@@ -484,7 +560,6 @@ void EPVS::on_goBackClicked()
         updateFolderContents(backFolder);
     }
 }
-
 
 void EPVS::on_goForwardClicked()
 {
@@ -505,7 +580,6 @@ void EPVS::on_goForwardClicked()
     }
 }
 
-
 void EPVS::on_goUpClicked()
 {
     // 文件夹导航，向上
@@ -514,7 +588,6 @@ void EPVS::on_goUpClicked()
 
     updateFolderContents(upFolder);
 }
-
 
 void EPVS::on_commonFolderListItemClicked(QListWidgetItem* item)
 {
@@ -570,7 +643,6 @@ void EPVS::on_commonFolderListItemClicked(QListWidgetItem* item)
         updateFolderContents(folder_path);
     }
 }
-
 
 void EPVS::updateFolderContents(const QString& pathText) {
     // 更新文件夹视图
@@ -632,7 +704,6 @@ void EPVS::updateFolderContents(const QString& pathText) {
     path = pathText;
 }
 
-
 void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
 {
     //QFileSystemModel* folderModel = qobject_cast<QFileSystemModel*>(index.model());
@@ -653,7 +724,6 @@ void EPVS::on_folderSelectedDoubleClicked(const QModelIndex& index)
         QDesktopServices::openUrl(url);
     }
 }
-
 
 void EPVS::on_comboBoxMainFileExplorerPath_activated() {
     updateFolderContents(comboBoxMainFileExplorerPath->currentText());
@@ -735,7 +805,6 @@ void EPVS::searchResultSelected(const QModelIndex& index)
         QDesktopServices::openUrl(url);
     }
 }
-
 
 void EPVS::setConnect() {
     //QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
