@@ -100,7 +100,7 @@ public:
     void updateFolderContents(const QString& pathText);
     void searchResultSelected(const QModelIndex& index);
     
-
+    void closeEvent(QCloseEvent* event);
 
     
 

@@ -824,3 +824,28 @@ void EPVS::setConnect() {
     connect(comboBoxMainFileExplorerPath, QOverload<int>::of(&QComboBox::activated), this, &EPVS::on_comboBoxMainFileExplorerPath_activated);
     connect(lineEditMainFileExplorerSearch, &QLineEdit::returnPressed, this, &EPVS::on_lineEditMainFileExplorerSearchReturnPressed);
 }
+
+
+
+void EPVS::closeEvent(QCloseEvent* event) {
+    // 创建一个消息框
+    QMessageBox messageBox(this);
+    messageBox.setIcon(QMessageBox::Question);
+    messageBox.setWindowTitle("确认退出");
+    messageBox.setText("确定要退出吗？");
+
+    // 添加确认和取消按钮
+    QPushButton* confirmButton = messageBox.addButton("确认", QMessageBox::AcceptRole);
+    QPushButton* cancelButton = messageBox.addButton("取消", QMessageBox::RejectRole);
+
+    // 显示消息框，并等待用户响应
+    messageBox.exec();
+
+    // 判断用户点击的是哪个按钮
+    if (messageBox.clickedButton() == confirmButton) {
+        event->accept();
+    }
+    else {
+        event->ignore();
+    }
+}
