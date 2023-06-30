@@ -112,6 +112,7 @@ public slots:
     void on_folderSelectedDoubleClicked(const QModelIndex& index);
     void on_comboBoxMainFileExplorerPath_activated();
     void on_lineEditMainFileExplorerSearchReturnPressed();
+    void updateTriggerListViewFileStr(const QString& message);
 
 private:
     Ui::EPVSClass ui;

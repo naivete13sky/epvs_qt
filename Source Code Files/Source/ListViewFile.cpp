@@ -19,7 +19,7 @@ ListViewFile::ListViewFile(const QString& path, QWidget* parent)
     contextMenu = new QMenu(this);
     contextMenu->setStyleSheet("QMenu::item:selected { color: black; }");
 
-    openAction = new QAction("Open", this);
+    openAction = new QAction("打开", this);
     copyAction = new QAction("Copy", this);
     pasteAction = new QAction("Paste", this);
     cutAction = new QAction("Cut", this);
@@ -84,6 +84,7 @@ void ListViewFile::openSelected()
     if (fileInfo.isFile())
     {
         QDesktopServices::openUrl(QUrl::fromLocalFile(absolutePath));
+        
     }
     else if (fileInfo.isDir())
     {
@@ -149,7 +150,7 @@ void ListViewFile::customizeContextMenu()
 {
     contextMenu->clear();
 
-    openAction = new QAction("Open", this);
+    openAction = new QAction("打开", this);
     copyAction = new QAction("Copy", this);
     pasteAction = new QAction("Paste", this);
     cutAction = new QAction("Cut", this);
@@ -169,6 +170,14 @@ void ListViewFile::customizeContextMenu()
     contextMenu->addAction(renameAction);
     contextMenu->addAction(newFolderAction);
     contextMenu->addMenu(subMenuDms);
+
+
+
+    QObject::connect(openAction, &QAction::triggered, this, &ListViewFile::openSelected);
+
+
+
+
 
     if (login_user_type != "dms")
     {
@@ -193,10 +202,12 @@ void ListViewFile::createShortcuts()
 
 void ListViewFile::openFolder(const QString& folderPath)
 {
-    emit triggerListViewFileStr(folderPath);
-    emit triggerListViewFileStrVsInputA(folderPath);
-    emit triggerListViewFileStrVsInputB(folderPath);
-    emit triggerListViewFileStrSwitchTab("0");
+    //qDebug() << "ccout";
+
+    emit triggerListViewFileStr("openFolder|" + folderPath);
+    //emit triggerListViewFileStrVsInputA(folderPath);
+    //emit triggerListViewFileStrVsInputB(folderPath);
+    //emit triggerListViewFileStrSwitchTab("0");
 }
 
 

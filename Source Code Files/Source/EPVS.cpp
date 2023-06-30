@@ -678,7 +678,7 @@ void EPVS::updateFolderContents(const QString& pathText) {
 
     QObject::connect(folderListView, &ListViewFile::doubleClicked, this, &EPVS::on_folderSelectedDoubleClicked);
     
-    ///*connect(folderListView, &ListViewFile::triggerListViewFileStr, this, &MyClass::updateTriggerListViewFileStr);
+    connect(folderListView, &ListViewFile::triggerListViewFileStr, this, &EPVS::updateTriggerListViewFileStr);
     //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputA, this, &MyClass::updateTriggerListViewFileStrVsInputA);
     //connect(folderListView, &ListViewFile::triggerListViewFileStrVsInputB, this, &MyClass::updateTriggerListViewFileStrVsInputB);
     //connect(folderListView, &ListViewFile::triggerListViewFileStrSwitchTab, this, &MyClass::updateTriggerListViewFileStrSwitchTab);*/
@@ -813,6 +813,27 @@ void EPVS::searchResultSelected(const QModelIndex& index)
         QDesktopServices::openUrl(url);
     }
 }
+
+
+void EPVS::updateTriggerListViewFileStr(const QString& message){
+    qDebug() << "outcc2" << message;
+    QString str = message;
+    QStringList splitList = str.split("|"); // 拆分字符串
+
+    if (splitList.size() >= 2) {
+        QString contentUsageType = splitList[0]; // 获取内容
+        if (contentUsageType == "openFolder") {
+            QString content = splitList[1];
+            updateFolderContents(content);
+        }
+    }
+    else {
+        qDebug() << "Invalid input string.";
+    }
+
+
+}
+
 
 void EPVS::setConnect() {
     //QObject::connect(pushButtonMainFileExplorerBack, SIGNAL(clicked()), this, SLOT(goBack()));
