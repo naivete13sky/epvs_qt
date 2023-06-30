@@ -440,7 +440,7 @@ void EPVS::createMainEPVSLeftTopLayout(QWidget* widget_vs_left_top) {
 }
 
 void EPVS::createMainEPVSLeftBotLayout(QWidget* widget_vs_left_bot) {
-    QTableWidget* tableWidgetVS = new QTableWidget(widget_vs_left_bot);
+    tableWidgetVS = new QTableWidget(widget_vs_left_bot);
     tableWidgetVS->setGeometry(10, 10, 891, 641);
     tableWidgetVS->setColumnCount(0);
     tableWidgetVS->setRowCount(0);
@@ -486,6 +486,14 @@ void EPVS::set_column_width_ratios(QTableWidget* tableWidget, const QList<int>& 
     // 最后一列设置为自动填充剩余空间
     header->setSectionResizeMode(ratios.size() - 1, QHeaderView::Stretch);
 }
+
+void EPVS::resizeEvent(QResizeEvent* event) {
+    // 在主窗口大小变化时调整表格部件的大小    
+    QWidget::resizeEvent(event);
+    QList<int> column_width_ratios = { 15, 15, 40, 15, 15 };
+    set_column_width_ratios(tableWidgetVS,column_width_ratios);
+}
+
 
 void EPVS::createMainEPVSRightLayout(QWidget* widget_vs_right) {
     widget_vs_right_top = new QWidget(widget_vs_right);

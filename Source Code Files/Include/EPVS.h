@@ -58,6 +58,7 @@ public:
     QWidget* widget_vs_left;//tabMainEPVS-->widget_vs_left
     QWidget* widget_vs_left_top;//tabMainEPVS-->widget_vs_left-->widget_vs_left_top
     QWidget* widget_vs_left_bot;//tabMainEPVS-->widget_vs_left-->widget_vs_left_bot
+    QTableWidget* tableWidgetVS;//tabMainEPVS-->widget_vs_left-->widget_vs_left_bot-->tableWidgetVS
 
     QWidget* widget_vs_right;//tabMainEPVS-->widget_vs_right
     QWidget* widget_vs_right_top;//tabMainEPVS-->widget_vs_right-->widget_vs_right_top
@@ -87,7 +88,7 @@ public:
 
 
     void set_column_width_ratios(QTableWidget* tableWidget, const QList<int>& ratios);
-
+    void resizeEvent(QResizeEvent* event);//ÖØÐ´ÊÂ¼þ
 
 
     void setConnect();
