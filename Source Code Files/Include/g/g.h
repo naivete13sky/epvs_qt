@@ -17,7 +17,8 @@ private:
     QString gatewayPath;
     QString gUserName;
     QProcess* process;
-    QString output;
+    QString command_output;
+    
 };
 
 #endif // G_H

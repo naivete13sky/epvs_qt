@@ -15,15 +15,15 @@ G::G(const QString& gatewayPath, const QString& gSetupType, const QString& GENES
 
         process->write("SET GENESIS_DIR=C:/Program Files/shareg\n");  // ·¢ËÍÃüÁî
         process->waitForBytesWritten();
-        output = QString::fromLocal8Bit(process->readAll());
-        qDebug().noquote() << output;
+        /*output = QString::fromLocal8Bit(process->readAll());
+        qDebug().noquote() << output;*/
 
         QByteArray commandBytes = command.toLocal8Bit();  // Convert QString to QByteArray
         process->write(commandBytes + "\n");  // ·¢ËÍÃüÁî
         process->waitForBytesWritten();
         process->waitForReadyRead();
-        output = QString::fromLocal8Bit(process->readAll());
-        qDebug().noquote() << output;
+        /*output = QString::fromLocal8Bit(process->readAll());
+        qDebug().noquote() << output;*/
 
 
     }
@@ -43,15 +43,11 @@ G::~G()
 
 int G::exec_cmd(const QString& cmd)
 {
+    qDebug().noquote() << "Ö´ÐÐÃüÁî£º" << cmd;
     process->write((cmd + "\n").toUtf8());
     process->waitForBytesWritten();
     process->waitForReadyRead();
-
-    output = QString::fromLocal8Bit(process->readAll());
-    qDebug() << "result:";
-    qDebug().noquote() << output;
-    //QString line = process->readLine();
-    /*int ret = line.trimmed().toInt();
-    return ret;*/
-    return output.toInt();
+    command_output = QString::fromLocal8Bit(process->readAll());
+    //qDebug().noquote() << "exec_cmd_result:" << output;    
+    return command_output.toInt();
 }

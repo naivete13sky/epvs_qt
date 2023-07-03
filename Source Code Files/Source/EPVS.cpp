@@ -884,14 +884,16 @@ void EPVS::on_buttonTestClicked() {
 
     qDebug() << "ccout3";
 
+    int result;
+
     G* g = new G("C:/cc/python/epwork/epvs/config_g/bin/gateway.exe");
     //const char* str = R"(COM info,args=-t root -m display -d JOBS_LIST,out_file=\\vmware-host\Shared Folders\share\epvs\job_list.txt,write_mode=replace,units=inch)";
     QString cmd = R"(COM info,args=-t root -m display -d JOBS_LIST,out_file=\\vmware-host\Shared Folders\share\epvs\job_list.txt,write_mode=replace,units=inch)";
-    int result = g->exec_cmd(cmd);
-    qDebug().noquote() << "return type:" << result;
+    result = g->exec_cmd(cmd);    
+    qDebug().noquote() << "执行结果：" << result;
 
 
-    int result2 = g->exec_cmd(cmd);
-    qDebug().noquote() << "return2 type:" << result2;
+    result = g->exec_cmd(cmd);
+    qDebug().noquote() << "执行结果：" << result;
 
 }
