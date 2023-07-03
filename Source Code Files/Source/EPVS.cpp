@@ -887,7 +887,11 @@ void EPVS::on_buttonTestClicked() {
     G* g = new G("C:/cc/python/epwork/epvs/config_g/bin/gateway.exe");
     //const char* str = R"(COM info,args=-t root -m display -d JOBS_LIST,out_file=\\vmware-host\Shared Folders\share\epvs\job_list.txt,write_mode=replace,units=inch)";
     QString cmd = R"(COM info,args=-t root -m display -d JOBS_LIST,out_file=\\vmware-host\Shared Folders\share\epvs\job_list.txt,write_mode=replace,units=inch)";
-    g->exec_cmd(cmd);
+    int result = g->exec_cmd(cmd);
+    qDebug().noquote() << "return type:" << result;
 
+
+    int result2 = g->exec_cmd(cmd);
+    qDebug().noquote() << "return2 type:" << result2;
 
 }

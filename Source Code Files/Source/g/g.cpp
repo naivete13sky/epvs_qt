@@ -53,5 +53,5 @@ int G::exec_cmd(const QString& cmd)
     //QString line = process->readLine();
     /*int ret = line.trimmed().toInt();
     return ret;*/
-    return 0;
+    return output.toInt();
 }
