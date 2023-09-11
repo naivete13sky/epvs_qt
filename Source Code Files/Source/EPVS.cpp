@@ -24,6 +24,7 @@
 #include "../Include/global_variables.h"
 #include "../Include/g/g.h"
 #include <iostream>
+#include "../Include/TabBarStyle.h"
 
 
 
@@ -290,6 +291,8 @@ void EPVS::createMainEPVSTab() {
 
     tabWidget->addTab(tabMainEPVS, "");
     tabWidget->setTabText(tabWidget->indexOf(tabMainEPVS), "转图比对");
+    // 把tabWidget子页面标题设置水平方向
+    tabWidget->tabBar()->setStyle(new TabBarStyle(Qt::Horizontal));
 
 }
 
@@ -519,9 +522,15 @@ void EPVS::createMainEPVSRightLayout(QWidget* widget_vs_right) {
     pushButtonSaveDMS->setText("保存至DMS");
     pushButtonSaveDMS->setGeometry(140, 10, 75, 23);
 
+    
+    pushButtonTest->setText("测试用");//测试用的
+
+
+
     // widget_vs_right_top，创建一个网格布局
     QGridLayout* layout_widget_vs_right_top = new QGridLayout(widget_vs_right_top);
     layout_widget_vs_right_top->addWidget(pushButtonLoadEPCAM, 0, 0);
+    layout_widget_vs_right_top->addWidget(pushButtonTest, 1, 0);
     layout_widget_vs_right_top->addWidget(pushButtonSaveDMS, 0, 1);
     if (login_user_type != "dms") {
         pushButtonSaveDMS->setDisabled(true);
@@ -851,6 +860,8 @@ void EPVS::setConnect() {
 
     connect(pushButtonJobBReset, &QPushButton::clicked, this, &EPVS::on_buttonTestClicked);
 
+    QObject::connect(pushButtonTest, &QPushButton::clicked, this, &EPVS::on_pushButtonTestClicked);
+
 
 }
 
@@ -895,5 +906,12 @@ void EPVS::on_buttonTestClicked() {
 
     result = g->exec_cmd(cmd);
     qDebug().noquote() << "执行结果：" << result;
+
+}
+
+
+void EPVS::on_pushButtonTestClicked() {
+    qDebug() << "ccout123";
+    qDebug() << "ccout123321";
 
 }

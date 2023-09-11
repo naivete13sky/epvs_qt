@@ -105,6 +105,7 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
+    <ClCompile Include="Source Code Files\Source\TabBarStyle.cpp" />
     <ClCompile Include="temp.cpp" />
     <QtRcc Include="Resources\forms\EPVS.qrc" />
     <QtUic Include="Resources\forms\EPVS.ui" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Source Code Files\Include\ccMethod\jsonutils.h" />
     <ClInclude Include="Source Code Files\Include\ccMethod\MySoup.h" />
     <ClInclude Include="Source Code Files\Include\g\g.h" />
+    <QtMoc Include="Source Code Files\Include\TabBarStyle.h" />
     <QtMoc Include="Source Code Files\Include\ListViewFile.h" />
     <QtMoc Include="Source Code Files\Include\QListWidgetCommonFolder.h" />
     <QtMoc Include="Source Code Files\Include\dms\dms.h" />

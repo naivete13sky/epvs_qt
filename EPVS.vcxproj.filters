@@ -73,6 +73,9 @@
     <ClCompile Include="Source Code Files\Source\g\g.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code Files\Source\TabBarStyle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Source Code Files\Include\login.h">
@@ -91,6 +94,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="Source Code Files\Include\ListViewFile.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Source Code Files\Include\TabBarStyle.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

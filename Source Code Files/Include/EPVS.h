@@ -62,6 +62,7 @@ public:
 
     QWidget* widget_vs_right;//tabMainEPVS-->widget_vs_right
     QWidget* widget_vs_right_top;//tabMainEPVS-->widget_vs_right-->widget_vs_right_top
+    QPushButton* pushButtonTest = new QPushButton;//²âÊÔÓÃµÄ¡£
     QWidget* widget_vs_right_bot;//tabMainEPVS-->widget_vs_right-->widget_vs_right_bot
 
 
@@ -122,6 +123,8 @@ public slots:
 
 
     void on_buttonTestClicked();
+
+    void on_pushButtonTestClicked();
 
 private:
     Ui::EPVSClass ui;
