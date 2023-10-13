@@ -915,11 +915,6 @@ void EPVS::on_buttonTestClicked() {
 void EPVS::on_pushButtonTestClicked() {
     qDebug() << "ccout123";
     qDebug() << "ccout123321";
-    Py_Initialize();//使用python之前，要调用Py_Initialize();这个函数进行初始化
-    PyRun_SimpleString("print('hello world!')");
-    Py_Finalize();
-
-
     Py_SetPythonHome(L"C:\\ProgramData\\Python3102");//指定python.exe位置
     Py_Initialize(); //使用python前要调用此函数，进行初始化
 
@@ -954,7 +949,6 @@ void EPVS::on_pushButtonTestClicked() {
     cout << "res:" << res << endl;
 
     Py_Finalize();
-
 
 
 }
