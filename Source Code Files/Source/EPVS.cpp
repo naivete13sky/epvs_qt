@@ -1,4 +1,5 @@
 #pragma execution_character_set("utf-8")
+#include<python.h>
 #include "../Include/EPVS.h"
 #include <QLineEdit>
 #include <QPushButton>
@@ -25,6 +26,7 @@
 #include "../Include/g/g.h"
 #include <iostream>
 #include "../Include/TabBarStyle.h"
+using namespace std;
 
 
 
@@ -913,5 +915,45 @@ void EPVS::on_buttonTestClicked() {
 void EPVS::on_pushButtonTestClicked() {
     qDebug() << "ccout123";
     qDebug() << "ccout123321";
+    Py_Initialize();//使用python之前，要调用Py_Initialize();这个函数进行初始化
+    PyRun_SimpleString("print('hello world!')");
+    Py_Finalize();
+
+
+    Py_SetPythonHome(L"C:\\ProgramData\\Python3102");//指定python.exe位置
+    Py_Initialize(); //使用python前要调用此函数，进行初始化
+
+    if (!Py_IsInitialized()) //如果没有初始化成功
+    {
+        cout << "fail to initial!" << endl;
+        Py_Finalize();
+    }
+
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("sys.path.append('./')");//设置.py文件所在位置
+
+    //声明变量
+    PyObject* pModule = NULL; //.py文件 
+    PyObject* pFunc = NULL;  //py文件中的函数
+    PyObject* pParams = NULL; //函数参数
+    PyObject* pResult = NULL;  //函数返回的结果
+
+    pModule = PyImport_ImportModule("testPython"); //调用上述路径下的testPython.py文件
+    if (pModule == NULL)
+    {
+        cout << "don't find the python file!" << endl;
+    }
+
+    pFunc = PyObject_GetAttrString(pModule, "add_number");  //从指定.py文件中调用函数add_number
+    pParams = Py_BuildValue("(ii)", 1, 1);//设置函数参数，i表示int整型，两个i表示有两个参数，s表示字符串等
+    pResult = PyObject_CallObject(pFunc, pParams);//调用函数，返回计算结果
+
+    int res;
+    PyArg_Parse(pResult, "i", &res);//将返回结果转换成C++类型
+    cout << "res:" << res << endl;
+
+    Py_Finalize();
+
+
 
 }
