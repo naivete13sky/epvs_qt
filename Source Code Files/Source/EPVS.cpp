@@ -628,20 +628,25 @@ void EPVS::on_commonFolderListItemClicked(QListWidgetItem* item)
         QJsonObject general_dict = settings_dict["general"].toObject();
         QJsonObject common_folder_dict = general_dict["common_folder"].toObject();
 
-        QString folder_path;
+        QString homePathDisk = general_dict["homePath_disk"].toString();
+        //qDebug() << "homePathDisk:" << homePathDisk;
+
+        
+        folder_path = QDir::homePath();
+        folder_path.replace(0, 1, homePathDisk);
 
         if (folder_name == "桌面")
-            folder_path = QDir::homePath() + "/Desktop";
-        else if (folder_name == "下载")
-            folder_path = QDir::homePath() + "/Downloads";
+            folder_path += "/Desktop";            
+        else if (folder_name == "下载")            
+            folder_path += "/Downloads";            
         else if (folder_name == "文档")
-            folder_path = QDir::homePath() + "/Documents";
+            folder_path += "/Documents";            
         else if (folder_name == "图片")
-            folder_path = QDir::homePath() + "/Pictures";
+            folder_path += "/Pictures";            
         else if (folder_name == "音乐")
-            folder_path = QDir::homePath() + "/Music";
+            folder_path += "/Music";         
         else if (folder_name == "视频")
-            folder_path = QDir::homePath() + "/Videos";
+            folder_path += "/Videos";            
         else if (!common_folder_dict.isEmpty())
         {
             for (auto it = common_folder_dict.constBegin(); it != common_folder_dict.constEnd(); ++it)
@@ -915,11 +920,6 @@ void EPVS::on_buttonTestClicked() {
 void EPVS::on_pushButtonTestClicked() {
     qDebug() << "ccout123";
     qDebug() << "ccout123321";
-    Py_Initialize();//使用python之前，要调用Py_Initialize();这个函数进行初始化
-    PyRun_SimpleString("print('hello world!')");
-    Py_Finalize();
-
-
     Py_SetPythonHome(L"C:\\ProgramData\\Python3102");//指定python.exe位置
     Py_Initialize(); //使用python前要调用此函数，进行初始化
 
@@ -954,7 +954,6 @@ void EPVS::on_pushButtonTestClicked() {
     cout << "res:" << res << endl;
 
     Py_Finalize();
-
 
 
 }

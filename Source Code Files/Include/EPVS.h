@@ -26,6 +26,7 @@ public:
     std::vector<QString> backHistory;// 文件夹路径的历史记录
     std::vector<QString> forwardHistory;// 前进路径的历史记录    
     QString path;
+    QString folder_path;//路径文件夹，QDir::homePath()
 
 
     QWidget* centralWidget;// 主widget，设置这个主要是为了缩放用
