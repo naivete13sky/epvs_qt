@@ -54,20 +54,23 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>D:\ProgramData\vcpkg-master\installed\x64-windows\include;D:\ProgramData\vcpkg-master\installed\x64-windows\bin;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\bin;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\ProgramData\Python3102\include;D:\ProgramData\vcpkg-master\installed\x64-windows\include;D:\ProgramData\vcpkg-master\installed\x64-windows\bin;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\bin;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\ProgramData\Python3102\libs;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link />
     <Link>
-      <AdditionalDependencies>$(QTDIR)\lib\Qt5Networkd.lib;libxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR)\lib\Qt5Networkd.lib;libxml2.lib;python310_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\ProgramData\vcpkg-master\installed\x64-windows\lib;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <AdditionalIncludeDirectories>$(QTDIR)\include\QtNetwork;D:\ProgramData\vcpkg-master\installed\x64-windows\include;C:\Qt\Qt5.9.1\5.9.1\msvc2017_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <PostBuildEvent>
+      <Command>editbin /SUBSYSTEM:CONSOLE $(OUTDIR)$(ProjectName).exe</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
